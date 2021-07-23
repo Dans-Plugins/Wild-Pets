@@ -1,4 +1,4 @@
 name: Wild Pets
-version: ${project.version}
+version: 0.3-alpha-1
 main: dansplugins.wildpets.WildPets
 api-version: 1.17

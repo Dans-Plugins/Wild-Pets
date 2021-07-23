@@ -4,10 +4,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WildPets extends JavaPlugin {
 
+    private static WildPets instance;
+
+    public static WildPets getInstance() {
+        return instance;
+    }
+
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        instance = this;
 
+        EventRegistry.getInstance().registerEvents();
     }
 
     @Override
