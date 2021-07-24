@@ -11,6 +11,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class Pet {
@@ -139,6 +140,15 @@ public class Pet {
     private void cancelTeleportTask() {
         Bukkit.getScheduler().cancelTask(teleportTaskID);
         teleportTaskID = -1;
+    }
+
+    public Map<String, String> save() {
+        // TODO
+        return null;
+    }
+
+    private void load(Map<String, String> data) {
+        // TODO
     }
 
 }

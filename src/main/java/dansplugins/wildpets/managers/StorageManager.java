@@ -47,13 +47,7 @@ public class StorageManager {
     }
 
     private void savePets() {
-        List<Map<String, String>> petLists = new ArrayList<>();
-        for (PetList petList : PersistentData.getInstance().getPetLists()){
-            petLists.add(petList.save());
-        }
-
-        File file = new File(FILE_PATH + PETS_FILE_NAME);
-        writeOutFiles(file, petLists);
+        // TODO
     }
 
     private void writeOutFiles(File file, List<Map<String, String>> saveData) {
@@ -68,14 +62,7 @@ public class StorageManager {
     }
 
     private void loadPets() {
-        PersistentData.getInstance().getPetLists().clear();
-
-        ArrayList<HashMap<String, String>> data = loadDataFromFilename(FILE_PATH + PETS_FILE_NAME);
-
-        for (Map<String, String> petList : data){
-            PetList list = new PetList(petList);
-            PersistentData.getInstance().getPetLists().add(list);
-        }
+        // TODO
     }
 
     private ArrayList<HashMap<String, String>> loadDataFromFilename(String filename) {

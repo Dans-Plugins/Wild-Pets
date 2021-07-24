@@ -18,10 +18,6 @@ public class PetList {
         owner = player;
     }
 
-    public PetList(Map<String, String> data) {
-        this.load(data);
-    }
-
     private ArrayList<Pet> getPets() {
         return pets;
     }
@@ -67,14 +63,5 @@ public class PetList {
         for (Pet pet : getPets()) {
             player.sendMessage(ChatColor.AQUA + pet.getName());
         }
-    }
-
-    public Map<String, String> save() {
-        // TODO: figure out how to save a list here
-        return null;
-    }
-
-    private void load(Map<String, String> data) {
-        // TODO: figure out how to save a list here
     }
 }

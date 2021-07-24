@@ -8,3 +8,4 @@
 - 0.7 - Help Command
 - 0.8 - Call Command
 - 0.9 - Set Free Command
+- 0.10 - Persistence
