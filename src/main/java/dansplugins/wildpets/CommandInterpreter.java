@@ -22,7 +22,7 @@ public class CommandInterpreter {
 
             if (secondaryLabel.equalsIgnoreCase("select")) {
                 SelectCommand command = new SelectCommand();
-                return command.execute(sender);
+                return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("rename")) {
