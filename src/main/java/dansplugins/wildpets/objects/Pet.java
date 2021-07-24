@@ -154,7 +154,7 @@ public class Pet {
     private void load(Map<String, String> data) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();;
 
-        uniqueID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
+        uniqueID = UUID.fromString(gson.fromJson(data.get("uniqueID"), String.class));
 
         Entity entity = Bukkit.getEntity(uniqueID);
         if (entity != null) {
