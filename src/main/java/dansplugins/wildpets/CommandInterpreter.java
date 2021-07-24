@@ -55,6 +55,11 @@ public class CommandInterpreter {
                 command.execute(sender);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("call")) {
+                CallCommand command = new CallCommand();
+                command.execute(sender);
+            }
+
         }
 
         return false;
