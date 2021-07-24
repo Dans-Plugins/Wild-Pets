@@ -1,5 +1,6 @@
 package dansplugins.wildpets.objects;
 
+import org.bukkit.EntityEffect;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -26,6 +27,8 @@ public class Pet {
         entity.setCustomName(name);
         entity.setPersistent(true);
         entity.setInvulnerable(true);
+
+        entity.playEffect(EntityEffect.LOVE_HEARTS);
 
         if (debug) {
             System.out.println("[DEBUG] Pet instantiated!");

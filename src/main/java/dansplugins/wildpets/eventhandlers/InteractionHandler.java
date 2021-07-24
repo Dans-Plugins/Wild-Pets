@@ -30,6 +30,7 @@ public class InteractionHandler implements Listener {
 
         if (PersistentData.getInstance().isPet(clickedEntity)) {
             event.getPlayer().sendMessage(ChatColor.RED + "That entity is already a pet!");
+            EphemeralData.getInstance().setPlayerAsNotTaming(event.getPlayer());
             return;
         }
 
