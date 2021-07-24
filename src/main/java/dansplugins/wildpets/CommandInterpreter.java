@@ -60,6 +60,11 @@ public class CommandInterpreter {
                 command.execute(sender);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("setfree")) {
+                SetFreeCommand command = new SetFreeCommand();
+                command.execute(sender);
+            }
+
         }
 
         return false;
