@@ -8,6 +8,8 @@ import java.util.UUID;
 
 public class Pet {
 
+    private boolean debug = true;
+
     private int entityID;
     private UUID uniqueID;
     private EntityType entityType;
@@ -24,6 +26,15 @@ public class Pet {
         entity.setCustomName(name);
         entity.setPersistent(true);
         entity.setInvulnerable(true);
+
+        if (debug) {
+            System.out.println("[DEBUG] Pet instantiated!");
+            System.out.println("[DEBUG] Entity ID: " + entityID);
+            System.out.println("[DEBUG] Unique ID: " + uniqueID.toString());
+            System.out.println("[DEBUG] Entity Type: " + entityType.name());
+            System.out.println("[DEBUG] Owner: " + owner.toString());
+            System.out.println("[DEBUG] Name: " + name);
+        }
     }
 
     public int getEntityID() {
