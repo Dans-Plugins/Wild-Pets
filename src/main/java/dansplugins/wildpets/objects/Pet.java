@@ -26,7 +26,7 @@ public class Pet {
     private String movementState;
 
     private Location stayingLocation;
-    private int teleportTaskID;
+    private int teleportTaskID = -1;
 
     public Pet(Entity entity, Player playerOwner) {
         entityID = entity.getEntityId();
@@ -105,6 +105,10 @@ public class Pet {
     }
 
     private void scheduleTeleportTask() {
+        if (teleportTaskID == -1) {
+            return;
+        }
+
         Entity entity = Bukkit.getEntity(uniqueID);
 
         if (entity != null) {
@@ -124,6 +128,7 @@ public class Pet {
 
     private void cancelTeleportTask() {
         Bukkit.getScheduler().cancelTask(teleportTaskID);
+        teleportTaskID = -1;
     }
 
 }
