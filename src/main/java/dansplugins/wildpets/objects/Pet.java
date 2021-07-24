@@ -78,9 +78,9 @@ public class Pet {
 
     public void sendInfoToPlayer(Player player) {
         player.sendMessage(ChatColor.AQUA + "=== Pet Info ===");
-        player.sendMessage("Name: " + name);
-        player.sendMessage("Type: " + entityType.name());
-        player.sendMessage("Owner: " + owner.getDisplayName());
+        player.sendMessage(ChatColor.AQUA + "Name: " + name);
+        player.sendMessage(ChatColor.AQUA + "Type: " + entityType.name());
+        player.sendMessage(ChatColor.AQUA + "Owner: " + owner.getDisplayName());
     }
 
 }

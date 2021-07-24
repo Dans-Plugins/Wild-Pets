@@ -1,5 +1,6 @@
 package dansplugins.wildpets.eventhandlers;
 
+import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.objects.Pet;
@@ -25,6 +26,7 @@ public class InteractionHandler implements Listener {
         Pet pet = PersistentData.getInstance().getPet(clickedEntity);
 
         if (EphemeralData.getInstance().isPlayerTaming(player)) {
+            setRightClickCooldown(player, 1);
 
             if (pet != null) {
                 player.sendMessage(ChatColor.RED + "That entity is already a pet.");
@@ -37,6 +39,7 @@ public class InteractionHandler implements Listener {
             EphemeralData.getInstance().setPlayerAsNotTaming(player);
         }
         else if (EphemeralData.getInstance().isPlayerSelecting(player)) {
+            setRightClickCooldown(player, 1);
 
             if (pet == null) {
                 player.sendMessage(ChatColor.RED + "That entity is not a pet.");
@@ -55,9 +58,29 @@ public class InteractionHandler implements Listener {
             EphemeralData.getInstance().setPlayerAsNotSelecting(player);
         }
         else {
-            pet.sendInfoToPlayer(player);
+            if (pet == null) {
+                return;
+            }
+
+            if (!EphemeralData.getInstance().hasRightClickCooldown(player)) {
+                setRightClickCooldown(player, 5);
+
+                pet.sendInfoToPlayer(player);
+            }
         }
 
+    }
+
+    private void setRightClickCooldown(Player player, int seconds) {
+        EphemeralData.getInstance().setRightClickCooldown(player, true);
+
+        WildPets.getInstance().getServer().getScheduler().runTaskLater(WildPets.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                EphemeralData.getInstance().setRightClickCooldown(player, false);
+
+            }
+        }, seconds * 20);
     }
 
 }
