@@ -65,12 +65,16 @@ public class EphemeralData {
     // -----
 
     public void selectPetForPlayer(Pet pet, Player player) {
-        if (selections.containsKey(player)) {
+        if (!selections.containsKey(player)) {
             selections.put(player, pet);
         }
         else {
             selections.replace(player, pet);
         }
+    }
+
+    public Pet getPetSelectionForPlayer(Player player) {
+        return selections.getOrDefault(player, null);
     }
 
     // -----
