@@ -22,7 +22,7 @@ public class CommandInterpreter {
 
             if (secondaryLabel.equalsIgnoreCase("select")) {
                 SelectCommand command = new SelectCommand();
-                return command.execute(sender);
+                return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("rename")) {
@@ -42,6 +42,11 @@ public class CommandInterpreter {
 
             if (secondaryLabel.equalsIgnoreCase("wander")) {
                 WanderCommand command = new WanderCommand();
+                command.execute(sender);
+            }
+
+            if (secondaryLabel.equalsIgnoreCase("list")) {
+                ListCommand command = new ListCommand();
                 command.execute(sender);
             }
 

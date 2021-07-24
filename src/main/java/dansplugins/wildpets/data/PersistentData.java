@@ -2,6 +2,7 @@ package dansplugins.wildpets.data;
 
 import dansplugins.wildpets.objects.Pet;
 import dansplugins.wildpets.objects.PetList;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -46,8 +47,8 @@ public class PersistentData {
         return null;
     }
 
-    public boolean hasPetList(Player player) {
-        return getPlayerPetLists().containsKey(player);
+    public PetList getPetList(Player player) {
+        return getPlayerPetLists().get(player);
     }
 
     public void createPetListForPlayer(Player player) {
@@ -58,5 +59,15 @@ public class PersistentData {
     public Pet getPlayersPet(Player player, Entity entity) {
         PetList petList = getPlayerPetLists().get(player);
         return petList.getPet(entity.getUniqueId());
+    }
+
+    public Pet getPlayersPet(Player player, String petName) {
+        PetList petList = getPlayerPetLists().get(player);
+        return petList.getPet(petName);
+    }
+
+    public void sendListOfPetsToPlayer(Player player) {
+        PetList petList = getPetList(player);
+        petList.sendListOfPetsToPlayer(player);
     }
 }

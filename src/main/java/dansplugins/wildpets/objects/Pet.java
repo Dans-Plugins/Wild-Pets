@@ -105,7 +105,7 @@ public class Pet {
     }
 
     private void scheduleTeleportTask() {
-        if (teleportTaskID == -1) {
+        if (teleportTaskID != -1) {
             return;
         }
 

@@ -1,5 +1,6 @@
 package dansplugins.wildpets.objects;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -29,7 +30,28 @@ public class PetList {
         return null;
     }
 
+    public Pet getPet(String name) {
+        for (Pet pet : getPets()) {
+            if (pet.getName().equalsIgnoreCase(name)) {
+                return pet;
+            }
+        }
+        return null;
+    }
+
     public void addPet(Pet newPet) {
         getPets().add(newPet);
+    }
+
+    public void sendListOfPetsToPlayer(Player player) {
+        if (getPets().size() == 0) {
+            player.sendMessage(ChatColor.RED + "You don't have any pets yet.");
+            return;
+        }
+
+        player.sendMessage(ChatColor.AQUA + "=== List of Pets ===");
+        for (Pet pet : getPets()) {
+            player.sendMessage(ChatColor.AQUA + pet.getName());
+        }
     }
 }

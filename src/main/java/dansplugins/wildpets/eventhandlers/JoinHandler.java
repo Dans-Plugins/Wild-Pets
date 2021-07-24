@@ -9,7 +9,7 @@ public class JoinHandler implements Listener {
 
     @EventHandler()
     public void handle(PlayerJoinEvent event) {
-        if (!PersistentData.getInstance().hasPetList(event.getPlayer())) {
+        if (PersistentData.getInstance().getPetList(event.getPlayer()) == null) {
 
             PersistentData.getInstance().createPetListForPlayer(event.getPlayer());
 
