@@ -1,5 +1,6 @@
 package dansplugins.wildpets;
 
+import dansplugins.wildpets.managers.StorageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -12,18 +13,20 @@ public final class WildPets extends JavaPlugin {
         return instance;
     }
 
-    private final String version = "v0.9";
+    private final String version = "v0.10";
 
     @Override
     public void onEnable() {
         instance = this;
 
         EventRegistry.getInstance().registerEvents();
+
+        StorageManager.getInstance().load();
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        StorageManager.getInstance().save();
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

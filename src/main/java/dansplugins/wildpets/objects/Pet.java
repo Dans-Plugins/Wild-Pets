@@ -1,39 +1,35 @@
 package dansplugins.wildpets.objects;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dansplugins.wildpets.WildPets;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
+import dansplugins.wildpets.utils.UUIDChecker;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class Pet {
 
     private boolean debug = true;
 
-    private int entityID;
-    private UUID uniqueID;
-    private EntityType entityType;
-    private Player owner;
-    private String name;
+    private UUID uniqueID; // saved
+    private UUID ownerUUID; // saved
+    private String name; // saved
 
-    private String movementState;
+    private String movementState; // defaulted
 
     private Location stayingLocation;
     private int teleportTaskID = -1;
 
-    public Pet(Entity entity, Player playerOwner) {
-        entityID = entity.getEntityId();
+    public Pet(Entity entity, UUID playerOwner) {
         uniqueID = entity.getUniqueId();
-        entityType = entity.getType();
-        owner = playerOwner;
-        name = owner.getDisplayName() + "'s Pet";
+        ownerUUID = playerOwner;
+        name = UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID) + "'s Pet";
         movementState = "Wandering";
 
         entity.setCustomName(ChatColor.GREEN + name);
@@ -44,12 +40,11 @@ public class Pet {
 
         if (debug) {
             System.out.println("[DEBUG] Pet instantiated!");
-            System.out.println("[DEBUG] Entity ID: " + entityID);
-            System.out.println("[DEBUG] Unique ID: " + uniqueID.toString());
-            System.out.println("[DEBUG] Entity Type: " + entityType.name());
-            System.out.println("[DEBUG] Owner: " + owner.getDisplayName());
-            System.out.println("[DEBUG] Name: " + name);
         }
+    }
+
+    public Pet(Map<String, String> petData) {
+        this.load(petData);
     }
 
     public void deconstruct() {
@@ -62,24 +57,16 @@ public class Pet {
         }
     }
 
-    public int getEntityID() {
-        return entityID;
-    }
-
     public UUID getUniqueID() {
         return uniqueID;
     }
 
-    public EntityType getEntityType() {
-        return entityType;
+    public UUID getOwnerUUID() {
+        return ownerUUID;
     }
 
-    public Player getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Player owner) {
-        this.owner = owner;
+    public void setOwnerUUID(UUID ownerUUID) {
+        this.ownerUUID = ownerUUID;
     }
 
     public String getName() {
@@ -99,8 +86,7 @@ public class Pet {
     public void sendInfoToPlayer(Player player) {
         player.sendMessage(ChatColor.AQUA + "=== Pet Info ===");
         player.sendMessage(ChatColor.AQUA + "Name: " + name);
-        player.sendMessage(ChatColor.AQUA + "Type: " + entityType.name());
-        player.sendMessage(ChatColor.AQUA + "Owner: " + owner.getDisplayName());
+        player.sendMessage(ChatColor.AQUA + "Owner: " + UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID));
         player.sendMessage(ChatColor.AQUA + "State: " + movementState);
     }
 
@@ -139,6 +125,35 @@ public class Pet {
     private void cancelTeleportTask() {
         Bukkit.getScheduler().cancelTask(teleportTaskID);
         teleportTaskID = -1;
+    }
+
+    public Map<String, String> save() {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();;
+
+        Map<String, String> saveMap = new HashMap<>();
+        saveMap.put("uniqueID", gson.toJson(uniqueID));
+        saveMap.put("owner", gson.toJson(ownerUUID));
+        saveMap.put("name", gson.toJson(name));
+        saveMap.put("movementState", gson.toJson(movementState));
+
+        return saveMap;
+    }
+
+    private void load(Map<String, String> data) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        uniqueID = UUID.fromString(gson.fromJson(data.get("uniqueID"), String.class));
+        ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
+        name = gson.fromJson(data.get("name"), String.class);
+
+        String state = gson.fromJson(data.get("movementState"), String.class);
+
+        if (state.equalsIgnoreCase("Wandering")) {
+            setWandering();
+        }
+        else if (state.equalsIgnoreCase("Staying")) {
+            setStaying();
+        }
     }
 
 }

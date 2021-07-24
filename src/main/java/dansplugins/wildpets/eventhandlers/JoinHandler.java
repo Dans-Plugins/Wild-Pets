@@ -9,9 +9,9 @@ public class JoinHandler implements Listener {
 
     @EventHandler()
     public void handle(PlayerJoinEvent event) {
-        if (PersistentData.getInstance().getPetList(event.getPlayer()) == null) {
+        if (PersistentData.getInstance().getPetList(event.getPlayer().getUniqueId()) == null) {
 
-            PersistentData.getInstance().createPetListForPlayer(event.getPlayer());
+            PersistentData.getInstance().createPetListForPlayer(event.getPlayer().getUniqueId());
 
         }
     }
