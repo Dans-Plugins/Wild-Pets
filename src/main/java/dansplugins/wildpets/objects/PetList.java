@@ -46,6 +46,7 @@ public class PetList {
     public void sendListOfPetsToPlayer(Player player) {
         if (getPets().size() == 0) {
             player.sendMessage(ChatColor.RED + "You don't have any pets yet.");
+            return;
         }
 
         player.sendMessage(ChatColor.AQUA + "=== List of Pets ===");
