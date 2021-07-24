@@ -1,11 +1,15 @@
 package dansplugins.wildpets.objects;
 
+import dansplugins.wildpets.WildPets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.UUID;
 
@@ -19,12 +23,18 @@ public class Pet {
     private Player owner;
     private String name;
 
+    private String movementState;
+
+    private Location stayingLocation;
+    private int teleportTaskID;
+
     public Pet(Entity entity, Player playerOwner) {
         entityID = entity.getEntityId();
         uniqueID = entity.getUniqueId();
         entityType = entity.getType();
         owner = playerOwner;
         name = owner.getDisplayName() + "'s Pet";
+        movementState = "Wandering";
 
         entity.setCustomName(ChatColor.GREEN + name);
         entity.setPersistent(true);
@@ -81,6 +91,39 @@ public class Pet {
         player.sendMessage(ChatColor.AQUA + "Name: " + name);
         player.sendMessage(ChatColor.AQUA + "Type: " + entityType.name());
         player.sendMessage(ChatColor.AQUA + "Owner: " + owner.getDisplayName());
+        player.sendMessage(ChatColor.AQUA + "State: " + movementState);
+    }
+
+    public void setWandering() {
+        movementState = "Wandering";
+        cancelTeleportTask(); // TODO: find a better solution for this
+    }
+
+    public void setStaying() {
+        movementState = "Staying";
+        scheduleTeleportTask(); // TODO: find a better solution for this
+    }
+
+    private void scheduleTeleportTask() {
+        Entity entity = Bukkit.getEntity(uniqueID);
+
+        if (entity != null) {
+            stayingLocation = entity.getLocation();
+
+            double secondsUntilRepeat = 0.1;
+            teleportTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    float yaw = entity.getLocation().getYaw();
+                    float pitch = entity.getLocation().getPitch();
+                    entity.teleport(new Location(stayingLocation.getWorld(), stayingLocation.getX(), stayingLocation.getY(), stayingLocation.getZ(), yaw, pitch));
+                }
+            }, 0, (int)(secondsUntilRepeat * 20));
+        }
+    }
+
+    private void cancelTeleportTask() {
+        Bukkit.getScheduler().cancelTask(teleportTaskID);
     }
 
 }

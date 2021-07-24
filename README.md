@@ -3,3 +3,4 @@
 - 0.2 - Pet Class
 - 0.3 - Taming
 - 0.4 - Selecting, Renaming and Information
+- 0.5 - Staying and Wandering
