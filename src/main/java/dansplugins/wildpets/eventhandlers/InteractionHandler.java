@@ -42,6 +42,7 @@ public class InteractionHandler implements Listener {
             PersistentData.getInstance().addNewPet(player, clickedEntity);
             player.sendMessage(ChatColor.GREEN + "Tamed.");
             EphemeralData.getInstance().setPlayerAsNotTaming(player);
+            EphemeralData.getInstance().selectPetForPlayer(PersistentData.getInstance().getPet(clickedEntity), player);
         }
         else if (EphemeralData.getInstance().isPlayerSelecting(player)) {
             setRightClickCooldown(player, 1);
