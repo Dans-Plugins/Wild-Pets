@@ -61,6 +61,11 @@ public class PersistentData {
         return petList.getPet(entity.getUniqueId());
     }
 
+    public Pet getPlayersPet(Player player, String petName) {
+        PetList petList = getPlayerPetLists().get(player);
+        return petList.getPet(petName);
+    }
+
     public void sendListOfPetsToPlayer(Player player) {
         PetList petList = getPetList(player);
         petList.sendListOfPetsToPlayer(player);

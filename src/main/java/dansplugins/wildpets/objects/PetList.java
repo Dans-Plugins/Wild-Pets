@@ -30,6 +30,15 @@ public class PetList {
         return null;
     }
 
+    public Pet getPet(String name) {
+        for (Pet pet : getPets()) {
+            if (pet.getName().equalsIgnoreCase(name)) {
+                return pet;
+            }
+        }
+        return null;
+    }
+
     public void addPet(Pet newPet) {
         getPets().add(newPet);
     }
