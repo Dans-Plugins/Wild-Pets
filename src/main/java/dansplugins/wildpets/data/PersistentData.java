@@ -45,4 +45,12 @@ public class PersistentData {
         return false;
     }
 
+    public boolean hasPetList(Player player) {
+        return getPlayerPetLists().containsKey(player);
+    }
+
+    public void createPetListForPlayer(Player player) {
+        PetList newPetList = new PetList(player);
+        getPlayerPetLists().put(player, newPetList);
+    }
 }

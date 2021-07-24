@@ -1,6 +1,7 @@
 package dansplugins.wildpets;
 
 import dansplugins.wildpets.eventhandlers.InteractionHandler;
+import dansplugins.wildpets.eventhandlers.JoinHandler;
 import org.bukkit.plugin.PluginManager;
 
 public class EventRegistry {
@@ -25,6 +26,7 @@ public class EventRegistry {
 
         // event handlers
         manager.registerEvents(new InteractionHandler(), mainInstance);
+        manager.registerEvents(new JoinHandler(), mainInstance);
     }
 
 }
