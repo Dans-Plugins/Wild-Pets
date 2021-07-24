@@ -28,6 +28,11 @@ public class InteractionHandler implements Listener {
         if (EphemeralData.getInstance().isPlayerTaming(player)) {
             setRightClickCooldown(player, 1);
 
+            if (clickedEntity instanceof Player) {
+                player.sendMessage(ChatColor.RED + "You can't tame players.");
+                return;
+            }
+
             if (pet != null) {
                 player.sendMessage(ChatColor.RED + "That entity is already a pet.");
                 EphemeralData.getInstance().setPlayerAsNotTaming(player);
