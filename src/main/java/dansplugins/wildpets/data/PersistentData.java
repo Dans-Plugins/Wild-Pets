@@ -2,12 +2,11 @@ package dansplugins.wildpets.data;
 
 import dansplugins.wildpets.objects.Pet;
 import dansplugins.wildpets.objects.PetList;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.UUID;
 
 public class PersistentData {
 
@@ -31,8 +30,8 @@ public class PersistentData {
     }
 
     public boolean addNewPet(Player player, Entity entity) {
-        Pet newPet = new Pet(entity, player);
-        PetList petList = getPetList(player);
+        Pet newPet = new Pet(entity, player.getUniqueId());
+        PetList petList = getPetList(player.getUniqueId());
 
         petList.addPet(newPet);
         return true;
@@ -48,32 +47,32 @@ public class PersistentData {
         return null;
     }
 
-    public PetList getPetList(Player player) {
+    public PetList getPetList(UUID playerUUID) {
         for (PetList petList : getPetLists()) {
-            if (petList.getOwner().getUniqueId().equals(player.getUniqueId())) {
+            if (petList.getOwnerUUID().equals(playerUUID)) {
                 return petList;
             }
         }
         return null;
     }
 
-    public void createPetListForPlayer(Player player) {
-        PetList newPetList = new PetList(player);
+    public void createPetListForPlayer(UUID playerUUID) {
+        PetList newPetList = new PetList(playerUUID);
         getPetLists().add(newPetList);
     }
 
     public Pet getPlayersPet(Player player, Entity entity) {
-        PetList petList = getPetList(player);
+        PetList petList = getPetList(player.getUniqueId());
         return petList.getPet(entity.getUniqueId());
     }
 
     public Pet getPlayersPet(Player player, String petName) {
-        PetList petList = getPetList(player);
+        PetList petList = getPetList(player.getUniqueId());
         return petList.getPet(petName);
     }
 
     public void sendListOfPetsToPlayer(Player player) {
-        PetList petList = getPetList(player);
+        PetList petList = getPetList(player.getUniqueId());
         petList.sendListOfPetsToPlayer(player);
     }
 

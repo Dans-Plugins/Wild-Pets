@@ -1,29 +1,27 @@
 package dansplugins.wildpets.objects;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.UUID;
 
 public class PetList {
 
-    private Player owner;
+    private UUID ownerUUID;
 
     private ArrayList<Pet> pets = new ArrayList<>();
 
-    public PetList(Player player) {
-        owner = player;
+    public PetList(UUID playerUUID) {
+        ownerUUID = playerUUID;
     }
 
     public ArrayList<Pet> getPets() {
         return pets;
     }
 
-    public Player getOwner() {
-        return owner;
+    public UUID getOwnerUUID() {
+        return ownerUUID;
     }
 
     public Pet getPet(UUID uuid) {

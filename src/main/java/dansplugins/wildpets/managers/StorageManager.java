@@ -6,7 +6,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.objects.Pet;
-import dansplugins.wildpets.objects.PetList;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -53,12 +52,14 @@ public class StorageManager {
             pets.add(pet.save());
         }
 
-        File file = new File(FILE_PATH + PETS_FILE_NAME);
-        writeOutFiles(file, pets);
+        writeOutFiles(pets);
     }
 
-    private void writeOutFiles(File file, List<Map<String, String>> saveData) {
+    private void writeOutFiles(List<Map<String, String>> saveData) {
         try {
+            File parentFolder = new File(FILE_PATH);
+            parentFolder.mkdir();
+            File file = new File(FILE_PATH + PETS_FILE_NAME);
             file.createNewFile();
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
             outputStreamWriter.write(gson.toJson(saveData));
@@ -81,7 +82,13 @@ public class StorageManager {
             allPets.add(pet);
         }
 
-        // TODO: reconstruct pet lists
+        for (Pet pet : allPets) {
+            if (PersistentData.getInstance().getPetList(pet.getOwnerUUID()) == null) {
+                PersistentData.getInstance().createPetListForPlayer(pet.getOwnerUUID());
+
+            }
+            PersistentData.getInstance().getPetList(pet.getOwnerUUID()).addPet(pet);
+        }
     }
 
     private ArrayList<HashMap<String, String>> loadDataFromFilename(String filename) {
