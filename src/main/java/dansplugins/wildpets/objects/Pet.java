@@ -134,18 +134,26 @@ public class Pet {
         saveMap.put("uniqueID", gson.toJson(uniqueID));
         saveMap.put("owner", gson.toJson(ownerUUID));
         saveMap.put("name", gson.toJson(name));
+        saveMap.put("movementState", gson.toJson(movementState));
 
         return saveMap;
     }
 
     private void load(Map<String, String> data) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         uniqueID = UUID.fromString(gson.fromJson(data.get("uniqueID"), String.class));
-
         ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
-
         name = gson.fromJson(data.get("name"), String.class);
+
+        String state = gson.fromJson(data.get("movementState"), String.class);
+
+        if (state.equalsIgnoreCase("Wandering")) {
+            setWandering();
+        }
+        else if (state.equalsIgnoreCase("Staying")) {
+            setStaying();
+        }
     }
 
 }
