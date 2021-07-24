@@ -1,9 +1,6 @@
 package dansplugins.wildpets.commands;
 
-import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.objects.Pet;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
