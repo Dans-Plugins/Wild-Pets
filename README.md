@@ -5,3 +5,4 @@
 - 0.4 - Selecting, Renaming & Information
 - 0.5 - Staying & Wandering
 - 0.6 - Listing & Better Selection
+- 0.7 - Help Command
