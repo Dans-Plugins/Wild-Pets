@@ -4,14 +4,10 @@ import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.objects.Pet;
 import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class InteractionHandler implements Listener {
@@ -25,10 +21,12 @@ public class InteractionHandler implements Listener {
         Entity clickedEntity = event.getRightClicked();
 
         Player player = event.getPlayer();
+        
+        Pet pet = PersistentData.getInstance().getPet(clickedEntity);
 
         if (EphemeralData.getInstance().isPlayerTaming(player)) {
 
-            if (PersistentData.getInstance().getPet(clickedEntity) != null) {
+            if (pet != null) {
                 player.sendMessage(ChatColor.RED + "That entity is already a pet.");
                 EphemeralData.getInstance().setPlayerAsNotTaming(player);
                 return;
@@ -40,7 +38,7 @@ public class InteractionHandler implements Listener {
         }
         else if (EphemeralData.getInstance().isPlayerSelecting(player)) {
 
-            if (PersistentData.getInstance().getPet(clickedEntity) == null) {
+            if (pet == null) {
                 player.sendMessage(ChatColor.RED + "That entity is not a pet.");
                 EphemeralData.getInstance().setPlayerAsNotSelecting(player);
                 return;
@@ -52,11 +50,12 @@ public class InteractionHandler implements Listener {
                 return;
             }
 
-            Pet pet = PersistentData.getInstance().getPet(clickedEntity);
-
             EphemeralData.getInstance().selectPetForPlayer(pet, player);
             player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
             EphemeralData.getInstance().setPlayerAsNotSelecting(player);
+        }
+        else {
+            pet.sendInfoToPlayer(player);
         }
 
     }

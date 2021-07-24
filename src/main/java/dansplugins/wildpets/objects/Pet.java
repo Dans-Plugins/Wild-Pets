@@ -37,7 +37,7 @@ public class Pet {
             System.out.println("[DEBUG] Entity ID: " + entityID);
             System.out.println("[DEBUG] Unique ID: " + uniqueID.toString());
             System.out.println("[DEBUG] Entity Type: " + entityType.name());
-            System.out.println("[DEBUG] Owner: " + owner.toString());
+            System.out.println("[DEBUG] Owner: " + owner.getDisplayName());
             System.out.println("[DEBUG] Name: " + name);
         }
     }
@@ -74,6 +74,13 @@ public class Pet {
         if (entity != null) {
             entity.setCustomName(ChatColor.GREEN + name);
         }
+    }
+
+    public void sendInfoToPlayer(Player player) {
+        player.sendMessage(ChatColor.AQUA + "=== Pet Info ===");
+        player.sendMessage("Name: " + name);
+        player.sendMessage("Type: " + entityType.name());
+        player.sendMessage("Owner: " + owner.getDisplayName());
     }
 
 }
