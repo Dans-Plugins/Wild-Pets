@@ -6,6 +6,7 @@ import org.bukkit.EntityEffect;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.UUID;
 
@@ -19,12 +20,18 @@ public class Pet {
     private Player owner;
     private String name;
 
+    private String movementState;
+
+    private Vector defaultVelocity;
+
     public Pet(Entity entity, Player playerOwner) {
         entityID = entity.getEntityId();
         uniqueID = entity.getUniqueId();
         entityType = entity.getType();
         owner = playerOwner;
         name = owner.getDisplayName() + "'s Pet";
+        movementState = "Wandering";
+        defaultVelocity = entity.getVelocity();
 
         entity.setCustomName(ChatColor.GREEN + name);
         entity.setPersistent(true);
@@ -81,6 +88,27 @@ public class Pet {
         player.sendMessage(ChatColor.AQUA + "Name: " + name);
         player.sendMessage(ChatColor.AQUA + "Type: " + entityType.name());
         player.sendMessage(ChatColor.AQUA + "Owner: " + owner.getDisplayName());
+        player.sendMessage(ChatColor.AQUA + "State: " + movementState);
+    }
+
+    public void setWandering() {
+        movementState = "Wandering";
+
+        Entity entity = Bukkit.getEntity(uniqueID);
+
+        if (entity != null) {
+            entity.setVelocity(defaultVelocity);
+        }
+    }
+
+    public void setStaying() {
+        movementState = "Staying";
+
+        Entity entity = Bukkit.getEntity(uniqueID);
+
+        if (entity != null) {
+            entity.setVelocity(new Vector(0, 0, 0));
+        }
     }
 
 }
