@@ -1,5 +1,6 @@
 package dansplugins.wildpets;
 
+import dansplugins.wildpets.commands.InfoCommand;
 import dansplugins.wildpets.commands.RenameCommand;
 import dansplugins.wildpets.commands.SelectCommand;
 import dansplugins.wildpets.commands.TameCommand;
@@ -30,6 +31,11 @@ public class CommandInterpreter {
             if (secondaryLabel.equalsIgnoreCase("rename")) {
                 RenameCommand command = new RenameCommand();
                 command.execute(sender, arguments);
+            }
+
+            if (secondaryLabel.equalsIgnoreCase("info")) {
+                InfoCommand command = new InfoCommand();
+                command.execute(sender);
             }
 
         }

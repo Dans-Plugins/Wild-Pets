@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class EphemeralData {
 
@@ -16,6 +17,9 @@ public class EphemeralData {
 
     // selections list
     private HashMap<Player, Pet> selections = new HashMap<>();
+
+    // cooldown lists
+    private ArrayList<Player> playersWithRightClickCooldown = new ArrayList<>();
 
     private EphemeralData() {
 
@@ -78,6 +82,23 @@ public class EphemeralData {
     }
 
     // -----
+
+    public void setRightClickCooldown(Player player, boolean flag) {
+        if (flag) {
+            if (!playersWithRightClickCooldown.contains(player)) {
+                playersWithRightClickCooldown.add(player);
+            }
+        }
+        else {
+            playersWithRightClickCooldown.remove(player);
+        }
+    }
+
+    public boolean hasRightClickCooldown(Player player) {
+        return playersWithRightClickCooldown.contains(player);
+    }
+
+    // ----- private methods
 
     private void clearPlayerFromActionLists(Player player) {
         setPlayerAsNotTaming(player);
