@@ -73,6 +73,10 @@ public class EphemeralData {
         }
     }
 
+    public Pet getPetSelectionForPlayer(Player player) {
+        return selections.getOrDefault(player, null);
+    }
+
     // -----
 
     private void clearPlayerFromActionLists(Player player) {
