@@ -1,5 +1,7 @@
 package dansplugins.wildpets.objects;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -24,7 +26,7 @@ public class Pet {
         owner = playerOwner;
         name = owner.getDisplayName() + "'s Pet";
 
-        entity.setCustomName(name);
+        entity.setCustomName(ChatColor.GREEN + name);
         entity.setPersistent(true);
         entity.setInvulnerable(true);
 
@@ -66,6 +68,12 @@ public class Pet {
 
     public void setName(String name) {
         this.name = name;
+
+        Entity entity = Bukkit.getEntity(uniqueID);
+
+        if (entity != null) {
+            entity.setCustomName(ChatColor.GREEN + name);
+        }
     }
 
 }
