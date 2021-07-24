@@ -7,3 +7,4 @@
 - 0.6 - Listing & Better Selection
 - 0.7 - Help Command
 - 0.8 - Call Command
+- 0.9 - Set Free Command

@@ -52,6 +52,16 @@ public class Pet {
         }
     }
 
+    public void deconstruct() {
+        Entity entity = Bukkit.getEntity(uniqueID);
+
+        if (entity != null) {
+            entity.setCustomName("");
+            entity.setPersistent(false);
+            entity.setInvulnerable(false);
+        }
+    }
+
     public int getEntityID() {
         return entityID;
     }

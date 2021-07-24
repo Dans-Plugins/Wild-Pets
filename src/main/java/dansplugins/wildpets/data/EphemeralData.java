@@ -81,6 +81,10 @@ public class EphemeralData {
         return selections.getOrDefault(player, null);
     }
 
+    public void clearPetSelectionForPlayer(Player player) {
+        selections.remove(player);
+    }
+
     // -----
 
     public void setRightClickCooldown(Player player, boolean flag) {

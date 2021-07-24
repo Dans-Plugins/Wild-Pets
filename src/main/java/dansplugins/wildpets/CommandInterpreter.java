@@ -1,6 +1,7 @@
 package dansplugins.wildpets;
 
 import dansplugins.wildpets.commands.*;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class CommandInterpreter {
@@ -60,8 +61,14 @@ public class CommandInterpreter {
                 command.execute(sender);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("setfree")) {
+                SetFreeCommand command = new SetFreeCommand();
+                command.execute(sender);
+            }
+
         }
 
+        sender.sendMessage(ChatColor.RED + "Wild Pets doesn't recognize that command.");
         return false;
     }
 

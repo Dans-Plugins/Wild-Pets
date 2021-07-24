@@ -43,6 +43,11 @@ public class PetList {
         getPets().add(newPet);
     }
 
+    public void removePet(Pet petToRemove) {
+        petToRemove.deconstruct();
+        getPets().remove(petToRemove);
+    }
+
     public void sendListOfPetsToPlayer(Player player) {
         if (getPets().size() == 0) {
             player.sendMessage(ChatColor.RED + "You don't have any pets yet.");
