@@ -17,9 +17,7 @@ public class Pet {
 
     private boolean debug = true;
 
-    private int entityID; // reconstructed
     private UUID uniqueID; // saved
-    private EntityType entityType; // reconstructed
     private UUID ownerUUID; // saved
     private String name; // saved
 
@@ -29,9 +27,7 @@ public class Pet {
     private int teleportTaskID = -1;
 
     public Pet(Entity entity, UUID playerOwner) {
-        entityID = entity.getEntityId();
         uniqueID = entity.getUniqueId();
-        entityType = entity.getType();
         ownerUUID = playerOwner;
         name = UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID) + "'s Pet";
         movementState = "Wandering";
@@ -61,16 +57,8 @@ public class Pet {
         }
     }
 
-    public int getEntityID() {
-        return entityID;
-    }
-
     public UUID getUniqueID() {
         return uniqueID;
-    }
-
-    public EntityType getEntityType() {
-        return entityType;
     }
 
     public UUID getOwnerUUID() {
@@ -98,7 +86,6 @@ public class Pet {
     public void sendInfoToPlayer(Player player) {
         player.sendMessage(ChatColor.AQUA + "=== Pet Info ===");
         player.sendMessage(ChatColor.AQUA + "Name: " + name);
-        player.sendMessage(ChatColor.AQUA + "Type: " + entityType.name());
         player.sendMessage(ChatColor.AQUA + "Owner: " + UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID));
         player.sendMessage(ChatColor.AQUA + "State: " + movementState);
     }
@@ -155,12 +142,6 @@ public class Pet {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();;
 
         uniqueID = UUID.fromString(gson.fromJson(data.get("uniqueID"), String.class));
-
-        Entity entity = Bukkit.getEntity(uniqueID);
-        if (entity != null) {
-            entityID = entity.getEntityId();
-            entityType = entity.getType();
-        }
 
         ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
 
