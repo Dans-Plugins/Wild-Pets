@@ -12,6 +12,8 @@ public final class WildPets extends JavaPlugin {
         return instance;
     }
 
+    private final String version = "v0.3";
+
     @Override
     public void onEnable() {
         instance = this;
@@ -27,5 +29,9 @@ public final class WildPets extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         CommandInterpreter commandInterpreter = new CommandInterpreter();
         return commandInterpreter.interpretCommand(sender, label, args);
+    }
+
+    public String getVersion() {
+        return version;
     }
 }
