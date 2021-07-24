@@ -1,5 +1,6 @@
 package dansplugins.wildpets.objects;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -19,13 +20,13 @@ public class PetList {
         return pets;
     }
 
-    public boolean containsPet(UUID uuid) {
+    public Pet getPet(UUID uuid) {
         for (Pet pet : getPets()) {
             if (pet.getUniqueID().equals(uuid)) {
-                return true;
+                return pet;
             }
         }
-        return false;
+        return null;
     }
 
     public void addPet(Pet newPet) {

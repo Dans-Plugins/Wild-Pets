@@ -36,13 +36,14 @@ public class PersistentData {
         return true;
     }
 
-    public boolean isPet(Entity entity) {
+    public Pet getPet(Entity entity) {
         for (PetList petList : playerPetLists.values()) {
-            if (petList.containsPet(entity.getUniqueId())) {
-                return true;
+            Pet pet = petList.getPet(entity.getUniqueId());
+            if (pet != null) {
+                return pet;
             }
         }
-        return false;
+        return null;
     }
 
     public boolean hasPetList(Player player) {
@@ -52,5 +53,10 @@ public class PersistentData {
     public void createPetListForPlayer(Player player) {
         PetList newPetList = new PetList(player);
         getPlayerPetLists().put(player, newPetList);
+    }
+
+    public Pet getPlayersPet(Player player, Entity entity) {
+        PetList petList = getPlayerPetLists().get(player);
+        return petList.getPet(entity.getUniqueId());
     }
 }
