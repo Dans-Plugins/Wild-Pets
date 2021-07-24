@@ -1,9 +1,6 @@
 package dansplugins.wildpets;
 
-import dansplugins.wildpets.commands.InfoCommand;
-import dansplugins.wildpets.commands.RenameCommand;
-import dansplugins.wildpets.commands.SelectCommand;
-import dansplugins.wildpets.commands.TameCommand;
+import dansplugins.wildpets.commands.*;
 import org.bukkit.command.CommandSender;
 
 public class CommandInterpreter {
@@ -35,6 +32,16 @@ public class CommandInterpreter {
 
             if (secondaryLabel.equalsIgnoreCase("info")) {
                 InfoCommand command = new InfoCommand();
+                command.execute(sender);
+            }
+
+            if (secondaryLabel.equalsIgnoreCase("stay")) {
+                StayCommand command = new StayCommand();
+                command.execute(sender);
+            }
+
+            if (secondaryLabel.equalsIgnoreCase("wander")) {
+                WanderCommand command = new WanderCommand();
                 command.execute(sender);
             }
 

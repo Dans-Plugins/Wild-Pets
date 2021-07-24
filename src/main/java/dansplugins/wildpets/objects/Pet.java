@@ -1,10 +1,13 @@
 package dansplugins.wildpets.objects;
 
+import dansplugins.wildpets.WildPets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -22,7 +25,8 @@ public class Pet {
 
     private String movementState;
 
-    private Vector defaultVelocity;
+    private Location stayingLocation;
+    private int teleportTaskID;
 
     public Pet(Entity entity, Player playerOwner) {
         entityID = entity.getEntityId();
@@ -31,7 +35,6 @@ public class Pet {
         owner = playerOwner;
         name = owner.getDisplayName() + "'s Pet";
         movementState = "Wandering";
-        defaultVelocity = entity.getVelocity();
 
         entity.setCustomName(ChatColor.GREEN + name);
         entity.setPersistent(true);
@@ -93,22 +96,32 @@ public class Pet {
 
     public void setWandering() {
         movementState = "Wandering";
-
-        Entity entity = Bukkit.getEntity(uniqueID);
-
-        if (entity != null) {
-            entity.setVelocity(defaultVelocity);
-        }
+        cancelTeleportTask(); // TODO: find a better solution for this
     }
 
     public void setStaying() {
         movementState = "Staying";
+        scheduleTeleportTask(); // TODO: find a better solution for this
+    }
 
+    private void scheduleTeleportTask() {
         Entity entity = Bukkit.getEntity(uniqueID);
 
         if (entity != null) {
-            entity.setVelocity(new Vector(0, 0, 0));
+            stayingLocation = entity.getLocation();
+
+            double secondsUntilRepeat = 0.1;
+            teleportTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    entity.teleport(stayingLocation);
+                }
+            }, 0, (int)(secondsUntilRepeat * 20));
         }
+    }
+
+    private void cancelTeleportTask() {
+        Bukkit.getScheduler().cancelTask(teleportTaskID);
     }
 
 }
