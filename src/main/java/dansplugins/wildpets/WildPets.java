@@ -1,5 +1,7 @@
 package dansplugins.wildpets;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WildPets extends JavaPlugin {
@@ -20,5 +22,10 @@ public final class WildPets extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        CommandInterpreter commandInterpreter = new CommandInterpreter();
+        return commandInterpreter.interpretCommand(sender, label, args);
     }
 }

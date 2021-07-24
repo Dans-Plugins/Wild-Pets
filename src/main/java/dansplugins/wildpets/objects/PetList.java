@@ -15,7 +15,7 @@ public class PetList {
         owner = player;
     }
 
-    public ArrayList<Pet> getPets() {
+    private ArrayList<Pet> getPets() {
         return pets;
     }
 
@@ -28,4 +28,7 @@ public class PetList {
         return false;
     }
 
+    public void addPet(Pet newPet) {
+        getPets().add(newPet);
+    }
 }

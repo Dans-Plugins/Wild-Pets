@@ -32,7 +32,7 @@ public class PersistentData {
         Pet newPet = new Pet(entity, player);
         PetList petList = getPlayerPetLists().get(player);
 
-        petList.getPets().add(newPet);
+        petList.addPet(newPet);
         return true;
     }
 
