@@ -1,16 +1,18 @@
 package dansplugins.wildpets.objects;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import dansplugins.wildpets.WildPets;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -18,13 +20,13 @@ public class Pet {
 
     private boolean debug = true;
 
-    private int entityID;
-    private UUID uniqueID;
-    private EntityType entityType;
-    private Player owner;
-    private String name;
+    private int entityID; // reconstructed
+    private UUID uniqueID; // saved
+    private EntityType entityType; // reconstructed
+    private Player owner; // saved
+    private String name; // saved
 
-    private String movementState;
+    private String movementState; // defaulted
 
     private Location stayingLocation;
     private int teleportTaskID = -1;
@@ -51,6 +53,10 @@ public class Pet {
             System.out.println("[DEBUG] Owner: " + owner.getDisplayName());
             System.out.println("[DEBUG] Name: " + name);
         }
+    }
+
+    public Pet(Map<String, String> petData) {
+        // TODO: implement constructor
     }
 
     public void deconstruct() {
@@ -143,12 +149,33 @@ public class Pet {
     }
 
     public Map<String, String> save() {
-        // TODO
-        return null;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();;
+
+        Map<String, String> saveMap = new HashMap<>();
+        saveMap.put("uniqueID", gson.toJson(uniqueID));
+        saveMap.put("owner", gson.toJson(owner.getUniqueId()));
+        saveMap.put("name", gson.toJson(name));
+
+        return saveMap;
     }
 
     private void load(Map<String, String> data) {
-        // TODO
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();;
+
+        uniqueID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
+
+        Entity entity = Bukkit.getEntity(uniqueID);
+        if (entity != null) {
+            entityID = entity.getEntityId();
+            entityType = entity.getType();
+        }
+
+        UUID ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
+
+        OfflinePlayer player = Bukkit.getPlayer(ownerUUID);
+        owner = (Player) player;
+
+        name = gson.fromJson(data.get("name"), String.class);
     }
 
 }

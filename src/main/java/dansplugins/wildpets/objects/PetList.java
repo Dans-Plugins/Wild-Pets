@@ -18,7 +18,7 @@ public class PetList {
         owner = player;
     }
 
-    private ArrayList<Pet> getPets() {
+    public ArrayList<Pet> getPets() {
         return pets;
     }
 

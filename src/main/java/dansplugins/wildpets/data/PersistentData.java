@@ -76,4 +76,12 @@ public class PersistentData {
         PetList petList = getPetList(player);
         petList.sendListOfPetsToPlayer(player);
     }
+
+    public ArrayList<Pet> getAllPets() {
+        ArrayList<Pet> toReturn = new ArrayList<>();
+        for (PetList petList : petLists) {
+            toReturn.addAll(petList.getPets());
+        }
+        return toReturn;
+    }
 }

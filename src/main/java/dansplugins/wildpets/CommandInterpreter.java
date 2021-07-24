@@ -18,7 +18,7 @@ public class CommandInterpreter {
 
             if (secondaryLabel.equalsIgnoreCase("help")) {
                 HelpCommand command = new HelpCommand();
-                command.execute(sender);
+                return command.execute(sender);
             }
 
             if (secondaryLabel.equalsIgnoreCase("tame")) {
@@ -33,37 +33,37 @@ public class CommandInterpreter {
 
             if (secondaryLabel.equalsIgnoreCase("rename")) {
                 RenameCommand command = new RenameCommand();
-                command.execute(sender, arguments);
+                return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("info")) {
                 InfoCommand command = new InfoCommand();
-                command.execute(sender);
+                return command.execute(sender);
             }
 
             if (secondaryLabel.equalsIgnoreCase("stay")) {
                 StayCommand command = new StayCommand();
-                command.execute(sender);
+                return command.execute(sender);
             }
 
             if (secondaryLabel.equalsIgnoreCase("wander")) {
                 WanderCommand command = new WanderCommand();
-                command.execute(sender);
+                return command.execute(sender);
             }
 
             if (secondaryLabel.equalsIgnoreCase("list")) {
                 ListCommand command = new ListCommand();
-                command.execute(sender);
+                return command.execute(sender);
             }
 
             if (secondaryLabel.equalsIgnoreCase("call")) {
                 CallCommand command = new CallCommand();
-                command.execute(sender);
+                return command.execute(sender);
             }
 
             if (secondaryLabel.equalsIgnoreCase("setfree")) {
                 SetFreeCommand command = new SetFreeCommand();
-                command.execute(sender);
+                return command.execute(sender);
             }
 
         }
