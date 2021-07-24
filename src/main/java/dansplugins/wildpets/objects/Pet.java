@@ -114,7 +114,9 @@ public class Pet {
             teleportTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
                 @Override
                 public void run() {
-                    entity.teleport(stayingLocation);
+                    float yaw = entity.getLocation().getYaw();
+                    float pitch = entity.getLocation().getPitch();
+                    entity.teleport(new Location(stayingLocation.getWorld(), stayingLocation.getX(), stayingLocation.getY(), stayingLocation.getZ(), yaw, pitch));
                 }
             }, 0, (int)(secondsUntilRepeat * 20));
         }
