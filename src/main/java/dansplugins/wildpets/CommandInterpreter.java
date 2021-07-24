@@ -15,6 +15,11 @@ public class CommandInterpreter {
             String secondaryLabel = args[0];
             String[] arguments = getArguments(args);
 
+            if (secondaryLabel.equalsIgnoreCase("help")) {
+                HelpCommand command = new HelpCommand();
+                command.execute(sender);
+            }
+
             if (secondaryLabel.equalsIgnoreCase("tame")) {
                 TameCommand command = new TameCommand();
                 return command.execute(sender);
