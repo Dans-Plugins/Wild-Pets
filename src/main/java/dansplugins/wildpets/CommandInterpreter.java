@@ -45,6 +45,11 @@ public class CommandInterpreter {
                 command.execute(sender);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("list")) {
+                ListCommand command = new ListCommand();
+                command.execute(sender);
+            }
+
         }
 
         return false;
