@@ -47,7 +47,7 @@ public class StorageManager {
     }
 
     private void savePets() {
-        // TODO
+        // TODO: save each pet object individually
     }
 
     private void writeOutFiles(File file, List<Map<String, String>> saveData) {
@@ -62,7 +62,7 @@ public class StorageManager {
     }
 
     private void loadPets() {
-        // TODO
+        // TODO: load each pet individually and reconstruct pet list objects
     }
 
     private ArrayList<HashMap<String, String>> loadDataFromFilename(String filename) {
