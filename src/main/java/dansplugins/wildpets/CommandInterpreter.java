@@ -1,5 +1,6 @@
 package dansplugins.wildpets;
 
+import dansplugins.wildpets.commands.SelectCommand;
 import dansplugins.wildpets.commands.TameCommand;
 import org.bukkit.command.CommandSender;
 
@@ -14,6 +15,11 @@ public class CommandInterpreter {
 
             if (args[0].equalsIgnoreCase("tame")) {
                 TameCommand command = new TameCommand();
+                return command.execute(sender);
+            }
+
+            if (args[0].equalsIgnoreCase("select")) {
+                SelectCommand command = new SelectCommand();
                 return command.execute(sender);
             }
 

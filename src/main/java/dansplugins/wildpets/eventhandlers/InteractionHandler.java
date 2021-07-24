@@ -22,21 +22,40 @@ public class InteractionHandler implements Listener {
     public void handle(PlayerInteractEntityEvent event) {
         if (debug) { System.out.println("Captured PlayerInteractEntity event!"); }
 
-        if (!EphemeralData.getInstance().isPlayerTaming(event.getPlayer())) {
-            return;
-        }
-
         Entity clickedEntity = event.getRightClicked();
 
-        if (PersistentData.getInstance().isPet(clickedEntity)) {
-            event.getPlayer().sendMessage(ChatColor.RED + "That entity is already a pet!");
+        if (EphemeralData.getInstance().isPlayerTaming(event.getPlayer())) {
+
+            if (PersistentData.getInstance().getPet(clickedEntity) != null) {
+                event.getPlayer().sendMessage(ChatColor.RED + "That entity is already a pet.");
+                EphemeralData.getInstance().setPlayerAsNotTaming(event.getPlayer());
+                return;
+            }
+
+            PersistentData.getInstance().addNewPet(event.getPlayer(), clickedEntity);
+            event.getPlayer().sendMessage(ChatColor.GREEN + "Tamed.");
             EphemeralData.getInstance().setPlayerAsNotTaming(event.getPlayer());
-            return;
+        }
+        else if (EphemeralData.getInstance().isPlayerSelecting(event.getPlayer())) {
+
+            if (PersistentData.getInstance().getPet(clickedEntity) == null) {
+                event.getPlayer().sendMessage(ChatColor.RED + "That entity is not a pet.");
+                EphemeralData.getInstance().setPlayerAsNotSelecting(event.getPlayer());
+                return;
+            }
+
+            if (PersistentData.getInstance().getPlayersPet(event.getPlayer(), clickedEntity) == null) {
+                event.getPlayer().sendMessage(ChatColor.RED + "That entity is not your pet.");
+                EphemeralData.getInstance().setPlayerAsNotSelecting(event.getPlayer());
+                return;
+            }
+
+            Pet pet = PersistentData.getInstance().getPet(clickedEntity);
+
+            EphemeralData.getInstance().selectPetForPlayer(pet, event.getPlayer());
+            event.getPlayer().sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
         }
 
-        PersistentData.getInstance().addNewPet(event.getPlayer(), clickedEntity);
-        event.getPlayer().sendMessage(ChatColor.GREEN + "Tamed!");
-        EphemeralData.getInstance().setPlayerAsNotTaming(event.getPlayer());
     }
 
 }
