@@ -29,6 +29,7 @@ public class SetFreeCommand {
         PetList petList = PersistentData.getInstance().getPetList(player);
         petList.removePet(pet);
         player.sendMessage(ChatColor.GREEN + petName + " has been set free.");
+        EphemeralData.getInstance().clearPetSelectionForPlayer(player);
         return true;
     }
 
