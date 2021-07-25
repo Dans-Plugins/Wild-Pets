@@ -5,11 +5,13 @@ import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.objects.Pet;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
@@ -41,16 +43,39 @@ public class InteractionHandler implements Listener {
                 return;
             }
 
+            ItemStack itemStack = player.getInventory().getItemInMainHand();
+            Material requiredMaterial = Material.WHEAT;
+            int requiredAmount = 1;
+            if (itemStack.getType() != requiredMaterial || itemStack.getAmount() < requiredAmount) {
+                player.sendMessage(ChatColor.RED + "You need to use " + requiredAmount + " " + requiredMaterial.name().toLowerCase() + " to tame this entity.");
+                EphemeralData.getInstance().setPlayerAsNotTaming(player);
+                return;
+            }
+
             // handle chance to tame
             if (!rollDice(0.25)) { // 25% chance to succeed
                 player.sendMessage(ChatColor.RED + "Taming failed.");
                 EphemeralData.getInstance().setPlayerAsNotTaming(player);
+                if (itemStack.getAmount() > requiredAmount) {
+                    player.getInventory().setItemInMainHand(new ItemStack(itemStack.getType(), itemStack.getAmount() - requiredAmount));
+                }
+                else {
+                    player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                }
                 return;
             }
 
             PersistentData.getInstance().addNewPet(player, clickedEntity);
             player.sendMessage(ChatColor.GREEN + "Tamed.");
             EphemeralData.getInstance().setPlayerAsNotTaming(player);
+
+            if (itemStack.getAmount() > requiredAmount) {
+                player.getInventory().setItemInMainHand(new ItemStack(itemStack.getType(), itemStack.getAmount() - requiredAmount));
+            }
+            else {
+                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            }
+
             EphemeralData.getInstance().selectPetForPlayer(PersistentData.getInstance().getPet(clickedEntity), player);
         }
         else if (EphemeralData.getInstance().isPlayerSelecting(player)) {
