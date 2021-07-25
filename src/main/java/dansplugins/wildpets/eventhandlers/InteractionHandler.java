@@ -23,8 +23,6 @@ public class InteractionHandler implements Listener {
 
     @EventHandler()
     public void handle(PlayerInteractEntityEvent event) {
-        if (debug) { System.out.println("Captured PlayerInteractEntity event!"); }
-
         Entity clickedEntity = event.getRightClicked();
 
         EntityConfig entityConfig = EntityConfigManager.getInstance().acquireConfiguration(clickedEntity);
