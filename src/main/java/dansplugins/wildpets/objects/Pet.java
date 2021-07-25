@@ -97,7 +97,7 @@ public class Pet {
 
         if (entity != null) {
             Location location = entity.getLocation();
-            player.sendMessage(ChatColor.AQUA + getName() + String.format(" is at (%s, %s, %s)", location.getX(), location.getY(), location.getZ()));
+            player.sendMessage(ChatColor.AQUA + getName() + String.format(" is at (%s, %s, %s).", (int) location.getX(), (int) location.getY(), (int) location.getZ()));
         }
     }
 
