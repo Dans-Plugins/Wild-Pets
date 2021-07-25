@@ -92,6 +92,15 @@ public class Pet {
         player.sendMessage(ChatColor.AQUA + "State: " + movementState);
     }
 
+    public void sendLocationToPlayer(Player player) {
+        Entity entity = Bukkit.getEntity(uniqueID);
+
+        if (entity != null) {
+            Location location = entity.getLocation();
+            player.sendMessage(ChatColor.AQUA + getName() + String.format(" is at (%s, %s, %s)", location.getX(), location.getY(), location.getZ()));
+        }
+    }
+
     public void setWandering() {
         movementState = "Wandering";
         cancelTeleportTask(); // TODO: find a better solution for this
