@@ -36,6 +36,9 @@ public class EntityConfigManager {
         entityConfigs.add(new EntityConfig("Axilotl", 0.10, Material.KELP, 20));
         entityConfigs.add(new EntityConfig("Bat", 0.10, Material.PUMPKIN_PIE, 1));
         entityConfigs.add(new EntityConfig("Cat", 0.10, Material.SALMON, 5));
+        entityConfigs.add(new EntityConfig("Chicken", 0.10, Material.WHEAT_SEEDS, 10));
+        entityConfigs.add(new EntityConfig("Cod", 0.10, Material.KELP, 20));
+        entityConfigs.add(new EntityConfig("Cow", 0.10, Material.WHEAT, 30));
     }
 
     private EntityConfig getDefaultConfiguration() {
