@@ -11,3 +11,4 @@
 - 0.10 - Persistence
 - 0.11 - Cancelling
 - 0.12 - Locate Command
+- 0.13 - Better Taming
