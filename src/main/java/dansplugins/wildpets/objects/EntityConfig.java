@@ -1,4 +1,4 @@
-package dansplugins.wildpets.wpentities;
+package dansplugins.wildpets.objects;
 
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
