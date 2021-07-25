@@ -33,6 +33,8 @@ public class EntityConfigManager {
     }
 
     private void initialize() {
+
+        // passive mobs
         entityConfigs.add(new EntityConfig("Axilotl", 0.10, Material.KELP, 20));
         entityConfigs.add(new EntityConfig("Bat", 0.10, Material.PUMPKIN_PIE, 1));
         entityConfigs.add(new EntityConfig("Cat", 0.10, Material.SALMON, 5));
@@ -57,7 +59,9 @@ public class EntityConfigManager {
         entityConfigs.add(new EntityConfig("Skeleton_Horse", 0.10, Material.BONE, 10));
         entityConfigs.add(new EntityConfig("Snow_Golem", 0.10, Material.SNOWBALL, 30));
         entityConfigs.add(new EntityConfig("Squid", 0.10, Material.KELP, 20));
-
+        entityConfigs.add(new EntityConfig("Strider", 0.10, Material.NETHER_WART, 30));
+        entityConfigs.add(new EntityConfig("Tropical_Fish", 0.10, Material.KELP, 20));
+        entityConfigs.add(new EntityConfig("Turtle", 0.10, Material.SEAGRASS, 15));
     }
 
     private EntityConfig getDefaultConfiguration() {
