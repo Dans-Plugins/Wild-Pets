@@ -33,7 +33,9 @@ public class EntityConfigManager {
     }
 
     private void initialize() {
-
+        entityConfigs.add(new EntityConfig("Axilotl", 0.10, Material.KELP, 20));
+        entityConfigs.add(new EntityConfig("Bat", 0.10, Material.PUMPKIN_PIE, 1));
+        entityConfigs.add(new EntityConfig("Cat", 0.10, Material.SALMON, 5));
     }
 
     private EntityConfig getDefaultConfiguration() {
