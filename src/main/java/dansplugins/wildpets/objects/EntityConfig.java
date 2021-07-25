@@ -10,11 +10,15 @@ public class EntityConfig {
     private Material requiredTamingItem;
     private int tamingItemAmount;
 
-    public EntityConfig(String inputType, double inputChanceToSucceed, Material inputRequiredTamingItem, int inputTamingItemAmount) {
+
+    private boolean enabled;
+
+    public EntityConfig(String inputType, double inputChanceToSucceed, Material inputRequiredTamingItem, int inputTamingItemAmount, boolean inputEnabled) {
         type = inputType;
         chanceToSucceed = inputChanceToSucceed;
         requiredTamingItem = inputRequiredTamingItem;
         tamingItemAmount = inputTamingItemAmount;
+        enabled = inputEnabled;
     }
 
     public String getType() {
@@ -33,4 +37,7 @@ public class EntityConfig {
         return tamingItemAmount;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
 }

@@ -47,6 +47,10 @@ public class InteractionHandler implements Listener {
                 return;
             }
 
+            if (!entityConfig.isEnabled()) {
+                return;
+            }
+
             ItemStack itemStack = player.getInventory().getItemInMainHand();
             Material requiredMaterial = entityConfig.getRequiredTamingItem();
             int requiredAmount = entityConfig.getTamingItemAmount();
