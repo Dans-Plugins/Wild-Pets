@@ -66,6 +66,7 @@ public class EntityConfigManager {
         entityConfigs.add(new EntityConfig("Strider", 0.05, Material.NETHER_WART, 30));
         entityConfigs.add(new EntityConfig("Tropical_Fish", 0.10, Material.KELP, 20));
         entityConfigs.add(new EntityConfig("Turtle", 0.25, Material.SEAGRASS, 15));
+
     }
 
     private EntityConfig getDefaultConfiguration() {
