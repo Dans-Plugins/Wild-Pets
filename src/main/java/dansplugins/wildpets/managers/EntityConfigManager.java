@@ -66,6 +66,8 @@ public class EntityConfigManager {
         entityConfigs.add(new EntityConfig("Strider", 0.05, Material.NETHER_WART, 30, true));
         entityConfigs.add(new EntityConfig("Tropical_Fish", 0.10, Material.KELP, 20, true));
         entityConfigs.add(new EntityConfig("Turtle", 0.25, Material.SEAGRASS, 15, true));
+        entityConfigs.add(new EntityConfig("Villager", 0.25, Material.POTATO, 10, false));
+        entityConfigs.add(new EntityConfig("Wandering Trader", 0.25, Material.GOLD_INGOT, 10, false));
 
         // neutral mobs
         // TODO

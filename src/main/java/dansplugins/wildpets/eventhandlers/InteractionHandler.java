@@ -48,6 +48,7 @@ public class InteractionHandler implements Listener {
             }
 
             if (!entityConfig.isEnabled()) {
+                player.sendMessage(ChatColor.RED + "That entity cannot be tamed.");
                 return;
             }
 
