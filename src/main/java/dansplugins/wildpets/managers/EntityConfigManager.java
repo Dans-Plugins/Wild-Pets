@@ -74,6 +74,9 @@ public class EntityConfigManager {
 
         // hostile mobs
         // TODO
+
+        // boss mobs
+        // TODO
     }
 
     private EntityConfig getDefaultConfiguration() {
