@@ -3,43 +3,34 @@ package dansplugins.wildpets.objects;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
-public abstract class EntityConfig {
+public class EntityConfig {
 
     private String type;
     private double chanceToSucceed;
     private Material requiredTamingItem;
     private int tamingItemAmount;
 
-    public String getType() {
-        return type;
+    public EntityConfig(String inputType, double inputChanceToSucceed, Material inputRequiredTamingItem, int inputTamingItemAmount) {
+        type = inputType;
+        chanceToSucceed = inputChanceToSucceed;
+        requiredTamingItem = inputRequiredTamingItem;
+        tamingItemAmount = inputTamingItemAmount;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public String getType() {
+        return type;
     }
 
     public double getChanceToSucceed() {
         return chanceToSucceed;
     }
 
-    public void setChanceToSucceed(double chanceToSucceed) {
-        this.chanceToSucceed = chanceToSucceed;
-    }
-
     public Material getRequiredTamingItem() {
         return requiredTamingItem;
     }
 
-    public void setRequiredTamingItem(Material requiredTamingItem) {
-        this.requiredTamingItem = requiredTamingItem;
-    }
-
     public int getTamingItemAmount() {
         return tamingItemAmount;
-    }
-
-    public void setTamingItemAmount(int tamingItemAmount) {
-        this.tamingItemAmount = tamingItemAmount;
     }
 
 }
