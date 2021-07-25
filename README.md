@@ -12,3 +12,4 @@
 - 0.11 - Cancelling
 - 0.12 - Locate Command
 - 0.13 - Better Taming
+- 0.14 - Entity Configurations - Passive Mobs
