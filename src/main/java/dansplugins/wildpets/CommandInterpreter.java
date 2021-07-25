@@ -23,7 +23,7 @@ public class CommandInterpreter {
 
             if (secondaryLabel.equalsIgnoreCase("tame")) {
                 TameCommand command = new TameCommand();
-                return command.execute(sender);
+                return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("select")) {
