@@ -28,6 +28,11 @@ public class SelectCommand {
 
             Pet pet = PersistentData.getInstance().getPlayersPet(player, petName);
 
+            if (pet == null) {
+                player.sendMessage(ChatColor.RED + "You don't have any pets named " + petName + ".");
+                return false;
+            }
+
             EphemeralData.getInstance().selectPetForPlayer(pet, player);
 
             player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
