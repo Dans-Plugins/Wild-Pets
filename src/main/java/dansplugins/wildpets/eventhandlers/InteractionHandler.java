@@ -3,6 +3,8 @@ package dansplugins.wildpets.eventhandlers;
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
+import dansplugins.wildpets.managers.EntityConfigManager;
+import dansplugins.wildpets.objects.EntityConfig;
 import dansplugins.wildpets.objects.Pet;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,6 +27,8 @@ public class InteractionHandler implements Listener {
 
         Entity clickedEntity = event.getRightClicked();
 
+        EntityConfig entityConfig = EntityConfigManager.getInstance().acquireConfiguration(clickedEntity);
+
         Player player = event.getPlayer();
         
         Pet pet = PersistentData.getInstance().getPet(clickedEntity);
@@ -44,8 +48,8 @@ public class InteractionHandler implements Listener {
             }
 
             ItemStack itemStack = player.getInventory().getItemInMainHand();
-            Material requiredMaterial = Material.WHEAT;
-            int requiredAmount = 1;
+            Material requiredMaterial = entityConfig.getRequiredTamingItem();
+            int requiredAmount = entityConfig.getTamingItemAmount();
             if (itemStack.getType() != requiredMaterial || itemStack.getAmount() < requiredAmount) {
                 player.sendMessage(ChatColor.RED + "You need to use " + requiredAmount + " " + requiredMaterial.name().toLowerCase() + " to tame this entity.");
                 EphemeralData.getInstance().setPlayerAsNotTaming(player);
@@ -53,7 +57,7 @@ public class InteractionHandler implements Listener {
             }
 
             // handle chance to tame
-            if (!rollDice(0.25)) { // 25% chance to succeed
+            if (!rollDice(entityConfig.getChanceToSucceed())) {
                 player.sendMessage(ChatColor.RED + "Taming failed.");
                 EphemeralData.getInstance().setPlayerAsNotTaming(player);
                 if (itemStack.getAmount() > requiredAmount) {
