@@ -33,6 +33,7 @@ public class CallCommand {
             return true;
         }
         else {
+            player.sendMessage(ChatColor.RED + pet.getName() + " cannot be found.");
             return false;
         }
     }
