@@ -23,6 +23,7 @@ public class HelpCommand {
         player.sendMessage(ChatColor.AQUA + "/wp stay - Make selected pet stay.");
         player.sendMessage(ChatColor.AQUA + "/wp wander - Make selected pet wander.");
         player.sendMessage(ChatColor.AQUA + "/wp call - Call selected pet to come to you.");
+        player.sendMessage(ChatColor.AQUA + "/wp locate - Locate your selected pet.");
         return true;
     }
 
