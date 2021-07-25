@@ -1,7 +1,6 @@
 package dansplugins.wildpets.objects;
 
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 
 public class EntityConfig {
 
