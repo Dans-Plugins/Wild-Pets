@@ -51,6 +51,9 @@ public class EntityConfigManager {
         entityConfigs.add(new EntityConfig("Piglin_Baby", 0.10, Material.NETHER_WART, 5));
         entityConfigs.add(new EntityConfig("Polar_Bear_Baby", 0.10, Material.SALMON, 15));
         entityConfigs.add(new EntityConfig("Pufferfish", 0.10, Material.KELP, 20));
+        entityConfigs.add(new EntityConfig("Rabbit", 0.10, Material.DANDELION, 5));
+        entityConfigs.add(new EntityConfig("Salmon", 0.10, Material.KELP, 20));
+        entityConfigs.add(new EntityConfig("Sheep", 0.10, Material.WHEAT, 10));
 
     }
 
