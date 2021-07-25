@@ -11,6 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
+import java.util.Random;
+
 public class InteractionHandler implements Listener {
 
     private boolean debug = true;
@@ -35,6 +37,13 @@ public class InteractionHandler implements Listener {
 
             if (pet != null) {
                 player.sendMessage(ChatColor.RED + "That entity is already a pet.");
+                EphemeralData.getInstance().setPlayerAsNotTaming(player);
+                return;
+            }
+
+            // handle chance to tame
+            if (!rollDice(0.25)) { // 25% chance to succeed
+                player.sendMessage(ChatColor.RED + "Taming failed.");
                 EphemeralData.getInstance().setPlayerAsNotTaming(player);
                 return;
             }
@@ -87,6 +96,15 @@ public class InteractionHandler implements Listener {
 
             }
         }, seconds * 20);
+    }
+
+    private boolean rollDice(double chanceToSucceed) {
+        double chanceToFail = 1 - chanceToSucceed;
+        if (debug) { System.out.println("Rolling dice! Chance to fail: " + chanceToFail * 100 + "%"); }
+        Random random = new Random();
+        double generatedNumber = random.nextDouble();
+        if (debug) { System.out.println("Dice landed on " + generatedNumber * 100 + ". " + chanceToFail * 100 + " was required."); }
+        return generatedNumber > chanceToFail;
     }
 
 }
