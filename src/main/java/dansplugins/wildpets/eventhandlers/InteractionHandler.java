@@ -112,7 +112,7 @@ public class InteractionHandler implements Listener {
             }
 
             if (!EphemeralData.getInstance().hasRightClickCooldown(player)) {
-                setRightClickCooldown(player, 5);
+                setRightClickCooldown(player, 3);
 
                 pet.sendInfoToPlayer(player);
             }
