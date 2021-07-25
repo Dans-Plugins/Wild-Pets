@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class EntityConfigManager {
 
+    private boolean debug = true;
+
     private static EntityConfigManager instance;
 
     private ArrayList<EntityConfig> entityConfigs = new ArrayList<>();
@@ -26,9 +28,11 @@ public class EntityConfigManager {
     public EntityConfig acquireConfiguration(Entity entity) {
         for (EntityConfig entityConfig : entityConfigs) {
             if (entity.getType().name().equalsIgnoreCase(entityConfig.getType())) {
+                if (debug) { System.out.println("Configuration for " + entity.getType().name() + " found!"); }
                 return entityConfig;
             }
         }
+        if (debug) { System.out.println("Configuration for " + entity.getType().name() + " not found! Using default configuration."); }
         return getDefaultConfiguration();
     }
 
