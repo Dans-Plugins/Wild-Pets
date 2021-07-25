@@ -1,5 +1,5 @@
 name: WildPets
-version: 0.11
+version: 0.12
 main: dansplugins.wildpets.WildPets
 api-version: 1.13
 
