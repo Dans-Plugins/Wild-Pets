@@ -45,6 +45,9 @@ public class EntityConfigManager {
         entityConfigs.add(new EntityConfig("Horse", 0.10, Material.APPLE, 5));
         entityConfigs.add(new EntityConfig("Mooshroom", 0.10, Material.RED_MUSHROOM, 10));
         entityConfigs.add(new EntityConfig("Mule", 0.10, Material.APPLE, 5));
+        entityConfigs.add(new EntityConfig("Ocelot", 0.10, Material.COD, 10));
+        entityConfigs.add(new EntityConfig("Parrot", 0.10, Material.PUMPKIN_SEEDS, 10));
+        entityConfigs.add(new EntityConfig("Pig", 0.10, Material.CARROT, 15));
 
     }
 
