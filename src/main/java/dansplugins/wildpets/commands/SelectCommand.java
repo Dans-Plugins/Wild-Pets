@@ -17,6 +17,13 @@ public class SelectCommand {
         Player player = (Player) sender;
 
         if (args.length > 0) {
+
+            if (args[0].equalsIgnoreCase("cancel")) {
+                EphemeralData.getInstance().setPlayerAsNotSelecting(player);
+                player.sendMessage(ChatColor.GREEN + "Selecting cancelled.");
+                return true;
+            }
+
             String petName = args[0];
 
             Pet pet = PersistentData.getInstance().getPlayersPet(player, petName);
@@ -28,7 +35,7 @@ public class SelectCommand {
         }
 
         EphemeralData.getInstance().setPlayerAsSelecting(player);
-        player.sendMessage(ChatColor.GREEN + "Right click on an entity to select it.");
+        player.sendMessage(ChatColor.GREEN + "Right click on an entity to select it. Type '/wp select cancel' to cancel selecting.");
         return true;
     }
 
