@@ -85,10 +85,43 @@ public class EntityConfigManager {
         entityConfigs.add(new EntityConfig("Zombified_Piglin", 0.5, Material.NETHER_WART, 32, true));
 
         // hostile mobs
-        // TODO
+        entityConfigs.add(new EntityConfig("Blaze", 0.5, Material.BLAZE_ROD, 16, false));
+        entityConfigs.add(new EntityConfig("Chicken_Jockey", 0.5, Material.BONE, 16, false));
+        entityConfigs.add(new EntityConfig("Creeper", 0.5, Material.GUNPOWDER, 16, false));
+        entityConfigs.add(new EntityConfig("Drowned", 0.5, Material.KELP, 16, false));
+        entityConfigs.add(new EntityConfig("Elder_Guardian", 0.5, Material.GLOWSTONE, 32, false));
+        entityConfigs.add(new EntityConfig("Endermite", 0.5, Material.ENDER_PEARL, 16, false));
+        entityConfigs.add(new EntityConfig("Evoker", 0.5, Material.GOLD_INGOT, 16, false));
+        entityConfigs.add(new EntityConfig("Endermite", 0.5, Material.ENDER_PEARL, 16, false));
+        entityConfigs.add(new EntityConfig("Ghast", 0.5, Material.GHAST_TEAR, 16, false));
+        entityConfigs.add(new EntityConfig("Guardian", 0.5, Material.GLOWSTONE, 16, false));
+        entityConfigs.add(new EntityConfig("Hoglin", 0.5, Material.CRIMSON_ROOTS, 16, false));
+        entityConfigs.add(new EntityConfig("Husk", 0.5, Material.SAND, 16, false));
+        entityConfigs.add(new EntityConfig("Magma_Cube", 0.5, Material.MAGMA_CREAM, 16, false));
+        entityConfigs.add(new EntityConfig("Phantom", 0.5, Material.SOUL_SAND, 16, false));
+        entityConfigs.add(new EntityConfig("Piglin", 0.5, Material.GOLD_INGOT, 16, false));
+        entityConfigs.add(new EntityConfig("Pillager", 0.5, Material.GOLD_INGOT, 16, false));
+        entityConfigs.add(new EntityConfig("Ravager", 0.5, Material.GOLD_INGOT, 16, false));
+        entityConfigs.add(new EntityConfig("Ravager_Jockey", 0.5, Material.GOLD_INGOT, 16, false));
+        entityConfigs.add(new EntityConfig("Shulker", 0.5, Material.CHEST, 16, false));
+        entityConfigs.add(new EntityConfig("Silverfish", 0.5, Material.STONE, 16, false));
+        entityConfigs.add(new EntityConfig("Skeleton", 0.5, Material.ARROW, 16, false));
+        entityConfigs.add(new EntityConfig("Skeleton_Horseman", 0.5, Material.ARROW, 32, false));
+        entityConfigs.add(new EntityConfig("Slime", 0.5, Material.SLIME_BALL, 16, false));
+        entityConfigs.add(new EntityConfig("Spider_Jockey", 0.5, Material.ARROW, 16, false));
+        entityConfigs.add(new EntityConfig("Stray", 0.5, Material.ARROW, 16, false));
+        entityConfigs.add(new EntityConfig("Vex", 0.5, Material.IRON_SWORD, 16, false));
+        entityConfigs.add(new EntityConfig("Vindicator", 0.5, Material.EMERALD, 16, false));
+        entityConfigs.add(new EntityConfig("Witch", 0.5, Material.BROWN_MUSHROOM, 16, false));
+        entityConfigs.add(new EntityConfig("Wither_Skeleton", 0.5, Material.BONE, 16, false));
+        entityConfigs.add(new EntityConfig("Zoglin", 0.5, Material.ROTTEN_FLESH, 16, false));
+        entityConfigs.add(new EntityConfig("Zombie", 0.5, Material.ROTTEN_FLESH, 16, false));
+        entityConfigs.add(new EntityConfig("Zombie_Villager", 0.5, Material.ROTTEN_FLESH, 16, false));
 
         // boss mobs
-        // TODO
+        entityConfigs.add(new EntityConfig("Ender_Dragon", 0.5, Material.ENDER_EYE, 64, false));
+        entityConfigs.add(new EntityConfig("Wither", 0.5, Material.WITHER_SKELETON_SKULL, 16, false));
+
     }
 
     private EntityConfig getDefaultConfiguration() {
