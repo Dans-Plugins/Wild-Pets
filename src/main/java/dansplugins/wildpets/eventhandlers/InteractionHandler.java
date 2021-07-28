@@ -45,8 +45,12 @@ public class InteractionHandler implements Listener {
                 return;
             }
 
+            if (debug && entityConfig.getType().equalsIgnoreCase("default")) {
+                player.sendMessage(ChatColor.BLUE + "[DEBUG] This entity doesn't have a configuration.");
+            }
+
             if (!entityConfig.isEnabled()) {
-                player.sendMessage(ChatColor.RED + "That entity cannot be tamed.");
+                player.sendMessage(ChatColor.RED + "Taming has been disabled for this entity.");
                 return;
             }
 
