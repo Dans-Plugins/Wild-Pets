@@ -37,6 +37,10 @@ public class PersistentData {
         return true;
     }
 
+    public boolean removePet(Pet petToRemove) {
+        return getPetList(petToRemove.getOwnerUUID()).getPets().remove(petToRemove);
+    }
+
     public Pet getPet(Entity entity) {
         for (PetList petList : getPetLists()) {
             Pet pet = petList.getPet(entity.getUniqueId());
