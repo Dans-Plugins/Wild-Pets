@@ -38,7 +38,7 @@ public class PersistentData {
     }
 
     public boolean removePet(Pet petToRemove) {
-        return getPetList(petToRemove.getOwnerUUID()).getPets().remove(petToRemove);
+        return getPetList(petToRemove.getOwnerUUID()).removePet(petToRemove);
     }
 
     public Pet getPet(Entity entity) {
