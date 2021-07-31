@@ -16,6 +16,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
     @EventHandler()
     public void handle(EntityDamageByEntityEvent event) {
         if (PersistentData.getInstance().getPet(event.getEntity()) != null) {
+            if (debug) { System.out.println("[DEBUG] Cancelling EntityDamageByEntity event."); }
             event.setCancelled(true);
         }
     }
@@ -23,6 +24,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
     @EventHandler()
     public void handle(AreaEffectCloudApplyEvent event) {
         if (PersistentData.getInstance().getPet(event.getEntity()) != null) {
+            if (debug) { System.out.println("[DEBUG] Cancelling AreaEffectCloudApply event."); }
             event.setCancelled(true);
         }
     }
@@ -30,6 +32,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
     @EventHandler()
     public void handle(LingeringPotionSplashEvent event) {
         if (PersistentData.getInstance().getPet(event.getEntity()) != null) {
+            if (debug) { System.out.println("[DEBUG] Cancelling LingeringPotionSplash event."); }
             event.setCancelled(true);
         }
     }
@@ -47,7 +50,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
                 }
             }
             else {
-                System.out.println("[DEBUG] Something went wrong removing " + name + " from the persistent data.");
+                if (debug) { System.out.println("[DEBUG] Something went wrong removing " + name + " from the persistent data."); }
             }
         }
     }
@@ -55,6 +58,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
     @EventHandler()
     public void handle(PotionSplashEvent event) {
         if (PersistentData.getInstance().getPet(event.getEntity()) != null) {
+            if (debug) { System.out.println("[DEBUG] Cancelling PotionSplashEvent event."); }
             event.setCancelled(true);
         }
     }
