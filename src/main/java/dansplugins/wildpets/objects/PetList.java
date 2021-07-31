@@ -46,9 +46,9 @@ public class PetList {
         getPets().add(newPet);
     }
 
-    public void removePet(Pet petToRemove) {
+    public boolean removePet(Pet petToRemove) {
         petToRemove.deconstruct();
-        getPets().remove(petToRemove);
+        return getPets().remove(petToRemove);
     }
 
     public void sendListOfPetsToPlayer(Player player) {

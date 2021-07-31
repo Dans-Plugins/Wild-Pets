@@ -36,7 +36,7 @@ public class Pet {
 
         entity.setCustomName(ChatColor.GREEN + name);
         entity.setPersistent(true);
-        entity.setInvulnerable(true);
+        // entity.setInvulnerable(true); // this has been replaced by the DamageEffectsAndDeathHandler class
 
         entity.playEffect(EntityEffect.LOVE_HEARTS);
 
