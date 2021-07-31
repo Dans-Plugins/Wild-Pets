@@ -15,24 +15,27 @@ public class DamageEffectsAndDeathHandler implements Listener {
 
     @EventHandler()
     public void handle(EntityDamageByEntityEvent event) {
-        if (PersistentData.getInstance().getPet(event.getEntity()) != null) {
-            if (debug) { System.out.println("[DEBUG] Cancelling EntityDamageByEntity event."); }
+        Pet pet = PersistentData.getInstance().getPet(event.getEntity());
+        if (pet != null) {
+            if (debug) { System.out.println("[DEBUG] Cancelling EntityDamageByEntity event to protect " + pet.getName() + "."); }
             event.setCancelled(true);
         }
     }
 
     @EventHandler()
     public void handle(AreaEffectCloudApplyEvent event) {
-        if (PersistentData.getInstance().getPet(event.getEntity()) != null) {
-            if (debug) { System.out.println("[DEBUG] Cancelling AreaEffectCloudApply event."); }
+        Pet pet = PersistentData.getInstance().getPet(event.getEntity());
+        if (pet != null) {
+            if (debug) { System.out.println("[DEBUG] Cancelling AreaEffectCloudApply event to protect " + pet.getName() + "."); }
             event.setCancelled(true);
         }
     }
 
     @EventHandler()
     public void handle(LingeringPotionSplashEvent event) {
-        if (PersistentData.getInstance().getPet(event.getEntity()) != null) {
-            if (debug) { System.out.println("[DEBUG] Cancelling LingeringPotionSplash event."); }
+        Pet pet = PersistentData.getInstance().getPet(event.getEntity());
+        if (pet != null) {
+            if (debug) { System.out.println("[DEBUG] Cancelling LingeringPotionSplash event to protect " + pet.getName() + "."); }
             event.setCancelled(true);
         }
     }
@@ -57,8 +60,9 @@ public class DamageEffectsAndDeathHandler implements Listener {
 
     @EventHandler()
     public void handle(PotionSplashEvent event) {
-        if (PersistentData.getInstance().getPet(event.getEntity()) != null) {
-            if (debug) { System.out.println("[DEBUG] Cancelling PotionSplashEvent event."); }
+        Pet pet = PersistentData.getInstance().getPet(event.getEntity());
+        if (pet != null) {
+            if (debug) { System.out.println("[DEBUG] Cancelling PotionSplashEvent event to protect " + pet.getName() + "."); }
             event.setCancelled(true);
         }
     }
