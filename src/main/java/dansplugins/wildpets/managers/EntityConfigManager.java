@@ -169,7 +169,7 @@ public class EntityConfigManager {
     private void printEntityConfigurations() {
         System.out.println("Entity Configurations: ");
         for (EntityConfig config : entityConfigs) {
-            System.out.println(config.getType() + ", " + config.getChanceToSucceed() + ", " + config.getRequiredTamingItem().name() + ", " + config.getTamingItemAmount());
+            System.out.println(config.getType() + ", " + config.getChanceToSucceed() + ", " + config.getRequiredTamingItem().name() + ", " + config.getTamingItemAmount() + ", " + config.isEnabled());
         }
     }
 }
