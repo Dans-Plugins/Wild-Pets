@@ -31,7 +31,7 @@ public class Pet {
     public Pet(Entity entity, UUID playerOwner) {
         uniqueID = entity.getUniqueId();
         ownerUUID = playerOwner;
-        name = UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID) + "'s Pet";
+        name = UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID) + "'s_Pet";
         movementState = "Wandering";
 
         entity.setCustomName(ChatColor.GREEN + name);
