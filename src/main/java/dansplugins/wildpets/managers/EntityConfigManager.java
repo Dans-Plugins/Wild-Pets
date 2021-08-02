@@ -32,11 +32,11 @@ public class EntityConfigManager {
     public EntityConfig acquireConfiguration(Entity entity) {
         for (EntityConfig entityConfig : entityConfigs) {
             if (entity.getType().name().equalsIgnoreCase(entityConfig.getType())) {
-                if (debug) { System.out.println("Configuration for " + entity.getType().name() + " found!"); }
+                if (debug) { System.out.println("[DEBUG] Configuration for " + entity.getType().name() + " found!"); }
                 return entityConfig;
             }
         }
-        if (debug) { System.out.println("Configuration for " + entity.getType().name() + " not found! Using default configuration."); }
+        if (debug) { System.out.println("[DEBUG] Configuration for " + entity.getType().name() + " not found! Using default configuration."); }
         return getDefaultConfiguration();
     }
 
