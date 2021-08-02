@@ -62,4 +62,8 @@ public class PetList {
             player.sendMessage(ChatColor.AQUA + pet.getName());
         }
     }
+
+    public int getNumPets() {
+        return pets.size();
+    }
 }
