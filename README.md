@@ -16,3 +16,4 @@
 - 0.15 - Entity Configurations - Neutral Mobs
 - 0.16 - Entity Configurations - Hostile & Boss Mobs
 - 0.17 - Damage, Effects and Death Handler
+- 0.18 - Config.yml & Permissions
