@@ -38,7 +38,7 @@ public class ConfigManager {
         WildPets.getInstance().getConfig().addDefault("version", WildPets.getInstance().getVersion());
 
         // save config options
-        WildPets.getInstance().getConfig().set("configOptions." + "testConfigOption", true);
+        // WildPets.getInstance().getConfig().set("configOptions." + "testConfigOption", true);
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
