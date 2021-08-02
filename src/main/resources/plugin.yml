@@ -6,3 +6,27 @@ api-version: 1.13
 commands:
   wildpets:
   wp:
+
+permissions:
+  wp.help:
+    default: true
+  wp.tame:
+    default: true
+  wp.select:
+    default: true
+  wp.rename:
+    default: true
+  wp.info:
+    default: true
+  wp.stay:
+    default: true
+  wp.wander:
+    default: true
+  wp.list:
+    default: true
+  wp.call:
+    default: true
+  wp.setfree:
+    default: true
+  wp.locate:
+    default: true
