@@ -54,6 +54,11 @@ public class InteractionHandler implements Listener {
                 return;
             }
 
+            if (PersistentData.getInstance().getPetList(player.getUniqueId()).getNumPets() >= WildPets.getInstance().getConfig().getInt("petLimit")) {
+                player.sendMessage(ChatColor.RED + "You have reached your pet limit.");
+                return;
+            }
+
             ItemStack itemStack = player.getInventory().getItemInMainHand();
             Material requiredMaterial = entityConfig.getRequiredTamingItem();
             int requiredAmount = entityConfig.getTamingItemAmount();
