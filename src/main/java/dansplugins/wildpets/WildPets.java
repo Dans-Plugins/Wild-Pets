@@ -1,9 +1,13 @@
 package dansplugins.wildpets;
 
+import dansplugins.wildpets.managers.ConfigManager;
+import dansplugins.wildpets.managers.EntityConfigManager;
 import dansplugins.wildpets.managers.StorageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public final class WildPets extends JavaPlugin {
 
@@ -18,6 +22,20 @@ public final class WildPets extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        // create/load config
+        if (!(new File("./plugins/WildPets/config.yml").exists())) {
+            EntityConfigManager.getInstance().initializeWithDefaults();
+            ConfigManager.getInstance().saveConfigDefaults();
+        }
+        else {
+            // pre load compatibility checks
+            if (isVersionMismatched()) {
+                ConfigManager.getInstance().handleVersionMismatch();
+            }
+            reloadConfig();
+            EntityConfigManager.getInstance().initializeWithConfig();
+        }
 
         EventRegistry.getInstance().registerEvents();
 
@@ -36,5 +54,9 @@ public final class WildPets extends JavaPlugin {
 
     public String getVersion() {
         return version;
+    }
+
+    private boolean isVersionMismatched() {
+        return !getConfig().getString("version").equalsIgnoreCase(getVersion());
     }
 }

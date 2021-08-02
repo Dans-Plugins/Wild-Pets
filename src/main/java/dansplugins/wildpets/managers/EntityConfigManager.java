@@ -1,10 +1,14 @@
 package dansplugins.wildpets.managers;
 
+import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.objects.EntityConfig;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 public class EntityConfigManager {
 
@@ -15,7 +19,7 @@ public class EntityConfigManager {
     private ArrayList<EntityConfig> entityConfigs = new ArrayList<>();
 
     private EntityConfigManager() {
-        initialize();
+
     }
 
     public static EntityConfigManager getInstance() {
@@ -36,10 +40,15 @@ public class EntityConfigManager {
         return getDefaultConfiguration();
     }
 
-    private void initialize() {
+    public ArrayList<EntityConfig> getEntityConfigurations() {
+        return entityConfigs;
+    }
+
+    public void initializeWithDefaults() {
+        if (debug) { System.out.println("[DEBUG] Initializing with defaults."); }
 
         // passive mobs
-        entityConfigs.add(new EntityConfig("Axilotl", 0.5, Material.KELP, 16, true));
+        entityConfigs.add(new EntityConfig("Axolotl", 0.5, Material.KELP, 16, true));
         entityConfigs.add(new EntityConfig("Bat", 0.5, Material.PUMPKIN_PIE, 1, true));
         entityConfigs.add(new EntityConfig("Cat", 0.5, Material.SALMON, 8, true));
         entityConfigs.add(new EntityConfig("Chicken", 0.5, Material.WHEAT_SEEDS, 8, true));
@@ -122,10 +131,45 @@ public class EntityConfigManager {
         entityConfigs.add(new EntityConfig("Ender_Dragon", 0.5, Material.ENDER_EYE, 64, false));
         entityConfigs.add(new EntityConfig("Wither", 0.5, Material.WITHER_SKELETON_SKULL, 16, false));
 
+        if (debug) {
+            printEntityConfigurations();
+        }
+
     }
 
-    private EntityConfig getDefaultConfiguration() {
+    public void initializeWithConfig() {
+        if (debug) { System.out.println("[DEBUG] Initializing with config."); }
+
+        Set<String> keys = WildPets.getInstance().getConfig().getConfigurationSection("entityConfigurations").getKeys(false);
+
+        for (String key : keys) {
+            if (debug) { System.out.println("Looking at entity configuration for " + key); }
+            HashMap<String, String> options = new HashMap<>();
+
+            Set<String> configOptions = WildPets.getInstance().getConfig().getConfigurationSection("entityConfigurations." + key).getKeys(false);
+
+            for (String configOption : configOptions) {
+                String value = WildPets.getInstance().getConfig().getString("entityConfigurations." + key + "." + configOption);
+                if (debug) { System.out.println("Looking at config option " + configOption + ". Value: " + value); }
+                options.put(configOption, value);
+            }
+
+            entityConfigs.add(new EntityConfig(key, Double.parseDouble(options.get("chanceToSucceed")), Material.getMaterial(options.get("requiredTamingItem")), Integer.parseInt(options.get("tamingItemAmount")), Boolean.parseBoolean(options.get("enabled"))));
+        }
+
+        if (debug) {
+            printEntityConfigurations();
+        }
+    }
+
+    public EntityConfig getDefaultConfiguration() {
         return new EntityConfig("default", 0.25, Material.WHEAT, 10, true);
     }
 
+    private void printEntityConfigurations() {
+        System.out.println("Entity Configurations: ");
+        for (EntityConfig config : entityConfigs) {
+            System.out.println(config.getType() + ", " + config.getChanceToSucceed() + ", " + config.getRequiredTamingItem().name() + ", " + config.getTamingItemAmount());
+        }
+    }
 }

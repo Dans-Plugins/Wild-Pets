@@ -8,8 +8,6 @@ public class EntityConfig {
     private double chanceToSucceed;
     private Material requiredTamingItem;
     private int tamingItemAmount;
-
-
     private boolean enabled;
 
     public EntityConfig(String inputType, double inputChanceToSucceed, Material inputRequiredTamingItem, int inputTamingItemAmount, boolean inputEnabled) {

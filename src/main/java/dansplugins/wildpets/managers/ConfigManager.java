@@ -1,7 +1,12 @@
 package dansplugins.wildpets.managers;
 
+import dansplugins.wildpets.WildPets;
+import dansplugins.wildpets.objects.EntityConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfigManager {
 
@@ -30,7 +35,35 @@ public class ConfigManager {
     }
 
     public void saveConfigDefaults() {
-        // TODO
+        WildPets.getInstance().getConfig().addDefault("version", WildPets.getInstance().getVersion());
+
+        // save config options
+        WildPets.getInstance().getConfig().set("configOptions." + "testConfigOption", true);
+
+        // save default entity configuration
+        EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
+        HashMap<String, String> defaultOptions = new HashMap<>();
+        defaultOptions.put("chanceToSucceed", "" + defaultEntityConfig.getChanceToSucceed());
+        defaultOptions.put("requiredTamingItem", defaultEntityConfig.getRequiredTamingItem().name());
+        defaultOptions.put("tamingItemAmount", "" + defaultEntityConfig.getTamingItemAmount());
+        defaultOptions.put("enabled", "" + defaultEntityConfig.isEnabled());
+        for (Map.Entry<String, String> entry : defaultOptions.entrySet()) {
+            WildPets.getInstance().getConfig().set("entityConfigurations." + defaultEntityConfig.getType() + "." + entry.getKey(), entry.getValue());
+        }
+
+        // save entity configurations
+        for (EntityConfig entityConfig : EntityConfigManager.getInstance().getEntityConfigurations()) {
+            HashMap<String, String> options = new HashMap<>();
+            options.put("chanceToSucceed", "" + entityConfig.getChanceToSucceed());
+            options.put("requiredTamingItem", entityConfig.getRequiredTamingItem().name());
+            options.put("tamingItemAmount", "" + entityConfig.getTamingItemAmount());
+            options.put("enabled", "" + entityConfig.isEnabled());
+            for (Map.Entry<String, String> entry : options.entrySet()) {
+                WildPets.getInstance().getConfig().set("entityConfigurations." + entityConfig.getType() + "." + entry.getKey(), entry.getValue());
+            }
+        }
+        WildPets.getInstance().getConfig().options().copyDefaults(true);
+        WildPets.getInstance().saveConfig();
     }
 
     public void sendConfigList(CommandSender sender) {
