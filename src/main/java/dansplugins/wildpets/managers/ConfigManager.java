@@ -27,13 +27,13 @@ public class ConfigManager {
     public void handleVersionMismatch() {
         // TODO
     }
-
+/*
     public void setConfigOption(String option, String value, CommandSender sender) {
         // TODO
 
         altered = true;
     }
-
+*/
     public void saveConfigDefaults() {
         WildPets.getInstance().getConfig().addDefault("version", WildPets.getInstance().getVersion());
 
