@@ -45,8 +45,15 @@ public class Pet {
         }
     }
 
-    public Pet(Map<String, String> petData) {
-        this.load(petData);
+    private Pet() {
+
+    }
+
+    private class PetJson {
+        public String uniqueID;
+        public String ownerUUID;
+        public String name;
+        public String movementState;
     }
 
     public void deconstruct() {
@@ -150,21 +157,30 @@ public class Pet {
         return saveMap;
     }
 
-    private void load(Map<String, String> data) {
+    public static Pet load(String jsonData) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-        uniqueID = UUID.fromString(gson.fromJson(data.get("uniqueID"), String.class));
-        ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
-        name = gson.fromJson(data.get("name"), String.class);
+        Pet newPet = new Pet();
 
-        String state = gson.fromJson(data.get("movementState"), String.class);
+        try {
+            PetJson data = gson.fromJson(jsonData, PetJson.class);
 
-        if (state.equalsIgnoreCase("Wandering")) {
-            setWandering();
+            newPet.uniqueID = UUID.fromString(data.uniqueID);
+            newPet.ownerUUID = UUID.fromString(data.ownerUUID);
+            newPet.name = data.name;
+            newPet.movementState = data.movementState;
+
+            if (newPet.movementState.equalsIgnoreCase("Wandering")) {
+                newPet.setWandering();
+            }
+            else if (newPet.movementState.equalsIgnoreCase("Staying")) {
+                newPet.setStaying();
+            }
+        } catch(Exception e) {
+            System.out.println("ERROR: Could not load pet.");
         }
-        else if (state.equalsIgnoreCase("Staying")) {
-            setStaying();
-        }
+
+        return newPet;
     }
 
 }

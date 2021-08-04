@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.objects.Pet;
+import dansplugins.wildpets.objects.PetList;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -24,7 +25,7 @@ public class StorageManager {
 
     private final static Type LIST_MAP_TYPE = new TypeToken<ArrayList<HashMap<String, String>>>(){}.getType();
 
-    private Gson gson = new GsonBuilder().setPrettyPrinting().create();;
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private StorageManager() {
 
@@ -38,28 +39,27 @@ public class StorageManager {
     }
 
     public void save() {
-        savePets();
+        savePetLists();
     }
 
     public void load() {
-        loadPets();
+        loadPetLists();
     }
 
-    private void savePets() {
-        // save each pet object individually
-        List<Map<String, String>> pets = new ArrayList<>();
-        for (Pet pet : PersistentData.getInstance().getAllPets()){
-            pets.add(pet.save());
+    private void savePetLists() {
+        List<Map<String, String>> petLists = new ArrayList<>();
+        for (PetList petList : PersistentData.getInstance().getPetLists()) {
+            petLists.add(petList.save());
         }
 
-        writeOutFiles(pets);
+        File file = new File(FILE_PATH + PETS_FILE_NAME);
+        writeOutFiles(file, petLists);
     }
 
-    private void writeOutFiles(List<Map<String, String>> saveData) {
+    private void writeOutFiles(File file, List<Map<String, String>> saveData) {
         try {
             File parentFolder = new File(FILE_PATH);
             parentFolder.mkdir();
-            File file = new File(FILE_PATH + PETS_FILE_NAME);
             file.createNewFile();
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
             outputStreamWriter.write(gson.toJson(saveData));
@@ -69,25 +69,14 @@ public class StorageManager {
         }
     }
 
-    private void loadPets() {
-        // load each pet individually and reconstruct pet list objects
-        PersistentData.getInstance().getPetLists().clear();
+    private void loadPetLists() {
+        // TODO; clear pets
 
         ArrayList<HashMap<String, String>> data = loadDataFromFilename(FILE_PATH + PETS_FILE_NAME);
 
-        ArrayList<Pet> allPets = new ArrayList<>();
-
-        for (Map<String, String> petData : data){
-            Pet pet = new Pet(petData);
-            allPets.add(pet);
-        }
-
-        for (Pet pet : allPets) {
-            if (PersistentData.getInstance().getPetList(pet.getOwnerUUID()) == null) {
-                PersistentData.getInstance().createPetListForPlayer(pet.getOwnerUUID());
-
-            }
-            PersistentData.getInstance().getPetList(pet.getOwnerUUID()).addPet(pet);
+        for (Map<String, String> petListData : data) {
+            PetList petList = new PetList(petListData);
+            PersistentData.getInstance().getPetLists().add(petList);
         }
     }
 
