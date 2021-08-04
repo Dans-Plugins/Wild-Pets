@@ -80,7 +80,7 @@ public class PetList {
         Map<String, String> saveMap = new HashMap<>();
 
         // save owner
-        saveMap.put("owner", ownerUUID.toString());
+        saveMap.put("owner", gson.toJson(ownerUUID));
 
         // save pets
         ArrayList<String> petsList = new ArrayList<>();

@@ -178,6 +178,7 @@ public class Pet {
             }
         } catch(Exception e) {
             System.out.println("ERROR: Could not load pet.");
+            e.printStackTrace();
         }
 
         return newPet;
