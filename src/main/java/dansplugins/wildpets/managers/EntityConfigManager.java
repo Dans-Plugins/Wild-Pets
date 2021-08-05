@@ -5,7 +5,6 @@ import dansplugins.wildpets.objects.EntityConfig;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
