@@ -10,6 +10,8 @@ import java.util.Map;
 
 public class ConfigManager {
 
+    private boolean debug = WildPets.getInstance().isDebugEnabled();
+
     private static ConfigManager instance;
     private boolean altered = false;
 
@@ -46,8 +48,10 @@ public class ConfigManager {
         defaultOptions.put("tamingItemAmount", "" + defaultEntityConfig.getTamingItemAmount());
         defaultOptions.put("enabled", "" + defaultEntityConfig.isEnabled());
         for (Map.Entry<String, String> entry : defaultOptions.entrySet()) {
-            if (!WildPets.getInstance().getConfig().isSet("entityConfigurations." + defaultEntityConfig.getType() + "." + entry.getKey())) {
-                WildPets.getInstance().getConfig().set("entityConfigurations." + defaultEntityConfig.getType() + "." + entry.getKey(), entry.getValue());
+            String identifier = "entityConfigurations." + defaultEntityConfig.getType() + "." + entry.getKey();
+            if (!WildPets.getInstance().getConfig().isSet(identifier)) {
+                if (debug) { System.out.println("[DEBUG] Adding missing configuration for " + identifier); }
+                WildPets.getInstance().getConfig().set(identifier, entry.getValue());
             }
         }
 
@@ -59,8 +63,10 @@ public class ConfigManager {
             options.put("tamingItemAmount", "" + entityConfig.getTamingItemAmount());
             options.put("enabled", "" + entityConfig.isEnabled());
             for (Map.Entry<String, String> entry : options.entrySet()) {
-                if (!WildPets.getInstance().getConfig().isSet("entityConfigurations." + defaultEntityConfig.getType() + "." + entry.getKey())) {
-                    WildPets.getInstance().getConfig().set("entityConfigurations." + entityConfig.getType() + "." + entry.getKey(), entry.getValue());
+                String identifier = "entityConfigurations." + entityConfig.getType() + "." + entry.getKey();
+                if (!WildPets.getInstance().getConfig().isSet(identifier)) {
+                    if (debug) { System.out.println("[DEBUG] Adding missing configuration for " + identifier); }
+                    WildPets.getInstance().getConfig().set(identifier, entry.getValue());
                 }
             }
         }
@@ -88,7 +94,8 @@ public class ConfigManager {
         defaultOptions.put("tamingItemAmount", "" + defaultEntityConfig.getTamingItemAmount());
         defaultOptions.put("enabled", "" + defaultEntityConfig.isEnabled());
         for (Map.Entry<String, String> entry : defaultOptions.entrySet()) {
-            WildPets.getInstance().getConfig().set("entityConfigurations." + defaultEntityConfig.getType() + "." + entry.getKey(), entry.getValue());
+            String identifier = "entityConfigurations." + defaultEntityConfig.getType() + "." + entry.getKey();
+            WildPets.getInstance().getConfig().set(identifier, entry.getValue());
         }
 
         // save entity configurations
@@ -99,7 +106,8 @@ public class ConfigManager {
             options.put("tamingItemAmount", "" + entityConfig.getTamingItemAmount());
             options.put("enabled", "" + entityConfig.isEnabled());
             for (Map.Entry<String, String> entry : options.entrySet()) {
-                WildPets.getInstance().getConfig().set("entityConfigurations." + entityConfig.getType() + "." + entry.getKey(), entry.getValue());
+                String identifier = "entityConfigurations." + entityConfig.getType() + "." + entry.getKey();
+                WildPets.getInstance().getConfig().set(identifier, entry.getValue());
             }
         }
         WildPets.getInstance().getConfig().options().copyDefaults(true);
