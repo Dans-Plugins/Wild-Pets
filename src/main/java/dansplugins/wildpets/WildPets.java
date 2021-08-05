@@ -11,7 +11,7 @@ import java.io.File;
 
 public final class WildPets extends JavaPlugin {
 
-    private final boolean debug = true;
+    private final boolean debug = false;
 
     private static WildPets instance;
 
