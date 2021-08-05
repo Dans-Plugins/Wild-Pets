@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class InteractionHandler implements Listener {
 
-    private boolean debug = true;
+    private boolean debug = WildPets.getInstance().isDebugEnabled();
 
     @EventHandler()
     public void handle(PlayerInteractEntityEvent event) {

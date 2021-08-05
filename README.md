@@ -18,3 +18,4 @@
 - 0.17 - Damage, Effects and Death Handler
 - 0.18 - Config.yml & Permissions
 - 0.19 - Pet Limit
+- 0.20 - Better Naming

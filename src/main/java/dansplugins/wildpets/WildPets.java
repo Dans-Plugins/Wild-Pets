@@ -11,13 +11,15 @@ import java.io.File;
 
 public final class WildPets extends JavaPlugin {
 
+    private final boolean debug = true;
+
     private static WildPets instance;
 
     public static WildPets getInstance() {
         return instance;
     }
 
-    private final String version = "v0.19";
+    private final String version = "v0.20";
 
     @Override
     public void onEnable() {
@@ -54,6 +56,10 @@ public final class WildPets extends JavaPlugin {
 
     public String getVersion() {
         return version;
+    }
+
+    public boolean isDebugEnabled() {
+        return debug;
     }
 
     private boolean isVersionMismatched() {

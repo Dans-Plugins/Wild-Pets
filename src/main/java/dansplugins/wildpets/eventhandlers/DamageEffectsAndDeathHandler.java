@@ -1,5 +1,6 @@
 package dansplugins.wildpets.eventhandlers;
 
+import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.objects.Pet;
 import org.bukkit.Bukkit;
@@ -11,7 +12,7 @@ import org.bukkit.event.entity.*;
 
 public class DamageEffectsAndDeathHandler implements Listener {
 
-    private boolean debug = true;
+    private boolean debug = WildPets.getInstance().isDebugEnabled();
 
     @EventHandler()
     public void handle(EntityDamageByEntityEvent event) {

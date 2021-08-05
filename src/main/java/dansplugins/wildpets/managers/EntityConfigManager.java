@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class EntityConfigManager {
 
-    private boolean debug = true;
+    private boolean debug = WildPets.getInstance().isDebugEnabled();
 
     private static EntityConfigManager instance;
 
