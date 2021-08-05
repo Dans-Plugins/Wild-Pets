@@ -25,7 +25,41 @@ public class ConfigManager {
     }
 
     public void handleVersionMismatch() {
-        // TODO
+        WildPets.getInstance().getConfig().addDefault("version", WildPets.getInstance().getVersion());
+
+        // save config options
+        if (!WildPets.getInstance().getConfig().isSet("configOptions." + "petLimit")) {
+            WildPets.getInstance().getConfig().set("configOptions." + "petLimit", 10);
+        }
+
+        // save default entity configuration
+        EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
+        HashMap<String, String> defaultOptions = new HashMap<>();
+        defaultOptions.put("chanceToSucceed", "" + defaultEntityConfig.getChanceToSucceed());
+        defaultOptions.put("requiredTamingItem", defaultEntityConfig.getRequiredTamingItem().name());
+        defaultOptions.put("tamingItemAmount", "" + defaultEntityConfig.getTamingItemAmount());
+        defaultOptions.put("enabled", "" + defaultEntityConfig.isEnabled());
+        for (Map.Entry<String, String> entry : defaultOptions.entrySet()) {
+            if (!WildPets.getInstance().getConfig().isSet("entityConfigurations." + defaultEntityConfig.getType() + "." + entry.getKey())) {
+                WildPets.getInstance().getConfig().set("entityConfigurations." + defaultEntityConfig.getType() + "." + entry.getKey(), entry.getValue());
+            }
+        }
+
+        // save entity configurations
+        for (EntityConfig entityConfig : EntityConfigManager.getInstance().getEntityConfigurations()) {
+            HashMap<String, String> options = new HashMap<>();
+            options.put("chanceToSucceed", "" + entityConfig.getChanceToSucceed());
+            options.put("requiredTamingItem", entityConfig.getRequiredTamingItem().name());
+            options.put("tamingItemAmount", "" + entityConfig.getTamingItemAmount());
+            options.put("enabled", "" + entityConfig.isEnabled());
+            for (Map.Entry<String, String> entry : options.entrySet()) {
+                if (!WildPets.getInstance().getConfig().isSet("entityConfigurations." + defaultEntityConfig.getType() + "." + entry.getKey())) {
+                    WildPets.getInstance().getConfig().set("entityConfigurations." + entityConfig.getType() + "." + entry.getKey(), entry.getValue());
+                }
+            }
+        }
+        WildPets.getInstance().getConfig().options().copyDefaults(true);
+        WildPets.getInstance().saveConfig();
     }
 /*
     public void setConfigOption(String option, String value, CommandSender sender) {
