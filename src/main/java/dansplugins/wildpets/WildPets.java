@@ -1,5 +1,6 @@
 package dansplugins.wildpets;
 
+import dansplugins.wildpets.bstats.Metrics;
 import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.managers.EntityConfigManager;
 import dansplugins.wildpets.managers.StorageManager;
@@ -42,6 +43,10 @@ public final class WildPets extends JavaPlugin {
         EventRegistry.getInstance().registerEvents();
 
         StorageManager.getInstance().load();
+
+        // bStats
+        int pluginId = 12332;
+        Metrics metrics = new Metrics(this, pluginId);
     }
 
     @Override
