@@ -56,7 +56,7 @@ public class ConfigManager {
         }
 
         // save entity configurations
-        for (EntityConfig entityConfig : EntityConfigManager.getInstance().getEntityConfigurations()) {
+        for (EntityConfig entityConfig : EntityConfigManager.getInstance().getDefaults()) {
             HashMap<String, String> options = new HashMap<>();
             options.put("chanceToSucceed", "" + entityConfig.getChanceToSucceed());
             options.put("requiredTamingItem", entityConfig.getRequiredTamingItem().name());
