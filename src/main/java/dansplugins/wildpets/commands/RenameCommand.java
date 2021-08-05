@@ -1,6 +1,7 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.objects.Pet;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -26,6 +27,11 @@ public class RenameCommand {
 
         if (pet == null) {
             player.sendMessage(ChatColor.RED + "No pet selected.");
+            return false;
+        }
+
+        if (PersistentData.getInstance().getPetList(player.getUniqueId()).isNameTaken(newName)) {
+            player.sendMessage(ChatColor.RED + "That name is already taken by one of your pets.");
             return false;
         }
 

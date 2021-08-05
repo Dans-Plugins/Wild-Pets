@@ -79,6 +79,15 @@ public class PetList {
         return newID;
     }
 
+    public boolean isNameTaken(String name) {
+        for (Pet pet : getPets()) {
+            if (pet.getName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean isIDTaken(int ID) {
         for (Pet pet : getPets()) {
             if (pet.getAssignedID() == ID) {
