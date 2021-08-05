@@ -25,7 +25,13 @@ public class ConfigManager {
     }
 
     public void handleVersionMismatch() {
-        WildPets.getInstance().getConfig().addDefault("version", WildPets.getInstance().getVersion());
+        // set version
+        if (!WildPets.getInstance().getConfig().isString("version")) {
+            WildPets.getInstance().getConfig().addDefault("version", WildPets.getInstance().getVersion());
+        }
+        else {
+            WildPets.getInstance().getConfig().set("version", WildPets.getInstance().getVersion());
+        }
 
         // save config options
         if (!WildPets.getInstance().getConfig().isSet("configOptions." + "petLimit")) {
