@@ -19,4 +19,4 @@
 - 0.18 - Config.yml & Permissions
 - 0.19 - Pet Limit
 - 0.20 - Better Naming
-- 0.21 - Version Mismatch Handling
+- 0.21 - Version Mismatch Handling & bStats
