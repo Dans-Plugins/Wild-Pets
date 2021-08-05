@@ -3,6 +3,7 @@ package dansplugins.wildpets.objects;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dansplugins.wildpets.WildPets;
+import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.utils.UUIDChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,17 +14,18 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 public class Pet {
 
-    private boolean debug = true;
+    private boolean debug = WildPets.getInstance().isDebugEnabled();
 
     private UUID uniqueID; // saved
     private UUID ownerUUID; // saved
+    private int assignedID;
     private String name; // saved
-
-    private String movementState; // defaulted
+    private String movementState; // saved
 
     private Location stayingLocation;
     private int teleportTaskID = -1;
@@ -31,7 +33,8 @@ public class Pet {
     public Pet(Entity entity, UUID playerOwner) {
         uniqueID = entity.getUniqueId();
         ownerUUID = playerOwner;
-        name = UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID) + "'s_Pet";
+        assignedID = PersistentData.getInstance().getPetList(ownerUUID).getNewID();
+        name = UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID) + "'s_Pet_" + assignedID;
         movementState = "Wandering";
 
         entity.setCustomName(ChatColor.GREEN + name);
@@ -85,11 +88,20 @@ public class Pet {
         }
     }
 
+    public int getAssignedID() {
+        return assignedID;
+    }
+
     public void sendInfoToPlayer(Player player) {
         player.sendMessage(ChatColor.AQUA + "=== Pet Info ===");
         player.sendMessage(ChatColor.AQUA + "Name: " + name);
         player.sendMessage(ChatColor.AQUA + "Owner: " + UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID));
         player.sendMessage(ChatColor.AQUA + "State: " + movementState);
+        if (debug) {
+            player.sendMessage(ChatColor.AQUA + "[DEBUG] uniqueID: " + uniqueID.toString());
+            player.sendMessage(ChatColor.AQUA + "[DEBUG] ownerUUID: " + ownerUUID.toString());
+            player.sendMessage(ChatColor.AQUA + "[DEBUG] assignedID: " + assignedID);
+        }
     }
 
     public void sendLocationToPlayer(Player player) {
@@ -144,6 +156,7 @@ public class Pet {
         Map<String, String> saveMap = new HashMap<>();
         saveMap.put("uniqueID", gson.toJson(uniqueID));
         saveMap.put("owner", gson.toJson(ownerUUID));
+        saveMap.put("assignedID", gson.toJson(assignedID));
         saveMap.put("name", gson.toJson(name));
         saveMap.put("movementState", gson.toJson(movementState));
 
@@ -155,6 +168,7 @@ public class Pet {
 
         uniqueID = UUID.fromString(gson.fromJson(data.get("uniqueID"), String.class));
         ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
+        assignedID = Integer.parseInt(gson.fromJson(data.get("assignedID"), String.class));
         name = gson.fromJson(data.get("name"), String.class);
 
         String state = gson.fromJson(data.get("movementState"), String.class);

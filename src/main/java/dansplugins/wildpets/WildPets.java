@@ -11,6 +11,8 @@ import java.io.File;
 
 public final class WildPets extends JavaPlugin {
 
+    private final boolean debug = true;
+
     private static WildPets instance;
 
     public static WildPets getInstance() {
@@ -54,6 +56,10 @@ public final class WildPets extends JavaPlugin {
 
     public String getVersion() {
         return version;
+    }
+
+    public boolean isDebugEnabled() {
+        return debug;
     }
 
     private boolean isVersionMismatched() {
