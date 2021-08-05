@@ -19,7 +19,7 @@ public final class WildPets extends JavaPlugin {
         return instance;
     }
 
-    private final String version = "v0.19";
+    private final String version = "v0.20";
 
     @Override
     public void onEnable() {
