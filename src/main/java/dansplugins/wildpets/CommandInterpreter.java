@@ -10,7 +10,7 @@ public class CommandInterpreter {
         if (label.equalsIgnoreCase("wildpets") || label.equalsIgnoreCase("wp")) {
 
             if (args.length == 0) {
-                sender.sendMessage(ChatColor.AQUA + "Wild Pets v" + WildPets.getInstance().getVersion());
+                sender.sendMessage(ChatColor.AQUA + "Wild Pets " + WildPets.getInstance().getVersion());
                 sender.sendMessage(ChatColor.AQUA + "Developer: DanTheTechMan");
                 sender.sendMessage(ChatColor.AQUA + "Wiki: https://github.com/dmccoystephenson/Wild-Pets/wiki");
                 return false;
