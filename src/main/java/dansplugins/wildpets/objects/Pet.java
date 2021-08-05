@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class Pet {
 
-    private boolean debug = true;
+    private static boolean debug = true;
 
     private UUID uniqueID; // saved
     private UUID ownerUUID; // saved
@@ -45,7 +45,7 @@ public class Pet {
         }
     }
 
-    private Pet() {
+    public Pet() {
 
     }
 
@@ -146,42 +146,39 @@ public class Pet {
     }
 
     public Map<String, String> save() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();;
-
         Map<String, String> saveMap = new HashMap<>();
-        saveMap.put("uniqueID", gson.toJson(uniqueID));
-        saveMap.put("owner", gson.toJson(ownerUUID));
-        saveMap.put("name", gson.toJson(name));
-        saveMap.put("movementState", gson.toJson(movementState));
+
+        saveMap.put("uniqueID", uniqueID.toString());
+        saveMap.put("owner", ownerUUID.toString());
+        saveMap.put("name", name);
+        saveMap.put("movementState", movementState);
 
         return saveMap;
     }
 
-    public static Pet load(String jsonData) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    public void load(String jsonData) {
+        if (debug) { System.out.println("Pet Json Data: " + jsonData); }
 
-        Pet newPet = new Pet();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         try {
             PetJson data = gson.fromJson(jsonData, PetJson.class);
 
-            newPet.uniqueID = UUID.fromString(data.uniqueID);
-            newPet.ownerUUID = UUID.fromString(data.ownerUUID);
-            newPet.name = data.name;
-            newPet.movementState = data.movementState;
+            uniqueID = UUID.fromString(data.uniqueID); // TODO: fix error here
+            ownerUUID = UUID.fromString(data.ownerUUID);
+            name = data.name;
+            movementState = data.movementState;
 
-            if (newPet.movementState.equalsIgnoreCase("Wandering")) {
-                newPet.setWandering();
+            if (movementState.equalsIgnoreCase("Wandering")) {
+                setWandering();
             }
-            else if (newPet.movementState.equalsIgnoreCase("Staying")) {
-                newPet.setStaying();
+            else if (movementState.equalsIgnoreCase("Staying")) {
+                setStaying();
             }
         } catch(Exception e) {
             System.out.println("ERROR: Could not load pet.");
             e.printStackTrace();
         }
-
-        return newPet;
     }
 
 }

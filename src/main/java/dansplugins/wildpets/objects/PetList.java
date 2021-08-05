@@ -12,6 +12,8 @@ import java.util.*;
 
 public class PetList {
 
+    private boolean debug = true;
+
     private UUID ownerUUID;
 
     private ArrayList<Pet> pets = new ArrayList<>();
@@ -102,12 +104,15 @@ public class PetList {
         // load owner
         ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
 
+        if (debug) { System.out.println("Pets from data: " + data.get("pets")); }
+
         // load pets
         ArrayList<String> petsList = gson.fromJson(data.get("pets"), arrayListTypeString);
         if (petsList != null) {
             for (String item : petsList) {
-                Pet pet = Pet.load(item);
-                pets.add(pet);
+                Pet newPet = new Pet();
+                newPet.load(item);
+                pets.add(newPet);
             }
         }
         else {
