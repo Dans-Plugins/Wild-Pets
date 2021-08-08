@@ -85,7 +85,9 @@ public class InteractionHandler implements Listener {
             // handle chance to tame
             if (!rollDice(entityConfig.getChanceToSucceed())) {
                 player.sendMessage(ChatColor.RED + "Taming failed.");
-                EphemeralData.getInstance().setPlayerAsNotTaming(player);
+                if (WildPets.getInstance().getConfig().getBoolean("configOptions." + "cancelTamingAfterFailedAttempt")) {
+                    EphemeralData.getInstance().setPlayerAsNotTaming(player);
+                }
                 if (itemStack.getAmount() > requiredAmount) {
                     player.getInventory().setItemInMainHand(new ItemStack(itemStack.getType(), itemStack.getAmount() - requiredAmount));
                 }
