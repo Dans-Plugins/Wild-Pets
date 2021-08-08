@@ -9,6 +9,7 @@ import dansplugins.wildpets.objects.Pet;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,6 +37,12 @@ public class InteractionHandler implements Listener {
 
             if (clickedEntity instanceof Player) {
                 player.sendMessage(ChatColor.RED + "You can't tame players.");
+                return;
+            }
+
+            if (!(clickedEntity instanceof LivingEntity)) {
+                player.sendMessage(ChatColor.RED + "You can only tame living entities.");
+                EphemeralData.getInstance().setPlayerAsNotTaming(player);
                 return;
             }
 
