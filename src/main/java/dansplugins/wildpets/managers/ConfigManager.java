@@ -39,6 +39,9 @@ public class ConfigManager {
         if (!WildPets.getInstance().getConfig().isSet("configOptions." + "petLimit")) {
             WildPets.getInstance().getConfig().set("configOptions." + "petLimit", 10);
         }
+        if (!WildPets.getInstance().getConfig().isSet("configOptions." + "cancelTamingAfterFailedAttempt")) {
+            WildPets.getInstance().getConfig().set("configOptions." + "cancelTamingAfterFailedAttempt", false);
+        }
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
@@ -85,6 +88,7 @@ public class ConfigManager {
 
         // save config options
         WildPets.getInstance().getConfig().set("configOptions." + "petLimit", 10);
+        WildPets.getInstance().getConfig().set("configOptions." + "cancelTamingAfterFailedAttempt", false);
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
