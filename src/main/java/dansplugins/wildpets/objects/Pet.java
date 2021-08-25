@@ -127,6 +127,13 @@ public class Pet {
         scheduleTeleportTask(); // TODO: find a better solution for this
     }
 
+    public void setFollowing() {
+        if (movementState.equals("Staying")) {
+            cancelTeleportTask();
+        }
+        movementState = "Following";
+    }
+
     private void scheduleTeleportTask() {
         if (teleportTaskID != -1) {
             return;
@@ -197,5 +204,4 @@ public class Pet {
             setStaying();
         }
     }
-
 }
