@@ -68,4 +68,13 @@ public class DamageEffectsAndDeathHandler implements Listener {
         }
     }
 
+    @EventHandler()
+    public void handle(EntityDamageByBlockEvent event) {
+        Pet pet = PersistentData.getInstance().getPet(event.getEntity());
+        if (pet != null) {
+            if (debug) { System.out.println("[DEBUG] Cancelling EntityDamageByBlockEvent event to protect " + pet.getName() + "."); }
+            event.setCancelled(true);
+        }
+    }
+
 }
