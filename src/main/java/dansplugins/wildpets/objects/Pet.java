@@ -207,5 +207,8 @@ public class Pet {
         else if (state.equalsIgnoreCase("Staying")) {
             setStaying();
         }
+        else if (state.equalsIgnoreCase("Following")) {
+            setFollowing();
+        }
     }
 }
