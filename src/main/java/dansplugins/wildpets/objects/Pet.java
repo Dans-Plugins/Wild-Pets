@@ -169,6 +169,10 @@ public class Pet {
         saveMap.put("assignedID", gson.toJson(assignedID));
         saveMap.put("name", gson.toJson(name));
         saveMap.put("movementState", gson.toJson(movementState));
+        saveMap.put("lastKnownX", gson.toJson(lastKnownX));
+        saveMap.put("lastKnownY", gson.toJson(lastKnownY));
+        saveMap.put("lastKnownZ", gson.toJson(lastKnownZ));
+
 
         return saveMap;
     }
@@ -180,6 +184,9 @@ public class Pet {
         ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
         assignedID = Integer.parseInt(gson.fromJson(data.get("assignedID"), String.class));
         name = gson.fromJson(data.get("name"), String.class);
+        lastKnownX = Integer.parseInt(gson.fromJson(data.get("lastKnownX"), String.class));
+        lastKnownY = Integer.parseInt(gson.fromJson(data.get("lastKnownY"), String.class));
+        lastKnownZ = Integer.parseInt(gson.fromJson(data.get("lastKnownZ"), String.class));
 
         String state = gson.fromJson(data.get("movementState"), String.class);
 
