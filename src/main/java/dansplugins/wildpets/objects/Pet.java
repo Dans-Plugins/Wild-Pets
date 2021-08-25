@@ -184,9 +184,9 @@ public class Pet {
         ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
         assignedID = Integer.parseInt(gson.fromJson(data.get("assignedID"), String.class));
         name = gson.fromJson(data.get("name"), String.class);
-        lastKnownX = Integer.parseInt(gson.fromJson(data.get("lastKnownX"), String.class));
-        lastKnownY = Integer.parseInt(gson.fromJson(data.get("lastKnownY"), String.class));
-        lastKnownZ = Integer.parseInt(gson.fromJson(data.get("lastKnownZ"), String.class));
+        lastKnownX = Integer.parseInt(gson.fromJson(data.getOrDefault("lastKnownX", "-1"), String.class));
+        lastKnownY = Integer.parseInt(gson.fromJson(data.getOrDefault("lastKnownY", "-1"), String.class));
+        lastKnownZ = Integer.parseInt(gson.fromJson(data.getOrDefault("lastKnownZ", "-1"), String.class));
 
         String state = gson.fromJson(data.get("movementState"), String.class);
 
