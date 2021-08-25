@@ -14,7 +14,6 @@ public class EntityTargetingHandler implements Listener {
 
     @EventHandler()
     public void handle(EntityTargetLivingEntityEvent event) {
-        if (debug) { System.out.println("EntityTargetLivingEntityEvent is firing!"); }
         Entity targetingEntity = event.getEntity();
 
         if (PersistentData.getInstance().getPet(targetingEntity) != null) {
@@ -22,9 +21,9 @@ public class EntityTargetingHandler implements Listener {
             if (targetingEntity instanceof Monster) {
                 Monster monster = (Monster) targetingEntity;
                 monster.setTarget(null);
+                if (debug) { System.out.println("Cancelling targeting event for a pet!"); }
+                event.setCancelled(true);
             }
-            if (debug) { System.out.println("Cancelling targeting event for a pet!"); }
-            event.setCancelled(true);
         }
     }
 }

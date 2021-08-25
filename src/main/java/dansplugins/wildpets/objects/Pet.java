@@ -134,6 +134,10 @@ public class Pet {
         movementState = "Following";
     }
 
+    public String getMovementState() {
+        return movementState;
+    }
+
     private void scheduleTeleportTask() {
         if (teleportTaskID != -1) {
             return;
