@@ -16,7 +16,6 @@ public class EntityTargetingHandler implements Listener {
     public void handle(EntityTargetLivingEntityEvent event) {
         if (debug) { System.out.println("EntityTargetLivingEntityEvent is firing!"); }
         Entity targetingEntity = event.getEntity();
-        Entity targetedEntity = event.getTarget();
 
         if (PersistentData.getInstance().getPet(targetingEntity) != null) {
             event.setTarget(null);
