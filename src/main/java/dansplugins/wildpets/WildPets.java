@@ -11,9 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 
 public final class WildPets extends JavaPlugin {
-
-    private final boolean debug = true;
-
+  
     private static WildPets instance;
 
     public static WildPets getInstance() {
@@ -64,7 +62,7 @@ public final class WildPets extends JavaPlugin {
     }
 
     public boolean isDebugEnabled() {
-        return debug;
+        return getConfig().getBoolean("debugMode");
     }
 
     private boolean isVersionMismatched() {

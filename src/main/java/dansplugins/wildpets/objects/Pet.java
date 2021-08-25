@@ -25,6 +25,9 @@ public class Pet {
     private int assignedID;
     private String name; // saved
     private String movementState; // saved
+    private int lastKnownX = -1;
+    private int lastKnownY = -1;
+    private int lastKnownZ = -1;
 
     private Location stayingLocation;
     private int teleportTaskID = -1;
@@ -35,6 +38,7 @@ public class Pet {
         assignedID = PersistentData.getInstance().getPetList(ownerUUID).getNewID();
         name = UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID) + "'s_Pet_" + assignedID;
         movementState = "Wandering";
+        setLastKnownLocation(entity.getLocation());
 
         entity.setCustomName(ChatColor.GREEN + name);
         entity.setPersistent(true);
@@ -107,9 +111,10 @@ public class Pet {
         Entity entity = Bukkit.getEntity(uniqueID);
 
         if (entity != null) {
-            Location location = entity.getLocation();
-            player.sendMessage(ChatColor.AQUA + getName() + String.format(" is at (%s, %s, %s).", (int) location.getX(), (int) location.getY(), (int) location.getZ()));
+            setLastKnownLocation(entity.getLocation());
         }
+
+        player.sendMessage(ChatColor.AQUA + getName() + String.format("'s last known location is (%s, %s, %s).", lastKnownX, lastKnownY, lastKnownZ));
     }
 
     public void setWandering() {
@@ -149,6 +154,12 @@ public class Pet {
         teleportTaskID = -1;
     }
 
+    private void setLastKnownLocation(Location location) {
+        lastKnownX = (int) location.getX();
+        lastKnownY = (int) location.getY();
+        lastKnownZ = (int) location.getZ();
+    }
+
     public Map<String, String> save() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();;
 
@@ -158,6 +169,10 @@ public class Pet {
         saveMap.put("assignedID", gson.toJson(assignedID));
         saveMap.put("name", gson.toJson(name));
         saveMap.put("movementState", gson.toJson(movementState));
+        saveMap.put("lastKnownX", gson.toJson(lastKnownX));
+        saveMap.put("lastKnownY", gson.toJson(lastKnownY));
+        saveMap.put("lastKnownZ", gson.toJson(lastKnownZ));
+
 
         return saveMap;
     }
@@ -169,6 +184,9 @@ public class Pet {
         ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
         assignedID = Integer.parseInt(gson.fromJson(data.get("assignedID"), String.class));
         name = gson.fromJson(data.get("name"), String.class);
+        lastKnownX = Integer.parseInt(gson.fromJson(data.get("lastKnownX"), String.class));
+        lastKnownY = Integer.parseInt(gson.fromJson(data.get("lastKnownY"), String.class));
+        lastKnownZ = Integer.parseInt(gson.fromJson(data.get("lastKnownZ"), String.class));
 
         String state = gson.fromJson(data.get("movementState"), String.class);
 
