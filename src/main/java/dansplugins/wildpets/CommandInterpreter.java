@@ -86,7 +86,7 @@ public class CommandInterpreter {
             }
 
             if (secondaryLabel.equalsIgnoreCase("config")) {
-                checkPermission(sender, "wp.config"); // TODO: add this permission to plugin.yml
+                checkPermission(sender, "wp.config");
                 ConfigCommand command = new ConfigCommand();
                 return command.execute(sender, arguments);
             }
