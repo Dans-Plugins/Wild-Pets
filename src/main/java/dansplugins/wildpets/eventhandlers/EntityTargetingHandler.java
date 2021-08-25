@@ -23,7 +23,6 @@ public class EntityTargetingHandler implements Listener {
                 Monster monster = (Monster) targetingEntity;
                 monster.setTarget(null);
             }
-            if (debug) { System.out.println(event.getTarget().getName()); }
             if (debug) { System.out.println("Cancelling targeting event for a pet!"); }
             event.setCancelled(true);
         }
