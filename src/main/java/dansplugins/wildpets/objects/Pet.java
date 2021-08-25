@@ -25,6 +25,9 @@ public class Pet {
     private int assignedID;
     private String name; // saved
     private String movementState; // saved
+    private int lastKnownX = -1;
+    private int lastKnownY = -1;
+    private int lastKnownZ = -1;
 
     private Location stayingLocation;
     private int teleportTaskID = -1;
@@ -35,6 +38,7 @@ public class Pet {
         assignedID = PersistentData.getInstance().getPetList(ownerUUID).getNewID();
         name = UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID) + "'s_Pet_" + assignedID;
         movementState = "Wandering";
+        setLastKnownLocation(entity.getLocation());
 
         entity.setCustomName(ChatColor.GREEN + name);
         entity.setPersistent(true);
@@ -107,9 +111,10 @@ public class Pet {
         Entity entity = Bukkit.getEntity(uniqueID);
 
         if (entity != null) {
-            Location location = entity.getLocation();
-            player.sendMessage(ChatColor.AQUA + getName() + String.format(" is at (%s, %s, %s).", (int) location.getX(), (int) location.getY(), (int) location.getZ()));
+            setLastKnownLocation(entity.getLocation());
         }
+
+        player.sendMessage(ChatColor.AQUA + getName() + String.format("'s last known location is (%s, %s, %s).", lastKnownX, lastKnownY, lastKnownZ));
     }
 
     public void setWandering() {
@@ -147,6 +152,12 @@ public class Pet {
     private void cancelTeleportTask() {
         Bukkit.getScheduler().cancelTask(teleportTaskID);
         teleportTaskID = -1;
+    }
+
+    private void setLastKnownLocation(Location location) {
+        lastKnownX = (int) location.getX();
+        lastKnownY = (int) location.getY();
+        lastKnownZ = (int) location.getZ();
     }
 
     public Map<String, String> save() {
