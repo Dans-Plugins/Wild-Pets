@@ -62,7 +62,7 @@ public final class WildPets extends JavaPlugin {
     }
 
     public boolean isDebugEnabled() {
-        return getConfig().getBoolean("debugMode");
+        return getConfig().getBoolean("configOptions.debugMode");
     }
 
     private boolean isVersionMismatched() {
