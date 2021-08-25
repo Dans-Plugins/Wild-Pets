@@ -36,6 +36,9 @@ public class ConfigManager {
         }
 
         // save config options
+        if (!WildPets.getInstance().getConfig().isSet("configOptions." + "debugMode")) {
+            WildPets.getInstance().getConfig().set("configOptions." + "debugMode", false);
+        }
         if (!WildPets.getInstance().getConfig().isSet("configOptions." + "petLimit")) {
             WildPets.getInstance().getConfig().set("configOptions." + "petLimit", 10);
         }
@@ -76,19 +79,20 @@ public class ConfigManager {
         WildPets.getInstance().getConfig().options().copyDefaults(true);
         WildPets.getInstance().saveConfig();
     }
-/*
+
     public void setConfigOption(String option, String value, CommandSender sender) {
         // TODO
 
         altered = true;
     }
-*/
+
     public void saveConfigDefaults() {
         WildPets.getInstance().getConfig().addDefault("version", WildPets.getInstance().getVersion());
 
         // save config options
         WildPets.getInstance().getConfig().set("configOptions." + "petLimit", 10);
         WildPets.getInstance().getConfig().set("configOptions." + "cancelTamingAfterFailedAttempt", false);
+        WildPets.getInstance().getConfig().set("configOptions." + "debugMode", false);
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
