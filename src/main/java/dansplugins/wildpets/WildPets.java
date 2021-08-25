@@ -11,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 
 public final class WildPets extends JavaPlugin {
-
+  
     private static WildPets instance;
 
     public static WildPets getInstance() {
