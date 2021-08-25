@@ -85,6 +85,12 @@ public class CommandInterpreter {
                 return command.execute(sender);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("config")) {
+                checkPermission(sender, "wp.config");
+                ConfigCommand command = new ConfigCommand();
+                return command.execute(sender, arguments);
+            }
+
         }
 
         sender.sendMessage(ChatColor.RED + "Wild Pets doesn't recognize that command.");

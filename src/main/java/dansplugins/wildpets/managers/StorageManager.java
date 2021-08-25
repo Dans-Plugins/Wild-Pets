@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.objects.Pet;
 
@@ -39,6 +40,9 @@ public class StorageManager {
 
     public void save() {
         savePets();
+        if (ConfigManager.getInstance().hasBeenAltered()) {
+            WildPets.getInstance().saveConfig();
+        }
     }
 
     public void load() {
