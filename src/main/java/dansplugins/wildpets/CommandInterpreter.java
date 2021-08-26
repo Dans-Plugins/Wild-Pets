@@ -20,67 +20,73 @@ public class CommandInterpreter {
             String[] arguments = getArguments(args);
 
             if (secondaryLabel.equalsIgnoreCase("help")) {
-                checkPermission(sender, "wp.help");
+                if (!checkPermission(sender, "wp.help")) { return false; }
                 HelpCommand command = new HelpCommand();
                 return command.execute(sender);
             }
 
             if (secondaryLabel.equalsIgnoreCase("tame")) {
-                checkPermission(sender, "wp.tame");
+                if (!checkPermission(sender, "wp.tame")) { return false; }
                 TameCommand command = new TameCommand();
                 return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("select")) {
-                checkPermission(sender, "wp.select");
+                if (!checkPermission(sender, "wp.select")) { return false; }
                 SelectCommand command = new SelectCommand();
                 return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("rename")) {
-                checkPermission(sender, "wp.rename");
+                if (!checkPermission(sender, "wp.rename")) { return false; }
                 RenameCommand command = new RenameCommand();
                 return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("info")) {
-                checkPermission(sender, "wp.info");
+                if (!checkPermission(sender, "wp.info")) { return false; }
                 InfoCommand command = new InfoCommand();
                 return command.execute(sender);
             }
 
             if (secondaryLabel.equalsIgnoreCase("stay")) {
-                checkPermission(sender, "wp.stay");
+                if (!checkPermission(sender, "wp.stay")) { return false; }
                 StayCommand command = new StayCommand();
                 return command.execute(sender);
             }
 
             if (secondaryLabel.equalsIgnoreCase("wander")) {
-                checkPermission(sender, "wp.wander");
+                if (!checkPermission(sender, "wp.wander")) { return false; }
                 WanderCommand command = new WanderCommand();
                 return command.execute(sender);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("follow")) {
+                if (!checkPermission(sender, "wp.follow")) { return false; }
+                FollowCommand command = new FollowCommand();
+                return command.execute(sender);
+            }
+
             if (secondaryLabel.equalsIgnoreCase("list")) {
-                checkPermission(sender, "wp.list");
+                if (!checkPermission(sender, "wp.list")) { return false; }
                 ListCommand command = new ListCommand();
                 return command.execute(sender);
             }
 
             if (secondaryLabel.equalsIgnoreCase("call")) {
-                checkPermission(sender, "wp.call");
+                if (!checkPermission(sender, "wp.call")) { return false; }
                 CallCommand command = new CallCommand();
                 return command.execute(sender);
             }
 
             if (secondaryLabel.equalsIgnoreCase("setfree")) {
-                checkPermission(sender, "wp.setfree");
+                if (!checkPermission(sender, "wp.setfree")) { return false; }
                 SetFreeCommand command = new SetFreeCommand();
                 return command.execute(sender);
             }
 
             if (secondaryLabel.equalsIgnoreCase("locate")) {
-                checkPermission(sender, "wp.locate");
+                if (!checkPermission(sender, "wp.locate")) { return false; }
                 LocateCommand command = new LocateCommand();
                 return command.execute(sender);
             }
@@ -107,10 +113,12 @@ public class CommandInterpreter {
         return toReturn;
     }
 
-    private void checkPermission(CommandSender sender, String permission) {
+    private boolean checkPermission(CommandSender sender, String permission) {
         if (!sender.hasPermission(permission)) {
             sender.sendMessage(ChatColor.RED + "In order to use this command, you need the following permission: '" + permission + "'");
+            return false;
         }
+        return true;
     }
 
 }

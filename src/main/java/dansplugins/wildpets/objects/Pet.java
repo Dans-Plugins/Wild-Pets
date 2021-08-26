@@ -127,6 +127,17 @@ public class Pet {
         scheduleTeleportTask(); // TODO: find a better solution for this
     }
 
+    public void setFollowing() {
+        if (movementState != null && movementState.equals("Staying")) {
+            cancelTeleportTask();
+        }
+        movementState = "Following";
+    }
+
+    public String getMovementState() {
+        return movementState;
+    }
+
     private void scheduleTeleportTask() {
         if (teleportTaskID != -1) {
             return;
@@ -196,6 +207,8 @@ public class Pet {
         else if (state.equalsIgnoreCase("Staying")) {
             setStaying();
         }
+        else if (state.equalsIgnoreCase("Following")) {
+            setFollowing();
+        }
     }
-
 }

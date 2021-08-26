@@ -1,9 +1,6 @@
 package dansplugins.wildpets;
 
-import dansplugins.wildpets.eventhandlers.DamageEffectsAndDeathHandler;
-import dansplugins.wildpets.eventhandlers.EntityTargetingHandler;
-import dansplugins.wildpets.eventhandlers.InteractionHandler;
-import dansplugins.wildpets.eventhandlers.JoinHandler;
+import dansplugins.wildpets.eventhandlers.*;
 import org.bukkit.plugin.PluginManager;
 
 public class EventRegistry {
@@ -31,6 +28,7 @@ public class EventRegistry {
         manager.registerEvents(new JoinHandler(), mainInstance);
         manager.registerEvents(new DamageEffectsAndDeathHandler(), mainInstance);
         manager.registerEvents(new EntityTargetingHandler(), mainInstance);
+        manager.registerEvents(new MoveHandler(), mainInstance);
     }
 
 }

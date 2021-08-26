@@ -88,6 +88,16 @@ public class PetList {
         return false;
     }
 
+    public ArrayList<Pet> getFollowingPets() {
+        ArrayList<Pet> toReturn = new ArrayList<>();
+        for (Pet pet : getPets()) {
+            if (pet.getMovementState().equals("Following")) {
+                toReturn.add(pet);
+            }
+        }
+        return toReturn;
+    }
+
     private boolean isIDTaken(int ID) {
         for (Pet pet : getPets()) {
             if (pet.getAssignedID() == ID) {
