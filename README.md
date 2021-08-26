@@ -20,3 +20,4 @@
 - 0.19 - Pet Limit
 - 0.20 - Better Naming
 - 0.21 - Version Mismatch Handling & bStats
+- 1.0 - Follow Command, Config Command, Debug Mode & Some Improvements
