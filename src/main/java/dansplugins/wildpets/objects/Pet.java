@@ -128,7 +128,7 @@ public class Pet {
     }
 
     public void setFollowing() {
-        if (movementState.equals("Staying")) {
+        if (movementState != null && movementState.equals("Staying")) {
             cancelTeleportTask();
         }
         movementState = "Following";
