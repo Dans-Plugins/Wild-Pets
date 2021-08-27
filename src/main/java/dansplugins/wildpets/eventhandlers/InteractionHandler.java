@@ -141,7 +141,7 @@ public class InteractionHandler implements Listener {
                 pet.sendInfoToPlayer(player);
 
                 if (WildPets.getInstance().getConfig().getBoolean("configOptions." + "rightClickToSelect")) {
-                    if (pet.getOwnerUUID().equals(player.getUniqueId())) {
+                    if (!pet.getOwnerUUID().equals(player.getUniqueId())) {
                         return;
                     }
 
