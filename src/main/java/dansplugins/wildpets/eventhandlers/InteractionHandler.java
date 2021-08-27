@@ -21,8 +21,6 @@ import java.util.Random;
 
 public class InteractionHandler implements Listener {
 
-    private boolean debug = WildPets.getInstance().isDebugEnabled();
-
     @EventHandler()
     public void handle(PlayerInteractEntityEvent event) {
         Entity clickedEntity = event.getRightClicked();
@@ -53,7 +51,7 @@ public class InteractionHandler implements Listener {
                 return;
             }
 
-            if (debug && entityConfig.getType().equalsIgnoreCase("default")) {
+            if (WildPets.getInstance().isDebugEnabled() && entityConfig.getType().equalsIgnoreCase("default")) {
                 player.sendMessage(ChatColor.BLUE + "[DEBUG] This entity doesn't have a configuration.");
             }
 
@@ -64,7 +62,7 @@ public class InteractionHandler implements Listener {
 
             int numPets = PersistentData.getInstance().getPetList(player.getUniqueId()).getNumPets();
             int petLimit = WildPets.getInstance().getConfig().getInt("configOptions." + "petLimit");
-            if (debug) {
+            if (WildPets.getInstance().isDebugEnabled()) {
                 System.out.println("[DEBUG] Number of pets: " + numPets);
                 System.out.println("[DEBUG] Pet Limit: " + petLimit);
             }
@@ -169,10 +167,10 @@ public class InteractionHandler implements Listener {
 
     private boolean rollDice(double chanceToSucceed) {
         double chanceToFail = 1 - chanceToSucceed;
-        if (debug) { System.out.println("Rolling dice! Chance to fail: " + chanceToFail * 100 + "%"); }
+        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("Rolling dice! Chance to fail: " + chanceToFail * 100 + "%"); }
         Random random = new Random();
         double generatedNumber = random.nextDouble();
-        if (debug) { System.out.println("Dice landed on " + generatedNumber * 100 + ". " + chanceToFail * 100 + " was required."); }
+        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("Dice landed on " + generatedNumber * 100 + ". " + chanceToFail * 100 + " was required."); }
         return generatedNumber > chanceToFail;
     }
 

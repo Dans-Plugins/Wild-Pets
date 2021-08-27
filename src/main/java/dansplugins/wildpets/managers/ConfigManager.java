@@ -18,8 +18,6 @@ import java.util.Map;
 
 public class ConfigManager {
 
-    private boolean debug = WildPets.getInstance().isDebugEnabled();
-
     private static ConfigManager instance;
     private boolean altered = false;
 
@@ -115,7 +113,7 @@ public class ConfigManager {
         for (Map.Entry<String, String> entry : defaultOptions.entrySet()) {
             String identifier = entityConfigurationsPrefix + defaultEntityConfig.getType() + "." + entry.getKey();
             if (!WildPets.getInstance().getConfig().isSet(identifier)) {
-                if (debug) { System.out.println("[DEBUG] Adding missing configuration for " + identifier); }
+                if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Adding missing configuration for " + identifier); }
                 WildPets.getInstance().getConfig().set(identifier, entry.getValue());
             }
         }
@@ -130,7 +128,7 @@ public class ConfigManager {
             for (Map.Entry<String, String> entry : options.entrySet()) {
                 String identifier = entityConfigurationsPrefix + entityConfig.getType() + "." + entry.getKey();
                 if (!WildPets.getInstance().getConfig().isSet(identifier)) {
-                    if (debug) { System.out.println("[DEBUG] Adding missing configuration for " + identifier); }
+                    if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Adding missing configuration for " + identifier); }
                     WildPets.getInstance().getConfig().set(identifier, entry.getValue());
                 }
             }
