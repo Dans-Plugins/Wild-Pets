@@ -146,11 +146,10 @@ public class ConfigManager {
             if (option.equalsIgnoreCase("version")) {
                 sender.sendMessage(ChatColor.RED + "Cannot set version.");
                 return;
-            } else if (option.equalsIgnoreCase("initialMaxPowerLevel")
-                    || option.equalsIgnoreCase("rightClickViewCooldown")) {
+            } else if (option.equalsIgnoreCase("rightClickViewCooldown")) {
                 WildPets.getInstance().getConfig().set(prefix + option, Integer.parseInt(value));
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
-            } else if (option.equalsIgnoreCase("mobsSpawnInFactionTerritory")
+            } else if (option.equalsIgnoreCase("debugMode")
                     || option.equalsIgnoreCase("rightClickToSelect")) {
                 WildPets.getInstance().getConfig().set(prefix + option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
