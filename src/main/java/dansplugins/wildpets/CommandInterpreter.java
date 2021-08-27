@@ -70,7 +70,7 @@ public class CommandInterpreter {
             if (secondaryLabel.equalsIgnoreCase("list")) {
                 if (!checkPermission(sender, "wp.list")) { return false; }
                 ListCommand command = new ListCommand();
-                return command.execute(sender);
+                return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("call")) {
