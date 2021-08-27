@@ -35,6 +35,11 @@ public class RenameCommand {
             return false;
         }
 
+        if (newName.equalsIgnoreCase("cancel")) {
+            player.sendMessage(ChatColor.RED + "You can't name your pet 'cancel'.");
+            return false;
+        }
+
         pet.setName(newName);
         player.sendMessage(ChatColor.GREEN + "Renamed.");
         return true;

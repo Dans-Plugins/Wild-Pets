@@ -139,6 +139,15 @@ public class InteractionHandler implements Listener {
                 setRightClickCooldown(player, WildPets.getInstance().getConfig().getInt("configOptions." + "rightClickViewCooldown"));
 
                 pet.sendInfoToPlayer(player);
+
+                if (WildPets.getInstance().getConfig().getBoolean("configOptions." + "rightClickToSelect")) {
+                    if (PersistentData.getInstance().getPlayersPet(player, clickedEntity) == null) {
+                        return;
+                    }
+
+                    EphemeralData.getInstance().selectPetForPlayer(pet, player);
+                    player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
+                }
             }
         }
 

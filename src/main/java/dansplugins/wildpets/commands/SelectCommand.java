@@ -1,5 +1,6 @@
 package dansplugins.wildpets.commands;
 
+import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.objects.Pet;
@@ -19,6 +20,10 @@ public class SelectCommand {
         if (args.length > 0) {
 
             if (args[0].equalsIgnoreCase("cancel")) {
+                if (args[0].equalsIgnoreCase("cancel")) {
+                    player.sendMessage(ChatColor.RED + "Usage: /wp select (petName)");
+                    return false;
+                }
                 EphemeralData.getInstance().setPlayerAsNotSelecting(player);
                 player.sendMessage(ChatColor.GREEN + "Selecting cancelled.");
                 return true;
@@ -39,9 +44,16 @@ public class SelectCommand {
             return true;
         }
 
-        EphemeralData.getInstance().setPlayerAsSelecting(player);
-        player.sendMessage(ChatColor.GREEN + "Right click on an entity to select it. Type '/wp select cancel' to cancel selecting.");
-        return true;
+        if (WildPets.getInstance().getConfig().getBoolean("configOptions." + "rightClickToSelect")) {
+            player.sendMessage(ChatColor.RED + "Usage: /wp select (petName)");
+            return false;
+        }
+        else {
+            EphemeralData.getInstance().setPlayerAsSelecting(player);
+            player.sendMessage(ChatColor.GREEN + "Right click on an entity to select it. Type '/wp select cancel' to cancel selecting.");
+            return true;
+        }
+
     }
 
 }
