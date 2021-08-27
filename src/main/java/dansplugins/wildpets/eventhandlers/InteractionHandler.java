@@ -145,7 +145,7 @@ public class InteractionHandler implements Listener {
                         return;
                     }
 
-                    if (EphemeralData.getInstance().getPetSelectionForPlayer(player).getUniqueID().equals(pet.getUniqueID())) {
+                    if (!EphemeralData.getInstance().getPetSelectionForPlayer(player).getUniqueID().equals(pet.getUniqueID())) {
                         EphemeralData.getInstance().selectPetForPlayer(pet, player);
                         player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
                     }
