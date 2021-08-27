@@ -159,7 +159,8 @@ public class ConfigManager {
         sender.sendMessage(ChatColor.AQUA + "version: " + WildPets.getInstance().getConfig().getString("version")
                 + ", debugMode: " + WildPets.getInstance().getConfig().getString(configOptionsPrefix + "debugMode")
                 + ", petLimit: " + WildPets.getInstance().getConfig().getString(configOptionsPrefix + "petLimit")
-                + ", cancelTamingAfterFailedAttempt: " + WildPets.getInstance().getConfig().getString(configOptionsPrefix + "cancelTamingAfterFailedAttempt"));
+                + ", cancelTamingAfterFailedAttempt: " + WildPets.getInstance().getConfig().getString(configOptionsPrefix + "cancelTamingAfterFailedAttempt")
+                + ", rightClickViewCooldown: " + WildPets.getInstance().getConfig().getInt(configOptionsPrefix + "rightClickViewCooldown"));
         sender.sendMessage(ChatColor.AQUA + "====================");
         sender.sendMessage(ChatColor.AQUA + "Note: Entity configurations are not shown.");
         sender.sendMessage(ChatColor.AQUA + "====================");
