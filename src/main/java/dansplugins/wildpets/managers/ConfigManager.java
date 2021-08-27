@@ -95,13 +95,14 @@ public class ConfigManager {
             if (option.equalsIgnoreCase("version")) {
                 sender.sendMessage(ChatColor.RED + "Cannot set version.");
                 return;
-            } else if (option.equalsIgnoreCase("initialMaxPowerLevel")) {
+            } else if (option.equalsIgnoreCase("initialMaxPowerLevel") ||
+                       option.equalsIgnoreCase("rightClickViewCooldown")) {
                 WildPets.getInstance().getConfig().set(prefix + option, Integer.parseInt(value));
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
             } else if (option.equalsIgnoreCase("mobsSpawnInFactionTerritory")) {
                 WildPets.getInstance().getConfig().set(prefix + option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
-            } else if (option.equalsIgnoreCase("factionOwnerMultiplier")) {
+            } else if (option.equalsIgnoreCase("")) { // no doubles yet
                 WildPets.getInstance().getConfig().set(prefix + option, Double.parseDouble(value));
                 sender.sendMessage(ChatColor.GREEN + "Double set.");
             } else {
