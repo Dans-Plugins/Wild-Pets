@@ -20,7 +20,7 @@ public class SelectCommand {
         if (args.length > 0) {
 
             if (args[0].equalsIgnoreCase("cancel")) {
-                if (args[0].equalsIgnoreCase("cancel")) {
+                if (WildPets.getInstance().getConfig().getBoolean("configOptions." + "rightClickToSelect")) {
                     player.sendMessage(ChatColor.RED + "Usage: /wp select (petName)");
                     return false;
                 }
