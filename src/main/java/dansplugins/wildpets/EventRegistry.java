@@ -27,7 +27,6 @@ public class EventRegistry {
         manager.registerEvents(new InteractionHandler(), mainInstance);
         manager.registerEvents(new JoinHandler(), mainInstance);
         manager.registerEvents(new DamageEffectsAndDeathHandler(), mainInstance);
-        manager.registerEvents(new EntityTargetingHandler(), mainInstance);
         manager.registerEvents(new MoveHandler(), mainInstance);
     }
 
