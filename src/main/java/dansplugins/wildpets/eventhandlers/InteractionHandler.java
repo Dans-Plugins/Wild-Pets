@@ -3,6 +3,7 @@ package dansplugins.wildpets.eventhandlers;
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
+import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.managers.EntityConfigManager;
 import dansplugins.wildpets.objects.EntityConfig;
 import dansplugins.wildpets.objects.Pet;
@@ -135,7 +136,7 @@ public class InteractionHandler implements Listener {
             }
 
             if (!EphemeralData.getInstance().hasRightClickCooldown(player)) {
-                setRightClickCooldown(player, 3);
+                setRightClickCooldown(player, WildPets.getInstance().getConfig().getInt("configOptions." + "rightClickViewCooldown"));
 
                 pet.sendInfoToPlayer(player);
             }

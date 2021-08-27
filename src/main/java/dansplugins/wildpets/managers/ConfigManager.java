@@ -15,6 +15,9 @@ public class ConfigManager {
     private static ConfigManager instance;
     private boolean altered = false;
 
+    private final String configOptionsPrefix = "configOptions.";
+    private final String entityConfigurationsPrefix = "entityConfigurations.";
+
     private ConfigManager() {
 
     }
@@ -36,14 +39,17 @@ public class ConfigManager {
         }
 
         // save config options
-        if (!WildPets.getInstance().getConfig().isSet("configOptions." + "debugMode")) {
-            WildPets.getInstance().getConfig().set("configOptions." + "debugMode", false);
+        if (!WildPets.getInstance().getConfig().isSet(configOptionsPrefix + "debugMode")) {
+            WildPets.getInstance().getConfig().set(configOptionsPrefix + "debugMode", false);
         }
-        if (!WildPets.getInstance().getConfig().isSet("configOptions." + "petLimit")) {
-            WildPets.getInstance().getConfig().set("configOptions." + "petLimit", 10);
+        if (!WildPets.getInstance().getConfig().isSet(configOptionsPrefix + "petLimit")) {
+            WildPets.getInstance().getConfig().set(configOptionsPrefix + "petLimit", 10);
         }
-        if (!WildPets.getInstance().getConfig().isSet("configOptions." + "cancelTamingAfterFailedAttempt")) {
-            WildPets.getInstance().getConfig().set("configOptions." + "cancelTamingAfterFailedAttempt", false);
+        if (!WildPets.getInstance().getConfig().isSet(configOptionsPrefix + "cancelTamingAfterFailedAttempt")) {
+            WildPets.getInstance().getConfig().set(configOptionsPrefix + "cancelTamingAfterFailedAttempt", false);
+        }
+        if (!WildPets.getInstance().getConfig().isSet(configOptionsPrefix + "rightClickViewCooldown")) {
+            WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickViewCooldown", 3);
         }
 
         // save default entity configuration
@@ -54,7 +60,7 @@ public class ConfigManager {
         defaultOptions.put("tamingItemAmount", "" + defaultEntityConfig.getTamingItemAmount());
         defaultOptions.put("enabled", "" + defaultEntityConfig.isEnabled());
         for (Map.Entry<String, String> entry : defaultOptions.entrySet()) {
-            String identifier = "entityConfigurations." + defaultEntityConfig.getType() + "." + entry.getKey();
+            String identifier = entityConfigurationsPrefix + defaultEntityConfig.getType() + "." + entry.getKey();
             if (!WildPets.getInstance().getConfig().isSet(identifier)) {
                 if (debug) { System.out.println("[DEBUG] Adding missing configuration for " + identifier); }
                 WildPets.getInstance().getConfig().set(identifier, entry.getValue());
@@ -69,7 +75,7 @@ public class ConfigManager {
             options.put("tamingItemAmount", "" + entityConfig.getTamingItemAmount());
             options.put("enabled", "" + entityConfig.isEnabled());
             for (Map.Entry<String, String> entry : options.entrySet()) {
-                String identifier = "entityConfigurations." + entityConfig.getType() + "." + entry.getKey();
+                String identifier = entityConfigurationsPrefix + entityConfig.getType() + "." + entry.getKey();
                 if (!WildPets.getInstance().getConfig().isSet(identifier)) {
                     if (debug) { System.out.println("[DEBUG] Adding missing configuration for " + identifier); }
                     WildPets.getInstance().getConfig().set(identifier, entry.getValue());
@@ -89,13 +95,14 @@ public class ConfigManager {
             if (option.equalsIgnoreCase("version")) {
                 sender.sendMessage(ChatColor.RED + "Cannot set version.");
                 return;
-            } else if (option.equalsIgnoreCase("initialMaxPowerLevel")) {
+            } else if (option.equalsIgnoreCase("initialMaxPowerLevel") ||
+                       option.equalsIgnoreCase("rightClickViewCooldown")) {
                 WildPets.getInstance().getConfig().set(prefix + option, Integer.parseInt(value));
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
             } else if (option.equalsIgnoreCase("mobsSpawnInFactionTerritory")) {
                 WildPets.getInstance().getConfig().set(prefix + option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
-            } else if (option.equalsIgnoreCase("factionOwnerMultiplier")) {
+            } else if (option.equalsIgnoreCase("")) { // no doubles yet
                 WildPets.getInstance().getConfig().set(prefix + option, Double.parseDouble(value));
                 sender.sendMessage(ChatColor.GREEN + "Double set.");
             } else {
@@ -115,9 +122,10 @@ public class ConfigManager {
         WildPets.getInstance().getConfig().addDefault("version", WildPets.getInstance().getVersion());
 
         // save config options
-        WildPets.getInstance().getConfig().set("configOptions." + "debugMode", false);
-        WildPets.getInstance().getConfig().set("configOptions." + "petLimit", 10);
-        WildPets.getInstance().getConfig().set("configOptions." + "cancelTamingAfterFailedAttempt", false);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "debugMode", false);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "petLimit", 10);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "cancelTamingAfterFailedAttempt", false);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickViewCooldown", 3);
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
@@ -127,7 +135,7 @@ public class ConfigManager {
         defaultOptions.put("tamingItemAmount", "" + defaultEntityConfig.getTamingItemAmount());
         defaultOptions.put("enabled", "" + defaultEntityConfig.isEnabled());
         for (Map.Entry<String, String> entry : defaultOptions.entrySet()) {
-            String identifier = "entityConfigurations." + defaultEntityConfig.getType() + "." + entry.getKey();
+            String identifier = entityConfigurationsPrefix + defaultEntityConfig.getType() + "." + entry.getKey();
             WildPets.getInstance().getConfig().set(identifier, entry.getValue());
         }
 
@@ -139,7 +147,7 @@ public class ConfigManager {
             options.put("tamingItemAmount", "" + entityConfig.getTamingItemAmount());
             options.put("enabled", "" + entityConfig.isEnabled());
             for (Map.Entry<String, String> entry : options.entrySet()) {
-                String identifier = "entityConfigurations." + entityConfig.getType() + "." + entry.getKey();
+                String identifier = entityConfigurationsPrefix + entityConfig.getType() + "." + entry.getKey();
                 WildPets.getInstance().getConfig().set(identifier, entry.getValue());
             }
         }
@@ -148,13 +156,12 @@ public class ConfigManager {
     }
 
     public void sendConfigList(CommandSender sender) {
-        String prefix = "configOptions.";
-
         sender.sendMessage(ChatColor.AQUA + "=== Config List ===");
         sender.sendMessage(ChatColor.AQUA + "version: " + WildPets.getInstance().getConfig().getString("version")
-                + ", debugMode: " + WildPets.getInstance().getConfig().getString(prefix + "debugMode")
-                + ", petLimit: " + WildPets.getInstance().getConfig().getString(prefix + "petLimit")
-                + ", cancelTamingAfterFailedAttempt: " + WildPets.getInstance().getConfig().getString(prefix + "cancelTamingAfterFailedAttempt"));
+                + ", debugMode: " + WildPets.getInstance().getConfig().getString(configOptionsPrefix + "debugMode")
+                + ", petLimit: " + WildPets.getInstance().getConfig().getString(configOptionsPrefix + "petLimit")
+                + ", cancelTamingAfterFailedAttempt: " + WildPets.getInstance().getConfig().getString(configOptionsPrefix + "cancelTamingAfterFailedAttempt")
+                + ", rightClickViewCooldown: " + WildPets.getInstance().getConfig().getInt(configOptionsPrefix + "rightClickViewCooldown"));
         sender.sendMessage(ChatColor.AQUA + "====================");
         sender.sendMessage(ChatColor.AQUA + "Note: Entity configurations are not shown.");
         sender.sendMessage(ChatColor.AQUA + "====================");
