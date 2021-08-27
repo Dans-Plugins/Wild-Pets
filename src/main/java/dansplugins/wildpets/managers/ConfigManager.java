@@ -46,6 +46,7 @@ public class ConfigManager {
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "cancelTamingAfterFailedAttempt", false);
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickViewCooldown", 3);
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenStayTeleports", 0.5);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickToSelect", false);
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
@@ -100,6 +101,9 @@ public class ConfigManager {
         if (!WildPets.getInstance().getConfig().isSet(configOptionsPrefix + "secondsBetweenStayTeleports")) {
             WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenStayTeleports", 0.5);
         }
+        if (!WildPets.getInstance().getConfig().isSet(configOptionsPrefix + "rightClickToSelect")) {
+            WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickToSelect", false);
+        }
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
@@ -144,11 +148,12 @@ public class ConfigManager {
             if (option.equalsIgnoreCase("version")) {
                 sender.sendMessage(ChatColor.RED + "Cannot set version.");
                 return;
-            } else if (option.equalsIgnoreCase("initialMaxPowerLevel") ||
-                       option.equalsIgnoreCase("rightClickViewCooldown")) {
+            } else if (option.equalsIgnoreCase("initialMaxPowerLevel")
+                    || option.equalsIgnoreCase("rightClickViewCooldown")) {
                 WildPets.getInstance().getConfig().set(prefix + option, Integer.parseInt(value));
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
-            } else if (option.equalsIgnoreCase("mobsSpawnInFactionTerritory")) {
+            } else if (option.equalsIgnoreCase("mobsSpawnInFactionTerritory")
+                    || option.equalsIgnoreCase("rightClickToSelect")) {
                 WildPets.getInstance().getConfig().set(prefix + option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
             } else if (option.equalsIgnoreCase("secondsBetweenStayTeleports")) { // no doubles yet
@@ -174,7 +179,8 @@ public class ConfigManager {
                 + ", petLimit: " + WildPets.getInstance().getConfig().getString(configOptionsPrefix + "petLimit")
                 + ", cancelTamingAfterFailedAttempt: " + WildPets.getInstance().getConfig().getString(configOptionsPrefix + "cancelTamingAfterFailedAttempt")
                 + ", rightClickViewCooldown: " + WildPets.getInstance().getConfig().getInt(configOptionsPrefix + "rightClickViewCooldown")
-                + ", secondsBetweenStayTeleports: " + WildPets.getInstance().getConfig().getDouble(configOptionsPrefix + "secondsBetweenStayTeleports"));
+                + ", secondsBetweenStayTeleports: " + WildPets.getInstance().getConfig().getDouble(configOptionsPrefix + "secondsBetweenStayTeleports")
+                + ", rightClickToSelect: " + WildPets.getInstance().getConfig().getBoolean(configOptionsPrefix + "rightClickToSelect"));
         sender.sendMessage(ChatColor.AQUA + "====================");
         sender.sendMessage(ChatColor.AQUA + "Note: Entity configurations are not shown.");
         sender.sendMessage(ChatColor.AQUA + "====================");
