@@ -30,6 +30,7 @@ public class ListCommand {
             }
             PetList petList = PersistentData.getInstance().getPetList(targetPlayer.getUniqueId());
             petList.sendListOfPetsToPlayer(player);
+            return true;
         }
 
         PersistentData.getInstance().sendListOfPetsToPlayer(player);
