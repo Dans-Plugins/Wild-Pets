@@ -37,6 +37,44 @@ public class ConfigManager {
         return instance;
     }
 
+    public void saveConfigDefaults() {
+        WildPets.getInstance().getConfig().addDefault("version", WildPets.getInstance().getVersion());
+
+        // save config options
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "debugMode", false);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "petLimit", 10);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "cancelTamingAfterFailedAttempt", false);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickViewCooldown", 3);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenStayTeleports", 0.5);
+
+        // save default entity configuration
+        EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
+        HashMap<String, String> defaultOptions = new HashMap<>();
+        defaultOptions.put("chanceToSucceed", "" + defaultEntityConfig.getChanceToSucceed());
+        defaultOptions.put("requiredTamingItem", defaultEntityConfig.getRequiredTamingItem().name());
+        defaultOptions.put("tamingItemAmount", "" + defaultEntityConfig.getTamingItemAmount());
+        defaultOptions.put("enabled", "" + defaultEntityConfig.isEnabled());
+        for (Map.Entry<String, String> entry : defaultOptions.entrySet()) {
+            String identifier = entityConfigurationsPrefix + defaultEntityConfig.getType() + "." + entry.getKey();
+            WildPets.getInstance().getConfig().set(identifier, entry.getValue());
+        }
+
+        // save entity configurations
+        for (EntityConfig entityConfig : EntityConfigManager.getInstance().getEntityConfigurations()) {
+            HashMap<String, String> options = new HashMap<>();
+            options.put("chanceToSucceed", "" + entityConfig.getChanceToSucceed());
+            options.put("requiredTamingItem", entityConfig.getRequiredTamingItem().name());
+            options.put("tamingItemAmount", "" + entityConfig.getTamingItemAmount());
+            options.put("enabled", "" + entityConfig.isEnabled());
+            for (Map.Entry<String, String> entry : options.entrySet()) {
+                String identifier = entityConfigurationsPrefix + entityConfig.getType() + "." + entry.getKey();
+                WildPets.getInstance().getConfig().set(identifier, entry.getValue());
+            }
+        }
+        WildPets.getInstance().getConfig().options().copyDefaults(true);
+        WildPets.getInstance().saveConfig();
+    }
+
     public void handleVersionMismatch() {
         // set version
         if (!WildPets.getInstance().getConfig().isString("version")) {
@@ -127,44 +165,6 @@ public class ConfigManager {
         } else {
             sender.sendMessage(ChatColor.RED + "That config option wasn't found.");
         }
-    }
-
-    public void saveConfigDefaults() {
-        WildPets.getInstance().getConfig().addDefault("version", WildPets.getInstance().getVersion());
-
-        // save config options
-        WildPets.getInstance().getConfig().set(configOptionsPrefix + "debugMode", false);
-        WildPets.getInstance().getConfig().set(configOptionsPrefix + "petLimit", 10);
-        WildPets.getInstance().getConfig().set(configOptionsPrefix + "cancelTamingAfterFailedAttempt", false);
-        WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickViewCooldown", 3);
-        WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenStayTeleports", 0.5);
-
-        // save default entity configuration
-        EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
-        HashMap<String, String> defaultOptions = new HashMap<>();
-        defaultOptions.put("chanceToSucceed", "" + defaultEntityConfig.getChanceToSucceed());
-        defaultOptions.put("requiredTamingItem", defaultEntityConfig.getRequiredTamingItem().name());
-        defaultOptions.put("tamingItemAmount", "" + defaultEntityConfig.getTamingItemAmount());
-        defaultOptions.put("enabled", "" + defaultEntityConfig.isEnabled());
-        for (Map.Entry<String, String> entry : defaultOptions.entrySet()) {
-            String identifier = entityConfigurationsPrefix + defaultEntityConfig.getType() + "." + entry.getKey();
-            WildPets.getInstance().getConfig().set(identifier, entry.getValue());
-        }
-
-        // save entity configurations
-        for (EntityConfig entityConfig : EntityConfigManager.getInstance().getEntityConfigurations()) {
-            HashMap<String, String> options = new HashMap<>();
-            options.put("chanceToSucceed", "" + entityConfig.getChanceToSucceed());
-            options.put("requiredTamingItem", entityConfig.getRequiredTamingItem().name());
-            options.put("tamingItemAmount", "" + entityConfig.getTamingItemAmount());
-            options.put("enabled", "" + entityConfig.isEnabled());
-            for (Map.Entry<String, String> entry : options.entrySet()) {
-                String identifier = entityConfigurationsPrefix + entityConfig.getType() + "." + entry.getKey();
-                WildPets.getInstance().getConfig().set(identifier, entry.getValue());
-            }
-        }
-        WildPets.getInstance().getConfig().options().copyDefaults(true);
-        WildPets.getInstance().saveConfig();
     }
 
     public void sendConfigList(CommandSender sender) {
