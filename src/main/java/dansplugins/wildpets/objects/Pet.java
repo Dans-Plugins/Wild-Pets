@@ -148,7 +148,7 @@ public class Pet {
         if (entity != null) {
             stayingLocation = entity.getLocation();
 
-            double secondsUntilRepeat = 0.1;
+            double secondsUntilRepeat = WildPets.getInstance().getConfig().getDouble("configOptions." + "secondsBetweenStayTeleports");
             teleportTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
                 @Override
                 public void run() {

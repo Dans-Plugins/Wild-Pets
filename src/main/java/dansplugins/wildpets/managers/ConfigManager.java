@@ -8,6 +8,14 @@ import org.bukkit.command.CommandSender;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+    To add a new config option, the following methods must be altered:
+    - handleVersionMismatch()
+    - setConfigOption()
+    - saveConfigDefaults()
+    - sendConfigList()
+ */
+
 public class ConfigManager {
 
     private boolean debug = WildPets.getInstance().isDebugEnabled();
@@ -50,6 +58,9 @@ public class ConfigManager {
         }
         if (!WildPets.getInstance().getConfig().isSet(configOptionsPrefix + "rightClickViewCooldown")) {
             WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickViewCooldown", 3);
+        }
+        if (!WildPets.getInstance().getConfig().isSet(configOptionsPrefix + "secondsBetweenStayTeleports")) {
+            WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenStayTeleports", 0.5);
         }
 
         // save default entity configuration
@@ -102,7 +113,7 @@ public class ConfigManager {
             } else if (option.equalsIgnoreCase("mobsSpawnInFactionTerritory")) {
                 WildPets.getInstance().getConfig().set(prefix + option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
-            } else if (option.equalsIgnoreCase("")) { // no doubles yet
+            } else if (option.equalsIgnoreCase("secondsBetweenStayTeleports")) { // no doubles yet
                 WildPets.getInstance().getConfig().set(prefix + option, Double.parseDouble(value));
                 sender.sendMessage(ChatColor.GREEN + "Double set.");
             } else {
@@ -126,6 +137,7 @@ public class ConfigManager {
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "petLimit", 10);
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "cancelTamingAfterFailedAttempt", false);
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickViewCooldown", 3);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenStayTeleports", 0.5);
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
@@ -161,7 +173,8 @@ public class ConfigManager {
                 + ", debugMode: " + WildPets.getInstance().getConfig().getString(configOptionsPrefix + "debugMode")
                 + ", petLimit: " + WildPets.getInstance().getConfig().getString(configOptionsPrefix + "petLimit")
                 + ", cancelTamingAfterFailedAttempt: " + WildPets.getInstance().getConfig().getString(configOptionsPrefix + "cancelTamingAfterFailedAttempt")
-                + ", rightClickViewCooldown: " + WildPets.getInstance().getConfig().getInt(configOptionsPrefix + "rightClickViewCooldown"));
+                + ", rightClickViewCooldown: " + WildPets.getInstance().getConfig().getInt(configOptionsPrefix + "rightClickViewCooldown")
+                + ", secondsBetweenStayTeleports: " + WildPets.getInstance().getConfig().getDouble(configOptionsPrefix + "secondsBetweenStayTeleports"));
         sender.sendMessage(ChatColor.AQUA + "====================");
         sender.sendMessage(ChatColor.AQUA + "Note: Entity configurations are not shown.");
         sender.sendMessage(ChatColor.AQUA + "====================");
