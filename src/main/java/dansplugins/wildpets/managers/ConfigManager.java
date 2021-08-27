@@ -102,7 +102,7 @@ public class ConfigManager {
             WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenStayTeleports", 0.5);
         }
         if (!WildPets.getInstance().getConfig().isSet(configOptionsPrefix + "rightClickToSelect")) {
-            WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickToSelect", false);
+            WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickToSelect", true);
         }
 
         // save default entity configuration

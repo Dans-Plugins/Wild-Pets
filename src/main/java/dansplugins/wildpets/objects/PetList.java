@@ -55,7 +55,13 @@ public class PetList {
 
     public void sendListOfPetsToPlayer(Player player) {
         if (getNumPets() == 0) {
-            player.sendMessage(ChatColor.RED + "You don't have any pets yet.");
+            if (player.getUniqueId().equals(ownerUUID)) {
+                player.sendMessage(ChatColor.RED + "You don't have any pets yet.");
+            }
+            else {
+                player.sendMessage(ChatColor.AQUA + "That player doesn't have any pets yet.");
+            }
+
             return;
         }
 
