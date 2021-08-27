@@ -11,8 +11,6 @@ import java.util.Set;
 
 public class EntityConfigManager {
 
-    private boolean debug = WildPets.getInstance().isDebugEnabled();
-
     private static EntityConfigManager instance;
 
     private ArrayList<EntityConfig> entityConfigs = new ArrayList<>();
@@ -31,11 +29,11 @@ public class EntityConfigManager {
     public EntityConfig acquireConfiguration(Entity entity) {
         for (EntityConfig entityConfig : entityConfigs) {
             if (entity.getType().name().equalsIgnoreCase(entityConfig.getType())) {
-                if (debug) { System.out.println("[DEBUG] Configuration for " + entity.getType().name() + " found!"); }
+                if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Configuration for " + entity.getType().name() + " found!"); }
                 return entityConfig;
             }
         }
-        if (debug) { System.out.println("[DEBUG] Configuration for " + entity.getType().name() + " not found! Using default configuration."); }
+        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Configuration for " + entity.getType().name() + " not found! Using default configuration."); }
         return getDefaultConfiguration();
     }
 
@@ -46,13 +44,13 @@ public class EntityConfigManager {
     public void initializeWithDefaults() {
         entityConfigs = getDefaults();
 
-        if (debug) {
+        if (WildPets.getInstance().isDebugEnabled()) {
             printEntityConfigurations();
         }
     }
 
     public ArrayList<EntityConfig> getDefaults() {
-        if (debug) { System.out.println("[DEBUG] Initializing with defaults."); }
+        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Initializing with defaults."); }
 
         ArrayList<EntityConfig> configurations = new ArrayList<>();
 
@@ -144,26 +142,26 @@ public class EntityConfigManager {
     }
 
     public void initializeWithConfig() {
-        if (debug) { System.out.println("[DEBUG] Initializing with config."); }
+        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Initializing with config."); }
 
         Set<String> keys = WildPets.getInstance().getConfig().getConfigurationSection("entityConfigurations").getKeys(false);
 
         for (String key : keys) {
-            if (debug) { System.out.println("Looking at entity configuration for " + key); }
+            if (WildPets.getInstance().isDebugEnabled()) { System.out.println("Looking at entity configuration for " + key); }
             HashMap<String, String> options = new HashMap<>();
 
             Set<String> configOptions = WildPets.getInstance().getConfig().getConfigurationSection("entityConfigurations." + key).getKeys(false);
 
             for (String configOption : configOptions) {
                 String value = WildPets.getInstance().getConfig().getString("entityConfigurations." + key + "." + configOption);
-                if (debug) { System.out.println("Looking at config option " + configOption + ". Value: " + value); }
+                if (WildPets.getInstance().isDebugEnabled()) { System.out.println("Looking at config option " + configOption + ". Value: " + value); }
                 options.put(configOption, value);
             }
 
             entityConfigs.add(new EntityConfig(key, Double.parseDouble(options.get("chanceToSucceed")), Material.getMaterial(options.get("requiredTamingItem")), Integer.parseInt(options.get("tamingItemAmount")), Boolean.parseBoolean(options.get("enabled"))));
         }
 
-        if (debug) {
+        if (WildPets.getInstance().isDebugEnabled()) {
             printEntityConfigurations();
         }
     }

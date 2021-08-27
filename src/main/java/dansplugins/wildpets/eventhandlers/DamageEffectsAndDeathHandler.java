@@ -12,13 +12,11 @@ import org.bukkit.event.entity.*;
 
 public class DamageEffectsAndDeathHandler implements Listener {
 
-    private boolean debug = WildPets.getInstance().isDebugEnabled();
-
     @EventHandler()
     public void handle(EntityDamageByEntityEvent event) {
         Pet pet = PersistentData.getInstance().getPet(event.getEntity());
         if (pet != null) {
-            if (debug) { System.out.println("[DEBUG] Cancelling EntityDamageByEntity event to protect " + pet.getName() + "."); }
+            if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Cancelling EntityDamageByEntity event to protect " + pet.getName() + "."); }
             event.setCancelled(true);
         }
     }
@@ -27,7 +25,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
     public void handle(AreaEffectCloudApplyEvent event) {
         Pet pet = PersistentData.getInstance().getPet(event.getEntity());
         if (pet != null) {
-            if (debug) { System.out.println("[DEBUG] Cancelling AreaEffectCloudApply event to protect " + pet.getName() + "."); }
+            if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Cancelling AreaEffectCloudApply event to protect " + pet.getName() + "."); }
             event.setCancelled(true);
         }
     }
@@ -36,7 +34,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
     public void handle(LingeringPotionSplashEvent event) {
         Pet pet = PersistentData.getInstance().getPet(event.getEntity());
         if (pet != null) {
-            if (debug) { System.out.println("[DEBUG] Cancelling LingeringPotionSplash event to protect " + pet.getName() + "."); }
+            if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Cancelling LingeringPotionSplash event to protect " + pet.getName() + "."); }
             event.setCancelled(true);
         }
     }
@@ -54,7 +52,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
                 }
             }
             else {
-                if (debug) { System.out.println("[DEBUG] Something went wrong removing " + name + " from the persistent data."); }
+                if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Something went wrong removing " + name + " from the persistent data."); }
             }
         }
     }
@@ -63,7 +61,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
     public void handle(PotionSplashEvent event) {
         Pet pet = PersistentData.getInstance().getPet(event.getEntity());
         if (pet != null) {
-            if (debug) { System.out.println("[DEBUG] Cancelling PotionSplashEvent event to protect " + pet.getName() + "."); }
+            if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Cancelling PotionSplashEvent event to protect " + pet.getName() + "."); }
             event.setCancelled(true);
         }
     }
@@ -72,7 +70,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
     public void handle(EntityDamageByBlockEvent event) {
         Pet pet = PersistentData.getInstance().getPet(event.getEntity());
         if (pet != null) {
-            if (debug) { System.out.println("[DEBUG] Cancelling EntityDamageByBlockEvent event to protect " + pet.getName() + "."); }
+            if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Cancelling EntityDamageByBlockEvent event to protect " + pet.getName() + "."); }
             event.setCancelled(true);
         }
     }

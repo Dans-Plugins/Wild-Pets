@@ -16,8 +16,6 @@ import java.util.ArrayList;
 
 public class MoveHandler implements Listener {
 
-    private boolean debug = WildPets.getInstance().isDebugEnabled();
-
     @EventHandler()
     public void handle(PlayerMoveEvent event) {
         if (event.getTo() == null) {

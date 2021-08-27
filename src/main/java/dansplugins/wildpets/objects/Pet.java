@@ -18,8 +18,6 @@ import java.util.UUID;
 
 public class Pet {
 
-    private boolean debug = WildPets.getInstance().isDebugEnabled();
-
     private UUID uniqueID; // saved
     private UUID ownerUUID; // saved
     private int assignedID;
@@ -46,7 +44,7 @@ public class Pet {
 
         entity.playEffect(EntityEffect.LOVE_HEARTS);
 
-        if (debug) {
+        if (WildPets.getInstance().isDebugEnabled()) {
             System.out.println("[DEBUG] Pet instantiated!");
         }
     }
@@ -100,7 +98,7 @@ public class Pet {
         player.sendMessage(ChatColor.AQUA + "Name: " + name);
         player.sendMessage(ChatColor.AQUA + "Owner: " + UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID));
         player.sendMessage(ChatColor.AQUA + "State: " + movementState);
-        if (debug) {
+        if (WildPets.getInstance().isDebugEnabled()) {
             player.sendMessage(ChatColor.AQUA + "[DEBUG] uniqueID: " + uniqueID.toString());
             player.sendMessage(ChatColor.AQUA + "[DEBUG] ownerUUID: " + ownerUUID.toString());
             player.sendMessage(ChatColor.AQUA + "[DEBUG] assignedID: " + assignedID);
