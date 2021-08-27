@@ -14,6 +14,7 @@ public class EntityTargetingHandler implements Listener {
 
     @EventHandler()
     public void handle(EntityTargetLivingEntityEvent event) {
+        /*
         Entity targetingEntity = event.getEntity();
 
         if (PersistentData.getInstance().getPet(targetingEntity) != null) {
@@ -25,5 +26,6 @@ public class EntityTargetingHandler implements Listener {
                 event.setCancelled(true);
             }
         }
+        */
     }
 }
