@@ -141,11 +141,11 @@ public class InteractionHandler implements Listener {
                 pet.sendInfoToPlayer(player);
 
                 if (WildPets.getInstance().getConfig().getBoolean("configOptions." + "rightClickToSelect")) {
-                    if (PersistentData.getInstance().getPlayersPet(player, clickedEntity) == null) {
+                    if (pet.getOwnerUUID().equals(player.getUniqueId())) {
                         return;
                     }
 
-                    if (EphemeralData.getInstance().getPetSelectionForPlayer(player).getUniqueID() == clickedEntity.getUniqueId()) {
+                    if (EphemeralData.getInstance().getPetSelectionForPlayer(player).getUniqueID().equals(pet.getUniqueID())) {
                         EphemeralData.getInstance().selectPetForPlayer(pet, player);
                         player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
                     }
