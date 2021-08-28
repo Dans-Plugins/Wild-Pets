@@ -1,6 +1,5 @@
 package dansplugins.wildpets.commands;
 
-import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.objects.Pet;
 import org.bukkit.ChatColor;

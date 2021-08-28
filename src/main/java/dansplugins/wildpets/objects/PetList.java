@@ -1,6 +1,5 @@
 package dansplugins.wildpets.objects;
 
-import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.managers.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

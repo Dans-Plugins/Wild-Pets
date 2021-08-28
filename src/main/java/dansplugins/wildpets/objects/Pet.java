@@ -12,7 +12,6 @@ import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.world.ChunkUnloadEvent;
 
 import java.util.HashMap;
 import java.util.Map;

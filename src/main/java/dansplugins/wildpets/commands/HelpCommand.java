@@ -1,6 +1,5 @@
 package dansplugins.wildpets.commands;
 
-import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.managers.ConfigManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

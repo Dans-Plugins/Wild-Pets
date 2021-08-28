@@ -1,6 +1,5 @@
 package dansplugins.wildpets.eventhandlers;
 
-import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.objects.Pet;
 import dansplugins.wildpets.objects.PetList;
