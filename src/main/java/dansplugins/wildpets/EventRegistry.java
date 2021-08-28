@@ -28,6 +28,7 @@ public class EventRegistry {
         manager.registerEvents(new JoinHandler(), mainInstance);
         manager.registerEvents(new DamageEffectsAndDeathHandler(), mainInstance);
         manager.registerEvents(new MoveHandler(), mainInstance);
+        manager.registerEvents(new ChunkLoadEventHandler(), mainInstance);
     }
 
 }

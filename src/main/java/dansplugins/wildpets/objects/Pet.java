@@ -136,7 +136,7 @@ public class Pet {
         return movementState;
     }
 
-    private void scheduleTeleportTask() {
+    public void scheduleTeleportTask() {
         if (teleportTaskID != -1) {
             return;
         }
@@ -163,7 +163,7 @@ public class Pet {
         teleportTaskID = -1;
     }
 
-    private void setLastKnownLocation(Location location) {
+    public void setLastKnownLocation(Location location) {
         lastKnownX = (int) location.getX();
         lastKnownY = (int) location.getY();
         lastKnownZ = (int) location.getZ();
