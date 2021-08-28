@@ -45,6 +45,8 @@ public class ConfigManager {
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickViewCooldown", 3);
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenStayTeleports", 0.5);
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickToSelect", false);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenSchedulingAttempts", 30);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "maxScheduleAttempts", 120);
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
@@ -102,6 +104,12 @@ public class ConfigManager {
         if (!WildPets.getInstance().getConfig().isSet(configOptionsPrefix + "rightClickToSelect")) {
             WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickToSelect", true);
         }
+        if (!WildPets.getInstance().getConfig().isSet(configOptionsPrefix + "secondsBetweenSchedulingAttempts")) {
+            WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenSchedulingAttempts", 30);
+        }
+        if (!WildPets.getInstance().getConfig().isSet(configOptionsPrefix + "maxScheduleAttempts")) {
+            WildPets.getInstance().getConfig().set(configOptionsPrefix + "maxScheduleAttempts", 120);
+        }
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
@@ -146,7 +154,9 @@ public class ConfigManager {
             if (option.equalsIgnoreCase("version")) {
                 sender.sendMessage(ChatColor.RED + "Cannot set version.");
                 return;
-            } else if (option.equalsIgnoreCase("rightClickViewCooldown")) {
+            } else if (option.equalsIgnoreCase("rightClickViewCooldown")
+                    || option.equalsIgnoreCase("secondsBetweenSchedulingAttempts")
+                    || option.equalsIgnoreCase("maxScheduleAttempts")) {
                 WildPets.getInstance().getConfig().set(prefix + option, Integer.parseInt(value));
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
             } else if (option.equalsIgnoreCase("debugMode")
@@ -177,7 +187,9 @@ public class ConfigManager {
                 + ", cancelTamingAfterFailedAttempt: " + WildPets.getInstance().getConfig().getString(configOptionsPrefix + "cancelTamingAfterFailedAttempt")
                 + ", rightClickViewCooldown: " + WildPets.getInstance().getConfig().getInt(configOptionsPrefix + "rightClickViewCooldown")
                 + ", secondsBetweenStayTeleports: " + WildPets.getInstance().getConfig().getDouble(configOptionsPrefix + "secondsBetweenStayTeleports")
-                + ", rightClickToSelect: " + WildPets.getInstance().getConfig().getBoolean(configOptionsPrefix + "rightClickToSelect"));
+                + ", rightClickToSelect: " + WildPets.getInstance().getConfig().getBoolean(configOptionsPrefix + "rightClickToSelect")
+                + ", secondsBetweenSchedulingAttempts: " + WildPets.getInstance().getConfig().getInt(configOptionsPrefix + "secondsBetweenSchedulingAttempts")
+                + ", maxScheduleAttempts: " + WildPets.getInstance().getConfig().getInt(configOptionsPrefix + "maxScheduleAttempts"));
         sender.sendMessage(ChatColor.AQUA + "====================");
         sender.sendMessage(ChatColor.AQUA + "Note: Entity configurations are not shown.");
         sender.sendMessage(ChatColor.AQUA + "====================");

@@ -139,6 +139,8 @@ public class Pet {
         return movementState;
     }
 
+    // scheduling methods ----------------------------------
+
     private void attemptToScheduleTeleportTask() {
         if (teleportTaskID != -1) {
             return;
@@ -146,13 +148,18 @@ public class Pet {
 
         if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Attempting to scheduling teleport task for " + getName() + "."); }
 
-        int secondsUntilRepeat = 30;
+        int secondsUntilRepeat = WildPets.getInstance().getConfig().getInt("configOptions." + "secondsBetweenSchedulingAttempts");
         schedulerTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
             @Override
             public void run() {
                 Entity entity = Bukkit.getEntity(uniqueID);
 
-                if (entity != null && teleportTaskID == -1) {
+                if (entity != null) {
+                    if (teleportTaskID != -1) {
+                        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Teleport task has already been scheduled! Cancelling scheduling task!"); }
+                        cancelSchedulingTask();
+                        return;
+                    }
                     if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity " + getName() + " is not null! Scheduling teleport now."); }
                     scheduleTeleport(entity);
 
@@ -162,7 +169,7 @@ public class Pet {
                     if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity '" + getName() + "' is null! Cannot schedule teleport task. Will retry in " + secondsUntilRepeat + " seconds."); }
                     scheduleAttempts++;
 
-                    int maxScheduleAttempts = 100;
+                    int maxScheduleAttempts = WildPets.getInstance().getConfig().getInt("configOptions." + "maxScheduleAttempts");
                     if (scheduleAttempts > maxScheduleAttempts) {
                         if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity '" + getName() + "' wasn't able to be found more than " + maxScheduleAttempts + " times. Cannot schedule."); }
                         cancelSchedulingTask();
@@ -201,6 +208,8 @@ public class Pet {
         Bukkit.getScheduler().cancelTask(teleportTaskID);
         teleportTaskID = -1;
     }
+
+    // end of scheduling methods ----------------------------------
 
     private void setLastKnownLocation(Location location) {
         lastKnownX = (int) location.getX();
