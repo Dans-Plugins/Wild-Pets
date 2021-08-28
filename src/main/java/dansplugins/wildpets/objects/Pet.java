@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
+import dansplugins.wildpets.utils.Scheduler;
 import dansplugins.wildpets.utils.UUIDChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -120,17 +121,17 @@ public class Pet {
 
     public void setWandering() {
         movementState = "Wandering";
-        cancelTeleportTask(); // TODO: find a better solution for this
+        Scheduler.getInstance().cancelTeleportTask(this); // TODO: find a better solution for this
     }
 
     public void setStaying() {
         movementState = "Staying";
-        attemptToScheduleTeleportTask(); // TODO: find a better solution for this
+        Scheduler.getInstance().attemptToScheduleTeleportTask(this); // TODO: find a better solution for this
     }
 
     public void setFollowing() {
         if (movementState != null && movementState.equals("Staying")) {
-            cancelTeleportTask();
+            Scheduler.getInstance().cancelTeleportTask(this);
         }
         movementState = "Following";
     }
@@ -139,77 +140,37 @@ public class Pet {
         return movementState;
     }
 
-    // scheduling methods ----------------------------------
-
-    private void attemptToScheduleTeleportTask() {
-        if (teleportTaskID != -1) {
-            return;
-        }
-
-        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Attempting to scheduling teleport task for " + getName() + "."); }
-
-        int secondsUntilRepeat = WildPets.getInstance().getConfig().getInt("configOptions." + "secondsBetweenSchedulingAttempts");
-        schedulerTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                Entity entity = Bukkit.getEntity(uniqueID);
-
-                if (entity != null) {
-                    if (teleportTaskID != -1) {
-                        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Teleport task has already been scheduled! Cancelling scheduling task!"); }
-                        cancelSchedulingTask();
-                        return;
-                    }
-                    if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity " + getName() + " was found! Scheduling teleport now."); }
-                    scheduleTeleport(entity);
-
-                    cancelSchedulingTask();
-                }
-                else {
-                    if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity '" + getName() + "' cannot be found! Cannot schedule teleport task. Will retry in " + secondsUntilRepeat + " seconds."); }
-                    scheduleAttempts++;
-
-                    int maxScheduleAttempts = WildPets.getInstance().getConfig().getInt("configOptions." + "maxScheduleAttempts");
-                    if (scheduleAttempts > maxScheduleAttempts) {
-                        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity '" + getName() + "' wasn't able to be found more than " + maxScheduleAttempts + " times. Cannot schedule."); }
-                        cancelSchedulingTask();
-                    }
-                }
-            }
-        }, 0, secondsUntilRepeat * 20);
+    public int getSchedulerTaskID() {
+        return schedulerTaskID;
     }
 
-    private void cancelSchedulingTask() {
-        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Cancelling scheduling task with ID " + schedulerTaskID); }
-        Bukkit.getScheduler().cancelTask(schedulerTaskID);
-        schedulerTaskID = -1;
+    public void setSchedulerTaskID(int schedulerTaskID) {
+        this.schedulerTaskID = schedulerTaskID;
     }
 
-    private void scheduleTeleport(Entity entity) {
-        stayingLocation = entity.getLocation();
-
-        double secondsUntilRepeat = WildPets.getInstance().getConfig().getDouble("configOptions." + "secondsBetweenStayTeleports");
-        teleportTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                float yaw = entity.getLocation().getYaw();
-                float pitch = entity.getLocation().getPitch();
-                entity.teleport(new Location(stayingLocation.getWorld(), stayingLocation.getX(), stayingLocation.getY(), stayingLocation.getZ(), yaw, pitch));
-            }
-        }, 0, (int)(secondsUntilRepeat * 20));
-        if (WildPets.getInstance().isDebugEnabled()) {
-            if (teleportTaskID != -1) {
-                System.out.println("[DEBUG] Scheduled!");
-            }
-        }
+    public int getScheduleAttempts() {
+        return scheduleAttempts;
     }
 
-    private void cancelTeleportTask() {
-        Bukkit.getScheduler().cancelTask(teleportTaskID);
-        teleportTaskID = -1;
+    public void incrementScheduleAttempts() {
+        this.scheduleAttempts++;
     }
 
-    // end of scheduling methods ----------------------------------
+    public int getTeleportTaskID() {
+        return teleportTaskID;
+    }
+
+    public void setTeleportTaskID(int teleportTaskID) {
+        this.teleportTaskID = teleportTaskID;
+    }
+
+    public Location getStayingLocation() {
+        return stayingLocation;
+    }
+
+    public void setStayingLocation(Location location) {
+        stayingLocation = location;
+    }
 
     private void setLastKnownLocation(Location location) {
         lastKnownX = (int) location.getX();
@@ -256,4 +217,5 @@ public class Pet {
             setFollowing();
         }
     }
+
 }

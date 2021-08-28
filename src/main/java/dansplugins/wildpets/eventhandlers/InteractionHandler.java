@@ -7,6 +7,7 @@ import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.managers.EntityConfigManager;
 import dansplugins.wildpets.objects.EntityConfig;
 import dansplugins.wildpets.objects.Pet;
+import dansplugins.wildpets.utils.Scheduler;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -156,14 +157,7 @@ public class InteractionHandler implements Listener {
 
     private void setRightClickCooldown(Player player, int seconds) {
         EphemeralData.getInstance().setRightClickCooldown(player, true);
-
-        WildPets.getInstance().getServer().getScheduler().runTaskLater(WildPets.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                EphemeralData.getInstance().setRightClickCooldown(player, false);
-
-            }
-        }, seconds * 20);
+        Scheduler.scheduleRightClickCooldownSetter(player, seconds);
     }
 
     private boolean rollDice(double chanceToSucceed) {
