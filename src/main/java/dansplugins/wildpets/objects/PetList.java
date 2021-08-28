@@ -1,7 +1,9 @@
 package dansplugins.wildpets.objects;
 
 import dansplugins.wildpets.WildPets;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -67,7 +69,16 @@ public class PetList {
 
         player.sendMessage(ChatColor.AQUA + "=== List of Pets ===");
         for (Pet pet : getPets()) {
-            player.sendMessage(ChatColor.AQUA + pet.getName());
+            Entity entity = Bukkit.getEntity(pet.getUniqueID());
+
+            ChatColor color;
+            if (entity != null) {
+                color = ChatColor.AQUA;
+            }
+            else {
+                color = ChatColor.RED;
+            }
+            player.sendMessage(color + pet.getName());
         }
     }
 

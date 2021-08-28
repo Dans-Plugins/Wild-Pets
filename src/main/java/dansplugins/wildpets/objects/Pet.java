@@ -11,6 +11,7 @@ import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.world.ChunkUnloadEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,8 @@ public class Pet {
     private int lastKnownZ = -1;
 
     private Location stayingLocation;
+    private int schedulerTaskID = -1;
+    private int scheduleAttempts = 0;
     private int teleportTaskID = -1;
 
     public Pet(Entity entity, UUID playerOwner) {
@@ -122,7 +125,7 @@ public class Pet {
 
     public void setStaying() {
         movementState = "Staying";
-        scheduleTeleportTask(); // TODO: find a better solution for this
+        attemptToScheduleTeleportTask(); // TODO: find a better solution for this
     }
 
     public void setFollowing() {
@@ -136,25 +139,61 @@ public class Pet {
         return movementState;
     }
 
-    private void scheduleTeleportTask() {
+    private void attemptToScheduleTeleportTask() {
         if (teleportTaskID != -1) {
             return;
         }
 
-        Entity entity = Bukkit.getEntity(uniqueID);
+        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Attempting to scheduling teleport task for " + getName() + "."); }
 
-        if (entity != null) {
-            stayingLocation = entity.getLocation();
+        int secondsUntilRepeat = 30;
+        schedulerTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                Entity entity = Bukkit.getEntity(uniqueID);
 
-            double secondsUntilRepeat = WildPets.getInstance().getConfig().getDouble("configOptions." + "secondsBetweenStayTeleports");
-            teleportTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    float yaw = entity.getLocation().getYaw();
-                    float pitch = entity.getLocation().getPitch();
-                    entity.teleport(new Location(stayingLocation.getWorld(), stayingLocation.getX(), stayingLocation.getY(), stayingLocation.getZ(), yaw, pitch));
+                if (entity != null && teleportTaskID == -1) {
+                    if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity " + getName() + " is not null! Scheduling teleport now."); }
+                    scheduleTeleport(entity);
+
+                    cancelSchedulingTask();
                 }
-            }, 0, (int)(secondsUntilRepeat * 20));
+                else {
+                    if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity '" + getName() + "' is null! Cannot schedule teleport task. Will retry in " + secondsUntilRepeat + " seconds."); }
+                    scheduleAttempts++;
+
+                    int maxScheduleAttempts = 100;
+                    if (scheduleAttempts > maxScheduleAttempts) {
+                        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity '" + getName() + "' wasn't able to be found more than " + maxScheduleAttempts + " times. Cannot schedule."); }
+                        cancelSchedulingTask();
+                    }
+                }
+            }
+        }, 0, secondsUntilRepeat * 20);
+    }
+
+    private void cancelSchedulingTask() {
+        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Cancelling scheduling task with ID " + schedulerTaskID); }
+        Bukkit.getScheduler().cancelTask(schedulerTaskID);
+        schedulerTaskID = -1;
+    }
+
+    private void scheduleTeleport(Entity entity) {
+        stayingLocation = entity.getLocation();
+
+        double secondsUntilRepeat = WildPets.getInstance().getConfig().getDouble("configOptions." + "secondsBetweenStayTeleports");
+        teleportTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                float yaw = entity.getLocation().getYaw();
+                float pitch = entity.getLocation().getPitch();
+                entity.teleport(new Location(stayingLocation.getWorld(), stayingLocation.getX(), stayingLocation.getY(), stayingLocation.getZ(), yaw, pitch));
+            }
+        }, 0, (int)(secondsUntilRepeat * 20));
+        if (WildPets.getInstance().isDebugEnabled()) {
+            if (teleportTaskID != -1) {
+                System.out.println("[DEBUG] Scheduled!");
+            }
         }
     }
 
@@ -181,7 +220,6 @@ public class Pet {
         saveMap.put("lastKnownX", gson.toJson(lastKnownX));
         saveMap.put("lastKnownY", gson.toJson(lastKnownY));
         saveMap.put("lastKnownZ", gson.toJson(lastKnownZ));
-
 
         return saveMap;
     }
