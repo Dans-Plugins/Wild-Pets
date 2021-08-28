@@ -27,12 +27,12 @@ public final class WildPets extends JavaPlugin {
         // create/load config
         if (!(new File("./plugins/WildPets/config.yml").exists())) {
             EntityConfigManager.getInstance().initializeWithDefaults();
-            ConfigManager.getInstance().saveConfigDefaults();
+            ConfigManager.getInstance().saveMissingConfigDefaultsIfNotPresent();
         }
         else {
             // pre load compatibility checks
             if (isVersionMismatched()) {
-                ConfigManager.getInstance().handleVersionMismatch();
+                ConfigManager.getInstance().saveMissingConfigDefaultsIfNotPresent();
             }
             reloadConfig();
             EntityConfigManager.getInstance().initializeWithConfig();

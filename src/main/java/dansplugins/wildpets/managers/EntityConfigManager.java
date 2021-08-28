@@ -144,16 +144,16 @@ public class EntityConfigManager {
     public void initializeWithConfig() {
         if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Initializing with config."); }
 
-        Set<String> keys = WildPets.getInstance().getConfig().getConfigurationSection("entityConfigurations").getKeys(false);
+        Set<String> keys = ConfigManager.getInstance().getConfig().getConfigurationSection("entityConfigurations").getKeys(false);
 
         for (String key : keys) {
             if (WildPets.getInstance().isDebugEnabled()) { System.out.println("Looking at entity configuration for " + key); }
             HashMap<String, String> options = new HashMap<>();
 
-            Set<String> configOptions = WildPets.getInstance().getConfig().getConfigurationSection("entityConfigurations." + key).getKeys(false);
+            Set<String> configOptions = ConfigManager.getInstance().getConfig().getConfigurationSection("entityConfigurations." + key).getKeys(false);
 
             for (String configOption : configOptions) {
-                String value = WildPets.getInstance().getConfig().getString("entityConfigurations." + key + "." + configOption);
+                String value = ConfigManager.getInstance().getConfig().getString("entityConfigurations." + key + "." + configOption);
                 if (WildPets.getInstance().isDebugEnabled()) { System.out.println("Looking at config option " + configOption + ". Value: " + value); }
                 options.put(configOption, value);
             }
