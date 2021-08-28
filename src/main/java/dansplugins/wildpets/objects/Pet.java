@@ -160,13 +160,13 @@ public class Pet {
                         cancelSchedulingTask();
                         return;
                     }
-                    if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity " + getName() + " is not null! Scheduling teleport now."); }
+                    if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity " + getName() + " was found! Scheduling teleport now."); }
                     scheduleTeleport(entity);
 
                     cancelSchedulingTask();
                 }
                 else {
-                    if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity '" + getName() + "' is null! Cannot schedule teleport task. Will retry in " + secondsUntilRepeat + " seconds."); }
+                    if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity '" + getName() + "' cannot be found! Cannot schedule teleport task. Will retry in " + secondsUntilRepeat + " seconds."); }
                     scheduleAttempts++;
 
                     int maxScheduleAttempts = WildPets.getInstance().getConfig().getInt("configOptions." + "maxScheduleAttempts");
