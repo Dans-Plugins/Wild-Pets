@@ -44,7 +44,7 @@ public class ConfigManager {
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "cancelTamingAfterFailedAttempt", false);
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickViewCooldown", 3);
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenStayTeleports", 0.5);
-        WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickToSelect", false);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickToSelect", true);
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
