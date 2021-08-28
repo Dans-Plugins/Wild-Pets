@@ -62,7 +62,7 @@ public class InteractionHandler implements Listener {
             }
 
             int numPets = PersistentData.getInstance().getPetList(player.getUniqueId()).getNumPets();
-            int petLimit = WildPets.getInstance().getConfig().getInt("configOptions." + "petLimit");
+            int petLimit = ConfigManager.getInstance().getInt("petLimit");
             if (WildPets.getInstance().isDebugEnabled()) {
                 System.out.println("[DEBUG] Number of pets: " + numPets);
                 System.out.println("[DEBUG] Pet Limit: " + petLimit);
@@ -85,7 +85,7 @@ public class InteractionHandler implements Listener {
             // handle chance to tame
             if (!rollDice(entityConfig.getChanceToSucceed())) {
                 player.sendMessage(ChatColor.RED + "Taming failed.");
-                if (WildPets.getInstance().getConfig().getBoolean("configOptions." + "cancelTamingAfterFailedAttempt")) {
+                if (ConfigManager.getInstance().getBoolean("cancelTamingAfterFailedAttempt")) {
                     EphemeralData.getInstance().setPlayerAsNotTaming(player);
                 }
                 if (itemStack.getAmount() > requiredAmount) {
@@ -135,11 +135,11 @@ public class InteractionHandler implements Listener {
             }
 
             if (!EphemeralData.getInstance().hasRightClickCooldown(player)) {
-                setRightClickCooldown(player, WildPets.getInstance().getConfig().getInt("configOptions." + "rightClickViewCooldown"));
+                setRightClickCooldown(player, ConfigManager.getInstance().getInt("rightClickViewCooldown"));
 
                 pet.sendInfoToPlayer(player);
 
-                if (WildPets.getInstance().getConfig().getBoolean("configOptions." + "rightClickToSelect")) {
+                if (ConfigManager.getInstance().getBoolean("rightClickToSelect")) {
                     if (!pet.getOwnerUUID().equals(player.getUniqueId())) {
                         return;
                     }

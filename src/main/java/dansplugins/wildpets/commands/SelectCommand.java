@@ -3,6 +3,7 @@ package dansplugins.wildpets.commands;
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
+import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.objects.Pet;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -20,7 +21,7 @@ public class SelectCommand {
         if (args.length > 0) {
 
             if (args[0].equalsIgnoreCase("cancel")) {
-                if (WildPets.getInstance().getConfig().getBoolean("configOptions." + "rightClickToSelect")) {
+                if (ConfigManager.getInstance().getBoolean("rightClickToSelect")) {
                     player.sendMessage(ChatColor.RED + "Usage: /wp select (petName)");
                     return false;
                 }
@@ -44,7 +45,7 @@ public class SelectCommand {
             return true;
         }
 
-        if (WildPets.getInstance().getConfig().getBoolean("configOptions." + "rightClickToSelect")) {
+        if (ConfigManager.getInstance().getBoolean("rightClickToSelect")) {
             player.sendMessage(ChatColor.RED + "Usage: /wp select (petName)");
             return false;
         }

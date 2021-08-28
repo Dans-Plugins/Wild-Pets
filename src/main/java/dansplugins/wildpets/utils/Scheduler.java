@@ -2,6 +2,7 @@ package dansplugins.wildpets.utils;
 
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.objects.Pet;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -40,7 +41,7 @@ public class Scheduler {
 
         if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Attempting to scheduling teleport task for " + pet.getName() + "."); }
 
-        int secondsUntilRepeat = WildPets.getInstance().getConfig().getInt("configOptions." + "secondsBetweenSchedulingAttempts");
+        int secondsUntilRepeat = ConfigManager.getInstance().getInt("secondsBetweenSchedulingAttempts");
         pet.setSchedulerTaskID(Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
             @Override
             public void run() {
@@ -61,7 +62,7 @@ public class Scheduler {
                     if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity '" + pet.getName() + "' cannot be found! Cannot schedule teleport task. Will retry in " + secondsUntilRepeat + " seconds."); }
                     pet.incrementScheduleAttempts();
 
-                    int maxScheduleAttempts = WildPets.getInstance().getConfig().getInt("configOptions." + "maxScheduleAttempts");
+                    int maxScheduleAttempts = ConfigManager.getInstance().getInt("maxScheduleAttempts");
                     if (pet.getScheduleAttempts() > maxScheduleAttempts) {
                         if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity '" + pet.getName() + "' wasn't able to be found more than " + maxScheduleAttempts + " times. Cannot schedule."); }
                         cancelSchedulingTask(pet);
@@ -85,7 +86,7 @@ public class Scheduler {
     private void scheduleTeleport(Entity entity, Pet pet) {
         pet.setStayingLocation(entity.getLocation());
 
-        double secondsUntilRepeat = WildPets.getInstance().getConfig().getDouble("configOptions." + "secondsBetweenStayTeleports");
+        double secondsUntilRepeat = ConfigManager.getInstance().getDouble("secondsBetweenStayTeleports");
         pet.setTeleportTaskID(Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
             @Override
             public void run() {

@@ -1,6 +1,7 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.WildPets;
+import dansplugins.wildpets.managers.ConfigManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ public class HelpCommand {
         player.sendMessage(ChatColor.AQUA + "/wp help - View a list of helpful commands.");
         player.sendMessage(ChatColor.AQUA + "/wp tame - Tame an entity.");
         player.sendMessage(ChatColor.AQUA + "/wp list - List tamed pets.");
-        if (!WildPets.getInstance().getConfig().getBoolean("configOptions." + "rightClickToSelect")) {
+        if (!ConfigManager.getInstance().getBoolean("rightClickToSelect")) {
             player.sendMessage(ChatColor.AQUA + "/wp select - Select a pet by interaction.");
         }
         player.sendMessage(ChatColor.AQUA + "/wp select (petName) - Select a pet by name.");
