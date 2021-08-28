@@ -45,8 +45,8 @@ public class ConfigManager {
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickViewCooldown", 3);
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenStayTeleports", 0.5);
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickToSelect", false);
-        WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenSchedulingAttempts", 30);
-        WildPets.getInstance().getConfig().set(configOptionsPrefix + "maxScheduleAttempts", 120);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenSchedulingAttempts", 60);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "maxScheduleAttempts", 1440);
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
@@ -105,10 +105,10 @@ public class ConfigManager {
             WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickToSelect", true);
         }
         if (!WildPets.getInstance().getConfig().isSet(configOptionsPrefix + "secondsBetweenSchedulingAttempts")) {
-            WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenSchedulingAttempts", 30);
+            WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenSchedulingAttempts", 60);
         }
         if (!WildPets.getInstance().getConfig().isSet(configOptionsPrefix + "maxScheduleAttempts")) {
-            WildPets.getInstance().getConfig().set(configOptionsPrefix + "maxScheduleAttempts", 120);
+            WildPets.getInstance().getConfig().set(configOptionsPrefix + "maxScheduleAttempts", 1440);
         }
 
         // save default entity configuration
