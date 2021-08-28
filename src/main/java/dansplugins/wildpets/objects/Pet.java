@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
+import dansplugins.wildpets.utils.Scheduler;
 import dansplugins.wildpets.utils.UUIDChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,6 +12,7 @@ import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.world.ChunkUnloadEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +30,8 @@ public class Pet {
     private int lastKnownZ = -1;
 
     private Location stayingLocation;
+    private int schedulerTaskID = -1;
+    private int scheduleAttempts = 0;
     private int teleportTaskID = -1;
 
     public Pet(Entity entity, UUID playerOwner) {
@@ -117,17 +121,17 @@ public class Pet {
 
     public void setWandering() {
         movementState = "Wandering";
-        cancelTeleportTask(); // TODO: find a better solution for this
+        Scheduler.getInstance().cancelTeleportTask(this); // TODO: find a better solution for this
     }
 
     public void setStaying() {
         movementState = "Staying";
-        scheduleTeleportTask(); // TODO: find a better solution for this
+        Scheduler.getInstance().attemptToScheduleTeleportTask(this); // TODO: find a better solution for this
     }
 
     public void setFollowing() {
         if (movementState != null && movementState.equals("Staying")) {
-            cancelTeleportTask();
+            Scheduler.getInstance().cancelTeleportTask(this);
         }
         movementState = "Following";
     }
@@ -136,31 +140,36 @@ public class Pet {
         return movementState;
     }
 
-    private void scheduleTeleportTask() {
-        if (teleportTaskID != -1) {
-            return;
-        }
-
-        Entity entity = Bukkit.getEntity(uniqueID);
-
-        if (entity != null) {
-            stayingLocation = entity.getLocation();
-
-            double secondsUntilRepeat = WildPets.getInstance().getConfig().getDouble("configOptions." + "secondsBetweenStayTeleports");
-            teleportTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    float yaw = entity.getLocation().getYaw();
-                    float pitch = entity.getLocation().getPitch();
-                    entity.teleport(new Location(stayingLocation.getWorld(), stayingLocation.getX(), stayingLocation.getY(), stayingLocation.getZ(), yaw, pitch));
-                }
-            }, 0, (int)(secondsUntilRepeat * 20));
-        }
+    public int getSchedulerTaskID() {
+        return schedulerTaskID;
     }
 
-    private void cancelTeleportTask() {
-        Bukkit.getScheduler().cancelTask(teleportTaskID);
-        teleportTaskID = -1;
+    public void setSchedulerTaskID(int schedulerTaskID) {
+        this.schedulerTaskID = schedulerTaskID;
+    }
+
+    public int getScheduleAttempts() {
+        return scheduleAttempts;
+    }
+
+    public void incrementScheduleAttempts() {
+        this.scheduleAttempts++;
+    }
+
+    public int getTeleportTaskID() {
+        return teleportTaskID;
+    }
+
+    public void setTeleportTaskID(int teleportTaskID) {
+        this.teleportTaskID = teleportTaskID;
+    }
+
+    public Location getStayingLocation() {
+        return stayingLocation;
+    }
+
+    public void setStayingLocation(Location location) {
+        stayingLocation = location;
     }
 
     private void setLastKnownLocation(Location location) {
@@ -181,7 +190,6 @@ public class Pet {
         saveMap.put("lastKnownX", gson.toJson(lastKnownX));
         saveMap.put("lastKnownY", gson.toJson(lastKnownY));
         saveMap.put("lastKnownZ", gson.toJson(lastKnownZ));
-
 
         return saveMap;
     }
@@ -209,4 +217,5 @@ public class Pet {
             setFollowing();
         }
     }
+
 }
