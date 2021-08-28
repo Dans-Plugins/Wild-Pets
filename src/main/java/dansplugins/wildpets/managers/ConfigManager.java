@@ -44,7 +44,7 @@ public class ConfigManager {
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "cancelTamingAfterFailedAttempt", false);
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickViewCooldown", 3);
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenStayTeleports", 0.5);
-        WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickToSelect", false);
+        WildPets.getInstance().getConfig().set(configOptionsPrefix + "rightClickToSelect", true);
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "secondsBetweenSchedulingAttempts", 60);
         WildPets.getInstance().getConfig().set(configOptionsPrefix + "maxScheduleAttempts", 1440);
 
