@@ -73,12 +73,12 @@ public class PetList {
 
             ChatColor color;
             if (entity != null) {
-                color = ChatColor.AQUA;
+                player.sendMessage(ChatColor.AQUA + pet.getName());
             }
             else {
-                color = ChatColor.RED;
+                player.sendMessage(ChatColor.AQUA + pet.getName() + ChatColor.RED + " [not found]");
             }
-            player.sendMessage(color + pet.getName());
+
         }
     }
 
