@@ -2,6 +2,7 @@ package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
+import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.objects.Pet;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -37,6 +38,12 @@ public class RenameCommand {
 
         if (newName.equalsIgnoreCase("cancel")) {
             player.sendMessage(ChatColor.RED + "You can't name your pet 'cancel'.");
+            return false;
+        }
+
+        int characterLimit = ConfigManager.getInstance().getInt("petNameCharacterLimit");
+        if (newName.length() > characterLimit) {
+            player.sendMessage(ChatColor.RED + "Your pet's name can't contain more than " + characterLimit + " characters.");
             return false;
         }
 
