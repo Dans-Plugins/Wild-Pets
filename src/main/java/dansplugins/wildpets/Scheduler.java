@@ -2,6 +2,7 @@ package dansplugins.wildpets;
 
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.managers.ConfigManager;
+import dansplugins.wildpets.managers.StorageManager;
 import dansplugins.wildpets.objects.Pet;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,6 +32,19 @@ public class Scheduler {
 
             }
         }, seconds * 20);
+    }
+
+    public void scheduleAutosave() {
+        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("Scheduling hourly autosave."); }
+        int delay = 60 * 60; // 1 hour
+        int secondsUntilRepeat = 60 * 60; // 1 hour
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                if (WildPets.getInstance().isDebugEnabled()) { System.out.println("Wild Pets is saving. This will happen hourly."); }
+                StorageManager.getInstance().save();
+            }
+        }, delay * 20, secondsUntilRepeat * 20);
     }
 
     public void attemptToScheduleTeleportTask(Pet pet) {

@@ -38,8 +38,13 @@ public final class WildPets extends JavaPlugin {
             EntityConfigManager.getInstance().initializeWithConfig();
         }
 
+        // schedule auto save
+        Scheduler.getInstance().scheduleAutosave();
+
+        // register events
         EventRegistry.getInstance().registerEvents();
 
+        // load save files
         StorageManager.getInstance().load();
 
         // bStats
