@@ -72,7 +72,7 @@ public class Scheduler {
                     cancelSchedulingTask(pet);
                 }
                 else {
-                    if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity '" + pet.getName() + "' cannot be found! Cannot schedule teleport task. Will retry in " + secondsUntilRepeat + " seconds."); }
+                    if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity '" + pet.getName() + "' cannot be found! Cannot schedule teleport task. Will retry in " + secondsUntilRepeat + " seconds. Attempt: " + pet.getScheduleAttempts()); }
                     pet.incrementScheduleAttempts();
 
                     int maxScheduleAttempts = ConfigManager.getInstance().getInt("maxScheduleAttempts");
