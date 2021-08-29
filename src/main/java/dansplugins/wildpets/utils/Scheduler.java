@@ -64,8 +64,9 @@ public class Scheduler {
 
                     int maxScheduleAttempts = ConfigManager.getInstance().getInt("maxScheduleAttempts");
                     if (pet.getScheduleAttempts() > maxScheduleAttempts) {
-                        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity '" + pet.getName() + "' wasn't able to be found more than " + maxScheduleAttempts + " times. Cannot schedule."); }
+                        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] The entity '" + pet.getName() + "' wasn't able to be found more than " + maxScheduleAttempts + " times. Cannot schedule. Setting pet to wander."); }
                         cancelSchedulingTask(pet);
+                        pet.setWandering();
                     }
                 }
             }
