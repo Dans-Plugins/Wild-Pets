@@ -1,6 +1,5 @@
-package dansplugins.wildpets.utils;
+package dansplugins.wildpets;
 
-import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.objects.Pet;

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.utils.Scheduler;
+import dansplugins.wildpets.Scheduler;
 import dansplugins.wildpets.utils.UUIDChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

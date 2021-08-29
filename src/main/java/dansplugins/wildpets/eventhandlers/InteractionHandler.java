@@ -7,7 +7,7 @@ import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.managers.EntityConfigManager;
 import dansplugins.wildpets.objects.EntityConfig;
 import dansplugins.wildpets.objects.Pet;
-import dansplugins.wildpets.utils.Scheduler;
+import dansplugins.wildpets.Scheduler;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
