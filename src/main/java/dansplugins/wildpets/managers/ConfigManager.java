@@ -70,6 +70,9 @@ public class ConfigManager {
         if (!getConfig().isSet(configOptionsPrefix + "maxScheduleAttempts")) {
             getConfig().set(configOptionsPrefix + "maxScheduleAttempts", 1440);
         }
+        if (!getConfig().isSet(configOptionsPrefix + "petNameCharacterLimit")) {
+            getConfig().set(configOptionsPrefix + "petNameCharacterLimit", 20);
+        }
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
@@ -114,7 +117,8 @@ public class ConfigManager {
                 return;
             } else if (option.equalsIgnoreCase("rightClickViewCooldown")
                     || option.equalsIgnoreCase("secondsBetweenSchedulingAttempts")
-                    || option.equalsIgnoreCase("maxScheduleAttempts")) {
+                    || option.equalsIgnoreCase("maxScheduleAttempts")
+                    || option.equalsIgnoreCase("petNameCharacterLimit")) {
                 getConfig().set(configOptionsPrefix + option, Integer.parseInt(value));
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
             } else if (option.equalsIgnoreCase("debugMode")
@@ -140,14 +144,15 @@ public class ConfigManager {
     public void sendConfigList(CommandSender sender) {
         sender.sendMessage(ChatColor.AQUA + "=== Config List ===");
         sender.sendMessage(ChatColor.AQUA + "version: " + getConfig().getString("version")
-                + ", debugMode: " + getConfig().getString(configOptionsPrefix + "debugMode")
-                + ", petLimit: " + getConfig().getString(configOptionsPrefix + "petLimit")
-                + ", cancelTamingAfterFailedAttempt: " + getConfig().getString(configOptionsPrefix + "cancelTamingAfterFailedAttempt")
-                + ", rightClickViewCooldown: " + getConfig().getInt(configOptionsPrefix + "rightClickViewCooldown")
-                + ", secondsBetweenStayTeleports: " + getConfig().getDouble(configOptionsPrefix + "secondsBetweenStayTeleports")
-                + ", rightClickToSelect: " + getConfig().getBoolean(configOptionsPrefix + "rightClickToSelect")
-                + ", secondsBetweenSchedulingAttempts: " + getConfig().getInt(configOptionsPrefix + "secondsBetweenSchedulingAttempts")
-                + ", maxScheduleAttempts: " + getConfig().getInt(configOptionsPrefix + "maxScheduleAttempts"));
+                + ", debugMode: " + getString("debugMode")
+                + ", petLimit: " + getString("petLimit")
+                + ", cancelTamingAfterFailedAttempt: " + getString("cancelTamingAfterFailedAttempt")
+                + ", rightClickViewCooldown: " + getInt("rightClickViewCooldown")
+                + ", secondsBetweenStayTeleports: " + getDouble("secondsBetweenStayTeleports")
+                + ", rightClickToSelect: " + getBoolean("rightClickToSelect")
+                + ", secondsBetweenSchedulingAttempts: " + getInt("secondsBetweenSchedulingAttempts")
+                + ", maxScheduleAttempts: " + getInt("maxScheduleAttempts")
+                + ", petNameCharacterLimit: " + getInt("petNameCharacterLimit"));
         sender.sendMessage(ChatColor.AQUA + "====================");
         sender.sendMessage(ChatColor.AQUA + "Note: Entity configurations are not shown.");
         sender.sendMessage(ChatColor.AQUA + "====================");
