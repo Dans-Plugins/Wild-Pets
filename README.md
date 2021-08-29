@@ -3,10 +3,9 @@ Wild Pets is an open source minecraft plugin that allows you to tame entities an
 
 # Features
 - Taming
-- Entity
+- Entity-specific configurations
 - 3 Movement States (staying, wandering, following)
 - Persistent and protected pets
-- Entity-specific configurations
 - 5+ config options
 
 # Wiki
