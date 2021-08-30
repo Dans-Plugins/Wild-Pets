@@ -14,6 +14,9 @@ Wild Pets is an open source minecraft plugin that allows players to tame any ent
 ## Support
 You can find the support discord server [here](https://discord.gg/xXtuAQ2).
 
+### Experiencing a bug?
+Please fill out a bug report [here](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aissue+is%3Aopen+label%3Abug).
+
 ## Roadmap
 - [Known Bugs](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
 - [Planned Features](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aopen+is%3Aissue+label%3AEpic)
@@ -31,8 +34,5 @@ GPL3
 ## Project Status
 This project is in active development.
 
-## Experiencing a bug?
-Please fill out a bug report [here](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aissue+is%3Aopen+label%3Abug).
-
-## bStats
+### bStats
 You can view the bStats page for the plugin [here](https://bstats.org/plugin/bukkit/Wild%20Pets/12332).
