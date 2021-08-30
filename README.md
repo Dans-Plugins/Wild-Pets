@@ -7,13 +7,13 @@
 - [Major Version Changes](https://github.com/dmccoystephenson/Wild-Pets/wiki/Major-Version-Changes)
 - [Releases](https://github.com/dmccoystephenson/Wild-Pets/releases)
 
-## Experiencing a bug?
-Please fill out a bug report [here](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aissue+is%3Aopen+label%3Abug).
-
 ## Project Planning
 - [Known Bugs](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
 - [Planned Features](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aopen+is%3Aissue+label%3AEpic)
 - [Planned Improvements](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
+
+## Experiencing a bug?
+Please fill out a bug report [here](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aissue+is%3Aopen+label%3Abug).
 
 ## bStats
 You can view the bStats page for the plugin [here](https://bstats.org/plugin/bukkit/Wild%20Pets/12332).
