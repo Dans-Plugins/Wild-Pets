@@ -1,7 +1,7 @@
 # Wild Pets Wiki
 ## Useful Links For Server Owners and Players
 - [What is Wild Pets?](https://github.com/dmccoystephenson/Wild-Pets/wiki/What-is-this%3F)
-- [User Guide (coming soon)](https://github.com/dmccoystephenson/Wild-Pets/wiki/Guide)
+- [User Guide](https://github.com/dmccoystephenson/Wild-Pets/wiki/Guide)
 - [List of Commands](https://github.com/dmccoystephenson/Wild-Pets/wiki/Commands)
 - [FAQ](https://github.com/dmccoystephenson/Wild-Pets/wiki/FAQ)
 - [Major Version Changes](https://github.com/dmccoystephenson/Wild-Pets/wiki/Major-Version-Changes)
