@@ -8,6 +8,7 @@
 - [Releases](https://github.com/dmccoystephenson/Wild-Pets/releases)
 
 ## Project Planning
+- [Notes for Developers](https://github.com/dmccoystephenson/Wild-Pets/wiki/Developer-Notes)
 - [Known Bugs](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
 - [Planned Features](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aopen+is%3Aissue+label%3AEpic)
 - [Planned Improvements](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
