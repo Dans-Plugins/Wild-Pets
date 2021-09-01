@@ -2,6 +2,7 @@ name: WildPets
 version: 1.0
 main: dansplugins.wildpets.WildPets
 api-version: 1.13
+author: DanTheTechMan
 
 commands:
   wildpets:
