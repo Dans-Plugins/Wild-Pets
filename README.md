@@ -4,7 +4,11 @@
 Wild Pets is an open source minecraft plugin that allows players to tame any entity in the game so long as their configuration is enabled.
 
 ## Installation
-(coming soon)
+1) You can download the plugin from [this page](https://www.spigotmc.org/resources/wild-pets.95800/).
+
+2) Once downloaded, place the jar in the plugins folder of your server files.
+
+3) Restart your server.
 
 ## Usage
 - [User Guide](https://github.com/dmccoystephenson/Wild-Pets/wiki/Guide)
@@ -26,7 +30,9 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/Wild-Pet
 - [Notes for Developers (coming soon)](https://github.com/dmccoystephenson/Wild-Pets/wiki/Developer-Notes)
 
 ## Authors and acknowledgement
-(coming soon)
+Name | Main Contributions
+------------ | -------------
+DanTheTechMan | Creator
 
 ## License
 GPL3
