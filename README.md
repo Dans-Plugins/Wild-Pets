@@ -34,7 +34,7 @@ Name | Main Contributions
 ------------ | -------------
 DanTheTechMan | Creator
 
-I created this plugin because one of my players, [TheeFallen100](https://www.planetminecraft.com/member/theefallen), said they wanted to tame a fox. When I mentioned I could make a plugin that could accomplish that, they suggested I name it Wild Pets.
+I created this plugin because one of my players, [TheeFallen100](https://www.planetminecraft.com/member/theefallen), said they wished they could tame a fox. When I mentioned I could make a plugin that could accomplish that, they suggested I name it Wild Pets.
 
 ## License
 GPL3
