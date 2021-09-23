@@ -97,6 +97,12 @@ public class CommandInterpreter {
                 return command.execute(sender, arguments);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("stats")) {
+                checkPermission(sender, "wp.stats");
+                StatsCommand command = new StatsCommand();
+                return command.execute(sender);
+            }
+
         }
 
         sender.sendMessage(ChatColor.RED + "Wild Pets doesn't recognize that command.");
