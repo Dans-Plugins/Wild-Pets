@@ -32,7 +32,7 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/Wild-Pet
 ## Authors and acknowledgement
 Name | Main Contributions
 ------------ | -------------
-DanTheTechMan | Creator
+Daniel Stephenson | Creator
 
 I created this plugin because one of my players, [TheeFallen100](https://www.planetminecraft.com/member/theefallen), said they wished they could tame a fox. When I mentioned I could make a plugin that could accomplish that, they suggested I name it Wild Pets.
 
