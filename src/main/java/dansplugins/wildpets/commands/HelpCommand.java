@@ -29,6 +29,9 @@ public class HelpCommand {
         player.sendMessage(ChatColor.AQUA + "/wp follow - Make selected pet follow you.");
         player.sendMessage(ChatColor.AQUA + "/wp call - Call selected pet to come to you.");
         player.sendMessage(ChatColor.AQUA + "/wp locate - Locate your selected pet.");
+        player.sendMessage(ChatColor.AQUA + "/wp lock - Lock your pet.");
+        player.sendMessage(ChatColor.AQUA + "/wp unlock - Unock your pet.");
+        player.sendMessage(ChatColor.AQUA + "/wp checkaccess - Check who has access to your pet.");
         player.sendMessage(ChatColor.AQUA + "/wp config - View or set config options.");
         return true;
     }

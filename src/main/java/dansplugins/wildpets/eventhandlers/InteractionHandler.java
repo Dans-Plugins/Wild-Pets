@@ -141,12 +141,14 @@ public class InteractionHandler implements Listener {
 
             if (!pet.getOwnerUUID().equals(player.getUniqueId())) {
                 player.sendMessage(ChatColor.RED + "This is not your pet.");
+                EphemeralData.getInstance().setPlayerAsNotLocking(player);
                 return;
             }
 
             boolean locked = pet.getLocked();
             if (locked) {
                 player.sendMessage(ChatColor.RED + "This pet is already locked.");
+                EphemeralData.getInstance().setPlayerAsNotLocking(player);
                 return;
             }
             pet.setLocked(true);
@@ -163,12 +165,14 @@ public class InteractionHandler implements Listener {
 
             if (!pet.getOwnerUUID().equals(player.getUniqueId())) {
                 player.sendMessage(ChatColor.RED + "This is not your pet.");
+                EphemeralData.getInstance().setPlayerAsNotUnlocking(player);
                 return;
             }
 
             boolean locked = pet.getLocked();
             if (!locked) {
                 player.sendMessage(ChatColor.RED + "This pet is already unlocked.");
+                EphemeralData.getInstance().setPlayerAsNotUnlocking(player);
                 return;
             }
             pet.setLocked(false);
@@ -180,12 +184,26 @@ public class InteractionHandler implements Listener {
             if (pet == null) {
                 player.sendMessage(ChatColor.RED + "This entity isn't a pet.");
                 EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player);
+                EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player);
                 return;
             }
 
             boolean locked = pet.getLocked();
             if (!locked) {
                 player.sendMessage(ChatColor.RED + "This pet isn't locked.");
+                EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player);
+                return;
+            }
+
+            if (pet.getAccessList().size() == 0) {
+                player.sendMessage(ChatColor.RED + "No one has access to this pet.");
+                EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player);
+                return;
+            }
+
+            if (pet.getAccessList().size() == 1 && pet.getAccessList().get(0).equals(player.getUniqueId())) {
+                player.sendMessage(ChatColor.RED + "No one has access to this pet but you.");
+                EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player);
                 return;
             }
 
