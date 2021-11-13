@@ -129,6 +129,15 @@ public class InteractionHandler implements Listener {
             player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
             EphemeralData.getInstance().setPlayerAsNotSelecting(player);
         }
+        else if (EphemeralData.getInstance().isPlayerLocking(player)) {
+            // TODO: implement
+        }
+        else if (EphemeralData.getInstance().isPlayerUnlocking(player)) {
+            // TODO: implement
+        }
+        else if (EphemeralData.getInstance().isPlayerCheckingAccess(player)) {
+            // TODO: implement
+        }
         else {
             if (pet == null) {
                 return;
