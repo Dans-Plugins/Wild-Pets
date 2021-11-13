@@ -52,6 +52,8 @@ public class Pet implements Lockable {
 
         entity.playEffect(EntityEffect.LOVE_HEARTS);
 
+        accessList.add(playerOwner);
+
         if (WildPets.getInstance().isDebugEnabled()) {
             System.out.println("[DEBUG] Pet instantiated!");
         }
