@@ -106,6 +106,7 @@ public class Pet implements Lockable {
         player.sendMessage(ChatColor.AQUA + "Name: " + name);
         player.sendMessage(ChatColor.AQUA + "Owner: " + UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID));
         player.sendMessage(ChatColor.AQUA + "State: " + movementState);
+        player.sendMessage(ChatColor.AQUA + "Locked: " + locked);
         if (WildPets.getInstance().isDebugEnabled()) {
             player.sendMessage(ChatColor.AQUA + "[DEBUG] uniqueID: " + uniqueID.toString());
             player.sendMessage(ChatColor.AQUA + "[DEBUG] ownerUUID: " + ownerUUID.toString());
