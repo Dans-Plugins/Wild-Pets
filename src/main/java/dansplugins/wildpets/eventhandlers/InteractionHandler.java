@@ -8,6 +8,7 @@ import dansplugins.wildpets.managers.EntityConfigManager;
 import dansplugins.wildpets.objects.EntityConfig;
 import dansplugins.wildpets.objects.Pet;
 import dansplugins.wildpets.Scheduler;
+import dansplugins.wildpets.utils.UUIDChecker;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -19,6 +20,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
+import java.util.UUID;
 
 public class InteractionHandler implements Listener {
 
@@ -130,13 +132,68 @@ public class InteractionHandler implements Listener {
             EphemeralData.getInstance().setPlayerAsNotSelecting(player);
         }
         else if (EphemeralData.getInstance().isPlayerLocking(player)) {
-            // TODO: implement
+
+            if (pet == null) {
+                player.sendMessage(ChatColor.RED + "This entity isn't a pet.");
+                EphemeralData.getInstance().setPlayerAsNotLocking(player);
+                return;
+            }
+
+            if (!pet.getOwnerUUID().equals(player.getUniqueId())) {
+                player.sendMessage(ChatColor.RED + "This is not your pet.");
+                return;
+            }
+
+            boolean locked = pet.getLocked();
+            if (locked) {
+                player.sendMessage(ChatColor.RED + "This pet is already locked.");
+                return;
+            }
+            pet.setLocked(true);
+            player.sendMessage(ChatColor.GREEN + "This pet has been locked.");
         }
         else if (EphemeralData.getInstance().isPlayerUnlocking(player)) {
-            // TODO: implement
+
+            if (pet == null) {
+                player.sendMessage(ChatColor.RED + "This entity isn't a pet.");
+                EphemeralData.getInstance().setPlayerAsNotLocking(player);
+                return;
+            }
+
+            if (!pet.getOwnerUUID().equals(player.getUniqueId())) {
+                player.sendMessage(ChatColor.RED + "This is not your pet.");
+                return;
+            }
+
+            boolean locked = pet.getLocked();
+            if (!locked) {
+                player.sendMessage(ChatColor.RED + "This pet is already unlocked.");
+                return;
+            }
+            pet.setLocked(false);
+            player.sendMessage(ChatColor.GREEN + "This pet has been unlocked.");
         }
         else if (EphemeralData.getInstance().isPlayerCheckingAccess(player)) {
-            // TODO: implement
+
+            if (pet == null) {
+                player.sendMessage(ChatColor.RED + "This entity isn't a pet.");
+                EphemeralData.getInstance().setPlayerAsNotLocking(player);
+                return;
+            }
+
+            boolean locked = pet.getLocked();
+            if (!locked) {
+                player.sendMessage(ChatColor.RED + "This pet isn't locked.");
+                return;
+            }
+
+            player.sendMessage(ChatColor.AQUA + "The following players have access to this pet:");
+            for (UUID uuid : pet.getAccessList()) {
+                String playerName = UUIDChecker.getInstance().findPlayerNameBasedOnUUID(uuid);
+                if (playerName != null) {
+                    player.sendMessage(ChatColor.AQUA + playerName);
+                }
+            }
         }
         else {
             if (pet == null) {
