@@ -121,6 +121,12 @@ public class CommandInterpreter {
                 return command.execute(sender);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("revokeaccess")) {
+                checkPermission(sender, "wp.revokeaccess");
+                RevokeAccessCommand command = new RevokeAccessCommand();
+                return command.execute(sender);
+            }
+
         }
 
         sender.sendMessage(ChatColor.RED + "Wild Pets doesn't recognize that command.");
