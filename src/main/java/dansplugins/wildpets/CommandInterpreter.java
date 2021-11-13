@@ -103,6 +103,24 @@ public class CommandInterpreter {
                 return command.execute(sender);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("lock")) {
+                checkPermission(sender, "wp.lock");
+                LockCommand command = new LockCommand();
+                return command.execute(sender);
+            }
+
+            if (secondaryLabel.equalsIgnoreCase("unlock")) {
+                checkPermission(sender, "wp.unlock");
+                UnlockCommand command = new UnlockCommand();
+                return command.execute(sender);
+            }
+
+            if (secondaryLabel.equalsIgnoreCase("checkaccess")) {
+                checkPermission(sender, "wp.checkaccess");
+                CheckAccessCommand command = new CheckAccessCommand();
+                return command.execute(sender);
+            }
+
         }
 
         sender.sendMessage(ChatColor.RED + "Wild Pets doesn't recognize that command.");
