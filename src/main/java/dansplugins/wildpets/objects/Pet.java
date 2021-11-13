@@ -2,6 +2,7 @@ package dansplugins.wildpets.objects;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.Scheduler;
@@ -12,22 +13,26 @@ import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import preponderous.ponder.modifiers.Lockable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.lang.reflect.Type;
+import java.util.*;
 
-public class Pet {
+public class Pet implements Lockable {
 
-    private UUID uniqueID; // saved
-    private UUID ownerUUID; // saved
+    // persistent
+    private UUID uniqueID;
+    private UUID ownerUUID;
     private int assignedID;
-    private String name; // saved
-    private String movementState; // saved
+    private String name;
+    private String movementState;
     private int lastKnownX = -1;
     private int lastKnownY = -1;
     private int lastKnownZ = -1;
+    private boolean locked = false; // TODO: make persistent
+    private HashSet<UUID> accessList = new HashSet<>(); // TODO: make persistent
 
+    // ephemeral
     private Location stayingLocation;
     private int schedulerTaskID = -1;
     private int scheduleAttempts = 0;
@@ -177,6 +182,44 @@ public class Pet {
         lastKnownZ = (int) location.getZ();
     }
 
+    @Override
+    public void setOwner(UUID uuid) {
+        this.ownerUUID = uuid;
+    }
+
+    @Override
+    public UUID getOwner() {
+        return ownerUUID;
+    }
+
+    @Override
+    public void addToAccessList(UUID uuid) {
+        accessList.add(uuid);
+    }
+
+    @Override
+    public void removeFromAccessList(UUID uuid) {
+        accessList.remove(uuid);
+    }
+
+    @Override
+    public boolean hasAccess(UUID uuid) {
+        return accessList.contains(uuid);
+    }
+
+    @Override
+    public ArrayList<UUID> getAccessList() {
+        return new ArrayList<>(accessList);
+    }
+
+    public boolean getLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean b) {
+        locked = b;
+    }
+
     public Map<String, String> save() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();;
 
@@ -189,12 +232,16 @@ public class Pet {
         saveMap.put("lastKnownX", gson.toJson(lastKnownX));
         saveMap.put("lastKnownY", gson.toJson(lastKnownY));
         saveMap.put("lastKnownZ", gson.toJson(lastKnownZ));
+        saveMap.put("locked", gson.toJson(locked));
+        saveMap.put("accessList", gson.toJson(accessList));
 
         return saveMap;
     }
 
     private void load(Map<String, String> data) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        Type hashsetTypeUUID = new TypeToken<HashSet<UUID>>(){}.getType();
 
         uniqueID = UUID.fromString(gson.fromJson(data.get("uniqueID"), String.class));
         ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
@@ -215,6 +262,8 @@ public class Pet {
         else if (state.equalsIgnoreCase("Following")) {
             setFollowing();
         }
-    }
 
+        locked = Boolean.parseBoolean(data.getOrDefault("locked", "false"));
+        accessList = gson.fromJson(data.getOrDefault("accessList", "[]"), hashsetTypeUUID);
+    }
 }
