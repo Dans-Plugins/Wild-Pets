@@ -151,12 +151,13 @@ public class InteractionHandler implements Listener {
             }
             pet.setLocked(true);
             player.sendMessage(ChatColor.GREEN + "This pet has been locked.");
+            EphemeralData.getInstance().setPlayerAsNotLocking(player);
         }
         else if (EphemeralData.getInstance().isPlayerUnlocking(player)) {
 
             if (pet == null) {
                 player.sendMessage(ChatColor.RED + "This entity isn't a pet.");
-                EphemeralData.getInstance().setPlayerAsNotLocking(player);
+                EphemeralData.getInstance().setPlayerAsNotUnlocking(player);
                 return;
             }
 
@@ -172,12 +173,13 @@ public class InteractionHandler implements Listener {
             }
             pet.setLocked(false);
             player.sendMessage(ChatColor.GREEN + "This pet has been unlocked.");
+            EphemeralData.getInstance().setPlayerAsNotUnlocking(player);
         }
         else if (EphemeralData.getInstance().isPlayerCheckingAccess(player)) {
 
             if (pet == null) {
                 player.sendMessage(ChatColor.RED + "This entity isn't a pet.");
-                EphemeralData.getInstance().setPlayerAsNotLocking(player);
+                EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player);
                 return;
             }
 
@@ -194,6 +196,7 @@ public class InteractionHandler implements Listener {
                     player.sendMessage(ChatColor.AQUA + playerName);
                 }
             }
+            EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player);
         }
         else {
             if (pet == null) {
