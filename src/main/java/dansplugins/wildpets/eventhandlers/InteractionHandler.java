@@ -18,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.spigotmc.event.entity.EntityMountEvent;
 
 import java.util.Random;
 import java.util.UUID;
@@ -245,6 +246,33 @@ public class InteractionHandler implements Listener {
             }
         }
 
+    }
+
+    @EventHandler()
+    public void handle(EntityMountEvent event) {
+        Entity entity = event.getEntity();
+        if (!(entity instanceof Player)) {
+            return;
+        }
+        Player player = (Player) entity;
+
+        Entity mount = event.getMount();
+        Pet pet = PersistentData.getInstance().getPet(mount);
+        if (pet == null) {
+            return;
+        }
+
+        if (!pet.getLocked()) {
+            return;
+        }
+
+        if (!pet.getAccessList().contains(player.getUniqueId())) {
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.RED + "You don't have access to this pet.");
+            return;
+        }
+
+        player.sendMessage(ChatColor.GREEN + "You mount " + pet.getName());
     }
 
     private void setRightClickCooldown(Player player, int seconds) {
