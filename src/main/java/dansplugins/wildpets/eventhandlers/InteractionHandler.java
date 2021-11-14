@@ -155,6 +155,7 @@ public class InteractionHandler implements Listener {
             pet.setLocked(true);
             player.sendMessage(ChatColor.GREEN + "This pet has been locked.");
             EphemeralData.getInstance().setPlayerAsNotLocking(player);
+            event.setCancelled(true);
         }
         else if (EphemeralData.getInstance().isPlayerUnlocking(player)) {
 
@@ -179,6 +180,7 @@ public class InteractionHandler implements Listener {
             pet.setLocked(false);
             player.sendMessage(ChatColor.GREEN + "This pet has been unlocked.");
             EphemeralData.getInstance().setPlayerAsNotUnlocking(player);
+            event.setCancelled(true);
         }
         else if (EphemeralData.getInstance().isPlayerCheckingAccess(player)) {
 
@@ -216,6 +218,7 @@ public class InteractionHandler implements Listener {
                 }
             }
             EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player);
+            event.setCancelled(true);
         }
         else {
             if (pet == null) {
