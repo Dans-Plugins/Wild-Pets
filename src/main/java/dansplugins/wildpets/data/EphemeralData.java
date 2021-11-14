@@ -3,7 +3,7 @@ package dansplugins.wildpets.data;
 import dansplugins.wildpets.objects.Pet;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.HashMap;
 
 public class EphemeralData {
@@ -11,14 +11,17 @@ public class EphemeralData {
     private static EphemeralData instance;
 
     // action lists
-    private ArrayList<Player> tamingPlayers = new ArrayList<>();
-    private ArrayList<Player> selectingPlayers = new ArrayList<>();
+    private HashSet<Player> tamingPlayers = new HashSet<>();
+    private HashSet<Player> selectingPlayers = new HashSet<>();
+    private HashSet<Player> lockingPlayers = new HashSet<>();
+    private HashSet<Player> unlockingPlayers = new HashSet<>();
+    private HashSet<Player> accessCheckingPlayers = new HashSet<>();
 
     // selections list
     private HashMap<Player, Pet> selections = new HashMap<>();
 
     // cooldown lists
-    private ArrayList<Player> playersWithRightClickCooldown = new ArrayList<>();
+    private HashSet<Player> playersWithRightClickCooldown = new HashSet<>();
 
     private EphemeralData() {
 
@@ -65,6 +68,49 @@ public class EphemeralData {
         return selectingPlayers.contains(player);
     }
 
+
+    // -----
+
+    public void setPlayerAsLocking(Player player) {
+        lockingPlayers.add(player);
+    }
+
+    public void setPlayerAsNotLocking(Player player) {
+        lockingPlayers.remove(player);
+    }
+
+    public boolean isPlayerLocking(Player player) {
+        return lockingPlayers.contains(player);
+    }
+
+    // -----
+
+    public void setPlayerAsUnlocking(Player player) {
+        unlockingPlayers.add(player);
+    }
+
+    public void setPlayerAsNotUnlocking(Player player) {
+        unlockingPlayers.remove(player);
+    }
+
+    public boolean isPlayerUnlocking(Player player) {
+        return unlockingPlayers.contains(player);
+    }
+
+    // -----
+
+    public void setPlayerAsCheckingAccess(Player player) {
+        accessCheckingPlayers.add(player);
+    }
+
+    public void setPlayerAsNotCheckingAccess(Player player) {
+        accessCheckingPlayers.remove(player);
+    }
+
+    public boolean isPlayerCheckingAccess(Player player) {
+        return accessCheckingPlayers.contains(player);
+    }
+
     // -----
 
     public void selectPetForPlayer(Pet pet, Player player) {
@@ -83,6 +129,7 @@ public class EphemeralData {
     public void clearPetSelectionForPlayer(Player player) {
         selections.remove(player);
     }
+
 
     // -----
 
