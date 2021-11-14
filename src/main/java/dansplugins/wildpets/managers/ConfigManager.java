@@ -73,6 +73,9 @@ public class ConfigManager {
         if (!getConfig().isSet(configOptionsPrefix + "petNameCharacterLimit")) {
             getConfig().set(configOptionsPrefix + "petNameCharacterLimit", 20);
         }
+        if (!getConfig().isSet(configOptionsPrefix + "preventMountingLockedPets")) {
+            getConfig().set(configOptionsPrefix + "preventMountingLockedPets", true);
+        }
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
@@ -122,7 +125,8 @@ public class ConfigManager {
                 getConfig().set(configOptionsPrefix + option, Integer.parseInt(value));
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
             } else if (option.equalsIgnoreCase("debugMode")
-                    || option.equalsIgnoreCase("rightClickToSelect")) {
+                    || option.equalsIgnoreCase("rightClickToSelect")
+                    || option.equalsIgnoreCase("preventMountingLockedPets")) {
                 getConfig().set(configOptionsPrefix + option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
             } else if (option.equalsIgnoreCase("secondsBetweenStayTeleports")) { // no doubles yet
@@ -152,7 +156,8 @@ public class ConfigManager {
                 + ", rightClickToSelect: " + getBoolean("rightClickToSelect")
                 + ", secondsBetweenSchedulingAttempts: " + getInt("secondsBetweenSchedulingAttempts")
                 + ", maxScheduleAttempts: " + getInt("maxScheduleAttempts")
-                + ", petNameCharacterLimit: " + getInt("petNameCharacterLimit"));
+                + ", petNameCharacterLimit: " + getInt("petNameCharacterLimit")
+                + ", preventMountingLockedPets: " + getInt("preventMountingLockedPets"));
         sender.sendMessage(ChatColor.AQUA + "====================");
         sender.sendMessage(ChatColor.AQUA + "Note: Entity configurations are not shown.");
         sender.sendMessage(ChatColor.AQUA + "====================");
