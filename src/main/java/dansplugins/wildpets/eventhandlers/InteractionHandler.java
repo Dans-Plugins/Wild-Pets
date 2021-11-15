@@ -269,7 +269,7 @@ public class InteractionHandler implements Listener {
             return;
         }
 
-        if (!pet.getAccessList().contains(player.getUniqueId())) {
+        if (!pet.getOwnerUUID().equals(player.getUniqueId()) && !pet.getAccessList().contains(player.getUniqueId())) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "You don't have access to this pet.");
             return;
