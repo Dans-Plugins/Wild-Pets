@@ -16,6 +16,8 @@ public class EphemeralData {
     private HashSet<Player> lockingPlayers = new HashSet<>();
     private HashSet<Player> unlockingPlayers = new HashSet<>();
     private HashSet<Player> accessCheckingPlayers = new HashSet<>();
+    private HashSet<Player> accessGrantingPlayers = new HashSet<>(); // TODO: add associated methods
+    private HashSet<Player> accessRevokingPlayers = new HashSet<>(); // TODO: add associated methods
 
     // selections list
     private HashMap<Player, Pet> selections = new HashMap<>();

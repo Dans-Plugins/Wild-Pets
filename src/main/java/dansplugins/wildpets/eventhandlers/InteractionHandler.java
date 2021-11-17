@@ -220,6 +220,12 @@ public class InteractionHandler implements Listener {
             EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player);
             event.setCancelled(true);
         }
+        else if (EphemeralData.getInstance().isPlayerGrantingAccess(player)) {
+            // TODO: implement
+        }
+        else if (EphemeralData.getInstance().isPlayerRevokingAccess(player)) {
+            // TODO: implement
+        }
         else {
             if (pet == null) {
                 return;

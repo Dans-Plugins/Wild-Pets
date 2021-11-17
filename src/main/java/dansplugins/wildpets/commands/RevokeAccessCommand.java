@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 public class RevokeAccessCommand {
 
     public boolean execute(CommandSender sender) {
+        // TODO: implement
         sender.sendMessage(ChatColor.RED + "This command isn't implemented yet.");
         return false;
     }
