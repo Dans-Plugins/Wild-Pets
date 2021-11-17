@@ -121,6 +121,12 @@ public class CommandInterpreter {
                 return command.execute(sender);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("grantaccess")) {
+                checkPermission(sender, "wp.grantaccess");
+                GrantAccessCommand command = new GrantAccessCommand();
+                return command.execute(sender, arguments);
+            }
+
             if (secondaryLabel.equalsIgnoreCase("revokeaccess")) {
                 checkPermission(sender, "wp.revokeaccess");
                 RevokeAccessCommand command = new RevokeAccessCommand();

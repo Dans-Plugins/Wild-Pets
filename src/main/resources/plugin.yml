@@ -43,5 +43,9 @@ permissions:
     default: true
   wp.checkaccess:
     default: true
+  wp.grantaccess:
+    default: true
+  wp.revokeaccess:
+    default: true
   wp.config:
     default: op
