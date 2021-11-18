@@ -111,7 +111,7 @@ public final class WildPets extends AbstractPonderPlugin {
         }
     }
 
-    private void registerEventHandlers() {
+    private void registerEventHandlers() { // TODO: worry about this later
         /*
         ArrayList<Listener> listeners = new ArrayList<>();
         getToolbox().getEventHandlerRegistry().registerEventHandlers(listeners, this);
