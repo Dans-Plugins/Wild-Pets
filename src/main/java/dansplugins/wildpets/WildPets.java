@@ -2,11 +2,16 @@ package dansplugins.wildpets;
 
 import dansplugins.wildpets.bstats.Metrics;
 import dansplugins.wildpets.commands.*;
+import dansplugins.wildpets.eventhandlers.DamageEffectsAndDeathHandler;
+import dansplugins.wildpets.eventhandlers.InteractionHandler;
+import dansplugins.wildpets.eventhandlers.JoinHandler;
+import dansplugins.wildpets.eventhandlers.MoveHandler;
 import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.managers.EntityConfigManager;
 import dansplugins.wildpets.managers.StorageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import preponderous.ponder.AbstractPonderPlugin;
 import preponderous.ponder.misc.PonderAPI_Integrator;
@@ -32,8 +37,6 @@ public final class WildPets extends AbstractPonderPlugin {
         instance = this;
         ponderAPI_integrator = new PonderAPI_Integrator(this);
         toolbox = getPonderAPI().getToolbox();
-        initializeConfigService();
-        initializeConfigFile();
         registerEventHandlers();
         initializeCommandService();
         getPonderAPI().setDebug(false);
@@ -54,9 +57,6 @@ public final class WildPets extends AbstractPonderPlugin {
 
         // schedule auto save
         Scheduler.getInstance().scheduleAutosave();
-
-        // register events
-        EventRegistry.getInstance().registerEvents();
 
         // load save files
         StorageManager.getInstance().load();
@@ -92,30 +92,13 @@ public final class WildPets extends AbstractPonderPlugin {
         return !getConfig().getString("version").equalsIgnoreCase(getVersion());
     }
 
-    private void initializeConfigService() {
-        HashMap<String, Object> configOptions = new HashMap<>();
-        configOptions.put("debugMode", false);
-        getPonderAPI().getConfigService().initialize(configOptions);
-    }
-
-    private void initializeConfigFile() {
-        if (!(new File("./plugins/WildPets/config.yml").exists())) {
-            getPonderAPI().getConfigService().saveMissingConfigDefaultsIfNotPresent();
-        }
-        else {
-            // pre load compatibility checks
-            if (isVersionMismatched()) {
-                getPonderAPI().getConfigService().saveMissingConfigDefaultsIfNotPresent();
-            }
-            reloadConfig();
-        }
-    }
-
-    private void registerEventHandlers() { // TODO: worry about this later
-        /*
+    private void registerEventHandlers() {
         ArrayList<Listener> listeners = new ArrayList<>();
+        listeners.add(new DamageEffectsAndDeathHandler());
+        listeners.add(new InteractionHandler());
+        listeners.add(new JoinHandler());
+        listeners.add(new MoveHandler());
         getToolbox().getEventHandlerRegistry().registerEventHandlers(listeners, this);
-        */
     }
 
     private void initializeCommandService() {
