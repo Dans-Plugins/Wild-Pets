@@ -25,6 +25,7 @@ public class ConfigCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
+        commandSender.sendMessage(ChatColor.RED + "Usage: /wp set (option) (value)");
         return false;
     }
 
@@ -40,8 +41,7 @@ public class ConfigCommand extends AbstractCommand {
         }
         else if (args[0].equalsIgnoreCase("set")) {
             if (args.length < 3) {
-                sender.sendMessage(ChatColor.RED + "Usage: /wp set (option) (value)");
-                return false;
+                return execute(sender);
             }
             String option = args[1];
             String value = args[2];

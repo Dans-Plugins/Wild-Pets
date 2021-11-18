@@ -29,7 +29,13 @@ public class ListCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        return false;
+        if (!(commandSender instanceof Player)) {
+            return false;
+        }
+
+        Player player = (Player) commandSender;
+        PersistentData.getInstance().sendListOfPetsToPlayer(player);
+        return true;
     }
 
     public boolean execute(CommandSender sender, String[] args) {
@@ -38,24 +44,18 @@ public class ListCommand extends AbstractCommand {
         }
 
         Player player = (Player) sender;
-
-        if (args.length > 0) {
-            if (!player.hasPermission("wp.list.others")) {
-                sender.sendMessage(ChatColor.RED + "In order to view other players' pet lists, you need the following permission: 'wp.list.others'");
-                return false;
-            }
-            String targetPlayerName = args[0];
-            OfflinePlayer targetPlayer = Bukkit.getPlayer(targetPlayerName);
-            if (targetPlayer == null) {
-                player.sendMessage(ChatColor.RED + "That player wasn't found.");
-                return false;
-            }
-            PetList petList = PersistentData.getInstance().getPetList(targetPlayer.getUniqueId());
-            petList.sendListOfPetsToPlayer(player);
-            return true;
+        if (!player.hasPermission("wp.list.others")) {
+            sender.sendMessage(ChatColor.RED + "In order to view other players' pet lists, you need the following permission: 'wp.list.others'");
+            return false;
         }
-
-        PersistentData.getInstance().sendListOfPetsToPlayer(player);
+        String targetPlayerName = args[0];
+        OfflinePlayer targetPlayer = Bukkit.getPlayer(targetPlayerName);
+        if (targetPlayer == null) {
+            player.sendMessage(ChatColor.RED + "That player wasn't found.");
+            return false;
+        }
+        PetList petList = PersistentData.getInstance().getPetList(targetPlayer.getUniqueId());
+        petList.sendListOfPetsToPlayer(player);
         return true;
     }
 

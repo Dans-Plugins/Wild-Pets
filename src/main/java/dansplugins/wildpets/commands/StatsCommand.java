@@ -33,7 +33,7 @@ public class StatsCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender, String[] strings) {
-        return false;
+        return execute(commandSender);
     }
 
 }

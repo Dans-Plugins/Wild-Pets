@@ -29,6 +29,7 @@ public class RenameCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
+        commandSender.sendMessage(ChatColor.RED + "Usage: /wp rename (new name)");
         return false;
     }
 
@@ -40,8 +41,7 @@ public class RenameCommand extends AbstractCommand {
         Player player = (Player) sender;
 
         if (args.length == 0) {
-            player.sendMessage(ChatColor.RED + "Usage: /wp rename (new name)");
-            return false;
+            return execute(sender);
         }
 
         String newName = args[0];

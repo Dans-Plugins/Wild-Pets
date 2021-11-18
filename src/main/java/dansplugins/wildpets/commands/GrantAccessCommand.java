@@ -24,7 +24,9 @@ public class GrantAccessCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        return false;
+        // TODO: implement
+        commandSender.sendMessage(ChatColor.RED + "This command isn't implemented yet.");
+        return true;
     }
 
     public boolean execute(CommandSender sender, String[] args) {

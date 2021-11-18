@@ -29,42 +29,11 @@ public class SelectCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        return false;
-    }
-
-    public boolean execute(CommandSender sender, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(commandSender instanceof Player)) {
             return false;
         }
 
-        Player player = (Player) sender;
-
-        if (args.length > 0) {
-
-            if (args[0].equalsIgnoreCase("cancel")) {
-                if (ConfigManager.getInstance().getBoolean("rightClickToSelect")) {
-                    player.sendMessage(ChatColor.RED + "Usage: /wp select (petName)");
-                    return false;
-                }
-                EphemeralData.getInstance().setPlayerAsNotSelecting(player.getUniqueId());
-                player.sendMessage(ChatColor.GREEN + "Selecting cancelled.");
-                return true;
-            }
-
-            String petName = args[0];
-
-            Pet pet = PersistentData.getInstance().getPlayersPet(player, petName);
-
-            if (pet == null) {
-                player.sendMessage(ChatColor.RED + "You don't have any pets named " + petName + ".");
-                return false;
-            }
-
-            EphemeralData.getInstance().selectPetForPlayer(pet, player.getUniqueId());
-
-            player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
-            return true;
-        }
+        Player player = (Player) commandSender;
 
         if (ConfigManager.getInstance().getBoolean("rightClickToSelect")) {
             player.sendMessage(ChatColor.RED + "Usage: /wp select (petName)");
@@ -75,7 +44,38 @@ public class SelectCommand extends AbstractCommand {
             player.sendMessage(ChatColor.GREEN + "Right click on an entity to select it. Type '/wp select cancel' to cancel selecting.");
             return true;
         }
+    }
 
+    public boolean execute(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player)) {
+            return false;
+        }
+
+        Player player = (Player) sender;
+
+        if (args[0].equalsIgnoreCase("cancel")) {
+            if (ConfigManager.getInstance().getBoolean("rightClickToSelect")) {
+                player.sendMessage(ChatColor.RED + "Usage: /wp select (petName)");
+                return false;
+            }
+            EphemeralData.getInstance().setPlayerAsNotSelecting(player.getUniqueId());
+            player.sendMessage(ChatColor.GREEN + "Selecting cancelled.");
+            return true;
+        }
+
+        String petName = args[0];
+
+        Pet pet = PersistentData.getInstance().getPlayersPet(player, petName);
+
+        if (pet == null) {
+            player.sendMessage(ChatColor.RED + "You don't have any pets named " + petName + ".");
+            return false;
+        }
+
+        EphemeralData.getInstance().selectPetForPlayer(pet, player.getUniqueId());
+
+        player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
+        return true;
     }
 
 }
