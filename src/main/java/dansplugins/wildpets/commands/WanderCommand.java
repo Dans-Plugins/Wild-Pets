@@ -5,8 +5,25 @@ import dansplugins.wildpets.objects.Pet;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import preponderous.ponder.misc.AbstractCommand;
 
-public class WanderCommand {
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class WanderCommand extends AbstractCommand {
+
+    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("wander"));
+    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("wp.wander"));
+
+    @Override
+    public ArrayList<String> getNames() {
+        return names;
+    }
+
+    @Override
+    public ArrayList<String> getPermissions() {
+        return permissions;
+    }
 
     public boolean execute(CommandSender sender) {
 
@@ -16,7 +33,7 @@ public class WanderCommand {
 
         Player player = (Player) sender;
 
-        Pet pet = EphemeralData.getInstance().getPetSelectionForPlayer(player);
+        Pet pet = EphemeralData.getInstance().getPetSelectionForPlayer(player.getUniqueId());
 
         if (pet == null) {
             player.sendMessage(ChatColor.RED + "No pet selected.");
@@ -26,6 +43,11 @@ public class WanderCommand {
         pet.setWandering();
         player.sendMessage(ChatColor.GREEN + pet.getName() + " is now wandering.");
         return true;
+    }
+
+    @Override
+    public boolean execute(CommandSender commandSender, String[] strings) {
+        return false;
     }
 
 }

@@ -7,8 +7,30 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import preponderous.ponder.misc.AbstractCommand;
 
-public class ListCommand {
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class ListCommand extends AbstractCommand {
+
+    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("list"));
+    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("wp.list"));
+
+    @Override
+    public ArrayList<String> getNames() {
+        return names;
+    }
+
+    @Override
+    public ArrayList<String> getPermissions() {
+        return permissions;
+    }
+
+    @Override
+    public boolean execute(CommandSender commandSender) {
+        return false;
+    }
 
     public boolean execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {

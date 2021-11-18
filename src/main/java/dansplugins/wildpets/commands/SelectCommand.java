@@ -7,8 +7,30 @@ import dansplugins.wildpets.objects.Pet;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import preponderous.ponder.misc.AbstractCommand;
 
-public class SelectCommand {
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class SelectCommand extends AbstractCommand {
+
+    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("select"));
+    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("wp.select"));
+
+    @Override
+    public ArrayList<String> getNames() {
+        return names;
+    }
+
+    @Override
+    public ArrayList<String> getPermissions() {
+        return permissions;
+    }
+
+    @Override
+    public boolean execute(CommandSender commandSender) {
+        return false;
+    }
 
     public boolean execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
@@ -24,7 +46,7 @@ public class SelectCommand {
                     player.sendMessage(ChatColor.RED + "Usage: /wp select (petName)");
                     return false;
                 }
-                EphemeralData.getInstance().setPlayerAsNotSelecting(player);
+                EphemeralData.getInstance().setPlayerAsNotSelecting(player.getUniqueId());
                 player.sendMessage(ChatColor.GREEN + "Selecting cancelled.");
                 return true;
             }
@@ -38,7 +60,7 @@ public class SelectCommand {
                 return false;
             }
 
-            EphemeralData.getInstance().selectPetForPlayer(pet, player);
+            EphemeralData.getInstance().selectPetForPlayer(pet, player.getUniqueId());
 
             player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
             return true;
@@ -49,7 +71,7 @@ public class SelectCommand {
             return false;
         }
         else {
-            EphemeralData.getInstance().setPlayerAsSelecting(player);
+            EphemeralData.getInstance().setPlayerAsSelecting(player.getUniqueId());
             player.sendMessage(ChatColor.GREEN + "Right click on an entity to select it. Type '/wp select cancel' to cancel selecting.");
             return true;
         }
