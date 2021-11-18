@@ -1,6 +1,7 @@
 package dansplugins.wildpets.data;
 
 import dansplugins.wildpets.objects.Pet;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -184,6 +185,17 @@ public class EphemeralData {
 
     public boolean hasRightClickCooldown(UUID player) {
         return playersWithRightClickCooldown.contains(player);
+    }
+
+    // -----
+
+    public void clearPlayerFromLists(Player player) {
+        setPlayerAsNotTaming(player.getUniqueId());
+        setPlayerAsNotSelecting(player.getUniqueId());
+        setPlayerAsNotLocking(player.getUniqueId());
+        setPlayerAsNotCheckingAccess(player.getUniqueId());
+        setPlayerAsNotGrantingAccess(player.getUniqueId());
+        setPlayerAsNotRevokingAccess(player.getUniqueId());
     }
 
     // ----- private methods

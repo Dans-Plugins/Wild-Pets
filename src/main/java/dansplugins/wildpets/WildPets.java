@@ -4,7 +4,7 @@ import dansplugins.wildpets.bstats.Metrics;
 import dansplugins.wildpets.commands.*;
 import dansplugins.wildpets.eventhandlers.DamageEffectsAndDeathHandler;
 import dansplugins.wildpets.eventhandlers.InteractionHandler;
-import dansplugins.wildpets.eventhandlers.JoinHandler;
+import dansplugins.wildpets.eventhandlers.JoinAndQuitHandler;
 import dansplugins.wildpets.eventhandlers.MoveHandler;
 import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.managers.EntityConfigManager;
@@ -94,7 +94,7 @@ public final class WildPets extends AbstractPonderPlugin {
         ArrayList<Listener> listeners = new ArrayList<>();
         listeners.add(new DamageEffectsAndDeathHandler());
         listeners.add(new InteractionHandler());
-        listeners.add(new JoinHandler());
+        listeners.add(new JoinAndQuitHandler());
         listeners.add(new MoveHandler());
         getToolbox().getEventHandlerRegistry().registerEventHandlers(listeners, this);
     }
