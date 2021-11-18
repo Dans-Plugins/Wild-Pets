@@ -1,5 +1,6 @@
 package dansplugins.wildpets.eventhandlers;
 
+import dansplugins.wildpets.Scheduler;
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
@@ -7,7 +8,6 @@ import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.managers.EntityConfigManager;
 import dansplugins.wildpets.objects.EntityConfig;
 import dansplugins.wildpets.objects.Pet;
-import dansplugins.wildpets.Scheduler;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;

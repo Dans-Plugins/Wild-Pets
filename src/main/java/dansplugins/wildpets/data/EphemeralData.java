@@ -1,10 +1,9 @@
 package dansplugins.wildpets.data;
 
 import dansplugins.wildpets.objects.Pet;
-import org.bukkit.entity.Player;
 
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.UUID;
 
 public class EphemeralData {
