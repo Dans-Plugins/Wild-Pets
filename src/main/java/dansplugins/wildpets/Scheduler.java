@@ -28,7 +28,7 @@ public class Scheduler {
         WildPets.getInstance().getServer().getScheduler().runTaskLater(WildPets.getInstance(), new Runnable() {
             @Override
             public void run() {
-                EphemeralData.getInstance().setRightClickCooldown(player, false);
+                EphemeralData.getInstance().setRightClickCooldown(player.getUniqueId(), false);
 
             }
         }, seconds * 20);
