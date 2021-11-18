@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class EphemeralData {
 
@@ -16,8 +17,8 @@ public class EphemeralData {
     private HashSet<Player> lockingPlayers = new HashSet<>();
     private HashSet<Player> unlockingPlayers = new HashSet<>();
     private HashSet<Player> accessCheckingPlayers = new HashSet<>();
-    private HashSet<Player> accessGrantingPlayers = new HashSet<>(); // TODO: add associated methods
-    private HashSet<Player> accessRevokingPlayers = new HashSet<>(); // TODO: add associated methods
+    private HashMap<UUID, UUID> accessGrantingPlayers = new HashMap<>(); // TODO: add associated methods
+    private HashMap<UUID, UUID> accessRevokingPlayers = new HashMap<>(); // TODO: add associated methods
 
     // selections list
     private HashMap<Player, Pet> selections = new HashMap<>();
@@ -111,6 +112,42 @@ public class EphemeralData {
 
     public boolean isPlayerCheckingAccess(Player player) {
         return accessCheckingPlayers.contains(player);
+    }
+
+    // -----
+
+    public void setPlayerAsGrantingAccess(Player player, Player target) {
+        accessGrantingPlayers.put(player.getUniqueId(), target.getUniqueId());
+    }
+
+    public void setPlayerAsNotGrantingAccess(Player player) {
+        accessGrantingPlayers.remove(player.getUniqueId());
+    }
+
+    public boolean isPlayerGrantingAccess(Player player) {
+        return accessGrantingPlayers.containsKey(player.getUniqueId());
+    }
+
+    public UUID getGrantee(Player player) {
+        return accessGrantingPlayers.get(player.getUniqueId());
+    }
+
+    // -----
+
+    public void setPlayerAsRevokingAccess(Player player, Player target) {
+        accessRevokingPlayers.put(player.getUniqueId(), target.getUniqueId());
+    }
+
+    public void setPlayerAsNotRevokingAccess(Player player) {
+        accessRevokingPlayers.remove(player.getUniqueId());
+    }
+
+    public boolean isPlayerRevokingAccess(Player player) {
+        return accessRevokingPlayers.containsKey(player.getUniqueId());
+    }
+
+    public UUID getRevokee(Player player) {
+        return accessRevokingPlayers.get(player.getUniqueId());
     }
 
     // -----
