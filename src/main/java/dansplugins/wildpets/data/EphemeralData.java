@@ -1,27 +1,29 @@
 package dansplugins.wildpets.data;
 
 import dansplugins.wildpets.objects.Pet;
-import org.bukkit.entity.Player;
 
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.UUID;
 
 public class EphemeralData {
 
     private static EphemeralData instance;
 
     // action lists
-    private HashSet<Player> tamingPlayers = new HashSet<>();
-    private HashSet<Player> selectingPlayers = new HashSet<>();
-    private HashSet<Player> lockingPlayers = new HashSet<>();
-    private HashSet<Player> unlockingPlayers = new HashSet<>();
-    private HashSet<Player> accessCheckingPlayers = new HashSet<>();
+    private HashSet<UUID> tamingPlayers = new HashSet<>();
+    private HashSet<UUID> selectingPlayers = new HashSet<>();
+    private HashSet<UUID> lockingPlayers = new HashSet<>();
+    private HashSet<UUID> unlockingPlayers = new HashSet<>();
+    private HashSet<UUID> accessCheckingPlayers = new HashSet<>();
+    private HashMap<UUID, UUID> accessGrantingPlayers = new HashMap<>(); // TODO: add associated methods
+    private HashMap<UUID, UUID> accessRevokingPlayers = new HashMap<>(); // TODO: add associated methods
 
     // selections list
-    private HashMap<Player, Pet> selections = new HashMap<>();
+    private HashMap<UUID, Pet> selections = new HashMap<>();
 
     // cooldown lists
-    private HashSet<Player> playersWithRightClickCooldown = new HashSet<>();
+    private HashSet<UUID> playersWithRightClickCooldown = new HashSet<>();
 
     private EphemeralData() {
 
@@ -36,84 +38,120 @@ public class EphemeralData {
 
     // -----
 
-    public void setPlayerAsTaming(Player player) {
+    public void setPlayerAsTaming(UUID player) {
         if (!isPlayerTaming(player)) {
             clearPlayerFromActionLists(player);
             tamingPlayers.add(player);
         }
     }
 
-    public void setPlayerAsNotTaming(Player player) {
+    public void setPlayerAsNotTaming(UUID player) {
         tamingPlayers.remove(player);
     }
 
-    public boolean isPlayerTaming(Player player) {
+    public boolean isPlayerTaming(UUID player) {
         return tamingPlayers.contains(player);
     }
 
     // -----
 
-    public void setPlayerAsSelecting(Player player) {
+    public void setPlayerAsSelecting(UUID player) {
         if (!isPlayerSelecting(player)) {
             clearPlayerFromActionLists(player);
             selectingPlayers.add(player);
         }
     }
 
-    public void setPlayerAsNotSelecting(Player player) {
+    public void setPlayerAsNotSelecting(UUID player) {
         selectingPlayers.remove(player);
     }
 
-    public boolean isPlayerSelecting(Player player) {
+    public boolean isPlayerSelecting(UUID player) {
         return selectingPlayers.contains(player);
     }
 
 
     // -----
 
-    public void setPlayerAsLocking(Player player) {
+    public void setPlayerAsLocking(UUID player) {
         lockingPlayers.add(player);
     }
 
-    public void setPlayerAsNotLocking(Player player) {
+    public void setPlayerAsNotLocking(UUID player) {
         lockingPlayers.remove(player);
     }
 
-    public boolean isPlayerLocking(Player player) {
+    public boolean isPlayerLocking(UUID player) {
         return lockingPlayers.contains(player);
     }
 
     // -----
 
-    public void setPlayerAsUnlocking(Player player) {
+    public void setPlayerAsUnlocking(UUID player) {
         unlockingPlayers.add(player);
     }
 
-    public void setPlayerAsNotUnlocking(Player player) {
+    public void setPlayerAsNotUnlocking(UUID player) {
         unlockingPlayers.remove(player);
     }
 
-    public boolean isPlayerUnlocking(Player player) {
+    public boolean isPlayerUnlocking(UUID player) {
         return unlockingPlayers.contains(player);
     }
 
     // -----
 
-    public void setPlayerAsCheckingAccess(Player player) {
+    public void setPlayerAsCheckingAccess(UUID player) {
         accessCheckingPlayers.add(player);
     }
 
-    public void setPlayerAsNotCheckingAccess(Player player) {
+    public void setPlayerAsNotCheckingAccess(UUID player) {
         accessCheckingPlayers.remove(player);
     }
 
-    public boolean isPlayerCheckingAccess(Player player) {
+    public boolean isPlayerCheckingAccess(UUID player) {
         return accessCheckingPlayers.contains(player);
     }
 
     // -----
 
-    public void selectPetForPlayer(Pet pet, Player player) {
+    public void setPlayerAsGrantingAccess(UUID player, UUID target) {
+        accessGrantingPlayers.put(player, target);
+    }
+
+    public void setPlayerAsNotGrantingAccess(UUID player) {
+        accessGrantingPlayers.remove(player);
+    }
+
+    public boolean isPlayerGrantingAccess(UUID player) {
+        return accessGrantingPlayers.containsKey(player);
+    }
+
+    public UUID getGrantee(UUID player) {
+        return accessGrantingPlayers.get(player);
+    }
+
+    // -----
+
+    public void setPlayerAsRevokingAccess(UUID player, UUID target) {
+        accessRevokingPlayers.put(player, target);
+    }
+
+    public void setPlayerAsNotRevokingAccess(UUID player) {
+        accessRevokingPlayers.remove(player);
+    }
+
+    public boolean isPlayerRevokingAccess(UUID player) {
+        return accessRevokingPlayers.containsKey(player);
+    }
+
+    public UUID getRevokee(UUID player) {
+        return accessRevokingPlayers.get(player);
+    }
+
+    // -----
+
+    public void selectPetForPlayer(Pet pet, UUID player) {
         if (!selections.containsKey(player)) {
             selections.put(player, pet);
         }
@@ -122,18 +160,18 @@ public class EphemeralData {
         }
     }
 
-    public Pet getPetSelectionForPlayer(Player player) {
+    public Pet getPetSelectionForPlayer(UUID player) {
         return selections.getOrDefault(player, null);
     }
 
-    public void clearPetSelectionForPlayer(Player player) {
+    public void clearPetSelectionForPlayer(UUID player) {
         selections.remove(player);
     }
 
 
     // -----
 
-    public void setRightClickCooldown(Player player, boolean flag) {
+    public void setRightClickCooldown(UUID player, boolean flag) {
         if (flag) {
             if (!playersWithRightClickCooldown.contains(player)) {
                 playersWithRightClickCooldown.add(player);
@@ -144,13 +182,13 @@ public class EphemeralData {
         }
     }
 
-    public boolean hasRightClickCooldown(Player player) {
+    public boolean hasRightClickCooldown(UUID player) {
         return playersWithRightClickCooldown.contains(player);
     }
 
     // ----- private methods
 
-    private void clearPlayerFromActionLists(Player player) {
+    private void clearPlayerFromActionLists(UUID player) {
         setPlayerAsNotTaming(player);
         setPlayerAsNotSelecting(player);
     }

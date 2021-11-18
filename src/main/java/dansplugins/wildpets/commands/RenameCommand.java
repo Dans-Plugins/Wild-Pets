@@ -7,8 +7,31 @@ import dansplugins.wildpets.objects.Pet;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import preponderous.ponder.misc.AbstractCommand;
 
-public class RenameCommand {
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class RenameCommand extends AbstractCommand {
+
+    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("rename"));
+    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("wp.rename"));
+
+    @Override
+    public ArrayList<String> getNames() {
+        return names;
+    }
+
+    @Override
+    public ArrayList<String> getPermissions() {
+        return permissions;
+    }
+
+    @Override
+    public boolean execute(CommandSender commandSender) {
+        commandSender.sendMessage(ChatColor.RED + "Usage: /wp rename (new name)");
+        return false;
+    }
 
     public boolean execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
@@ -18,13 +41,12 @@ public class RenameCommand {
         Player player = (Player) sender;
 
         if (args.length == 0) {
-            player.sendMessage(ChatColor.RED + "Usage: /wp rename (new name)");
-            return false;
+            return execute(sender);
         }
 
         String newName = args[0];
 
-        Pet pet = EphemeralData.getInstance().getPetSelectionForPlayer(player);
+        Pet pet = EphemeralData.getInstance().getPetSelectionForPlayer(player.getUniqueId());
 
         if (pet == null) {
             player.sendMessage(ChatColor.RED + "No pet selected.");

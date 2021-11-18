@@ -4,8 +4,25 @@ import dansplugins.wildpets.managers.ConfigManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import preponderous.ponder.misc.AbstractCommand;
 
-public class HelpCommand {
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class HelpCommand extends AbstractCommand {
+
+    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("help"));
+    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("wp.help"));
+
+    @Override
+    public ArrayList<String> getNames() {
+        return names;
+    }
+
+    @Override
+    public ArrayList<String> getPermissions() {
+        return permissions;
+    }
 
     public boolean execute(CommandSender sender) {
         if (!(sender instanceof Player)) {
@@ -32,9 +49,15 @@ public class HelpCommand {
         player.sendMessage(ChatColor.AQUA + "/wp lock - Lock your pet.");
         player.sendMessage(ChatColor.AQUA + "/wp unlock - Unock your pet.");
         player.sendMessage(ChatColor.AQUA + "/wp checkaccess - Check who has access to your pet.");
+        player.sendMessage(ChatColor.AQUA + "/wp grantaccess - Grant someone access to your pet.");
         player.sendMessage(ChatColor.AQUA + "/wp revokeaccess - Revoke access for someone to your pet.");
         player.sendMessage(ChatColor.AQUA + "/wp config - View or set config options.");
         return true;
+    }
+
+    @Override
+    public boolean execute(CommandSender commandSender, String[] strings) {
+        return execute(commandSender);
     }
 
 }

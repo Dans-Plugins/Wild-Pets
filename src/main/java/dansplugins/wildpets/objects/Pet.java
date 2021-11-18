@@ -3,10 +3,9 @@ package dansplugins.wildpets.objects;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import dansplugins.wildpets.Scheduler;
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.Scheduler;
-import dansplugins.wildpets.utils.UUIDChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
@@ -42,7 +41,7 @@ public class Pet implements Lockable {
         uniqueID = entity.getUniqueId();
         ownerUUID = playerOwner;
         assignedID = PersistentData.getInstance().getPetList(ownerUUID).getNewID();
-        name = UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID) + "'s_Pet_" + assignedID;
+        name = WildPets.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(ownerUUID) + "'s_Pet_" + assignedID;
         movementState = "Wandering";
         setLastKnownLocation(entity.getLocation());
 
@@ -106,7 +105,7 @@ public class Pet implements Lockable {
     public void sendInfoToPlayer(Player player) {
         player.sendMessage(ChatColor.AQUA + "=== Pet Info ===");
         player.sendMessage(ChatColor.AQUA + "Name: " + name);
-        player.sendMessage(ChatColor.AQUA + "Owner: " + UUIDChecker.getInstance().findPlayerNameBasedOnUUID(ownerUUID));
+        player.sendMessage(ChatColor.AQUA + "Owner: " + WildPets.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(ownerUUID));
         player.sendMessage(ChatColor.AQUA + "State: " + movementState);
         player.sendMessage(ChatColor.AQUA + "Locked: " + locked);
         if (WildPets.getInstance().isDebugEnabled()) {

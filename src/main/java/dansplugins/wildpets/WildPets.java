@@ -1,16 +1,26 @@
 package dansplugins.wildpets;
 
 import dansplugins.wildpets.bstats.Metrics;
+import dansplugins.wildpets.commands.*;
+import dansplugins.wildpets.eventhandlers.DamageEffectsAndDeathHandler;
+import dansplugins.wildpets.eventhandlers.InteractionHandler;
+import dansplugins.wildpets.eventhandlers.JoinHandler;
+import dansplugins.wildpets.eventhandlers.MoveHandler;
 import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.managers.EntityConfigManager;
 import dansplugins.wildpets.managers.StorageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.event.Listener;
+import preponderous.ponder.AbstractPonderPlugin;
+import preponderous.ponder.misc.PonderAPI_Integrator;
+import preponderous.ponder.misc.specification.ICommand;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-public final class WildPets extends JavaPlugin {
+public final class WildPets extends AbstractPonderPlugin {
   
     private static WildPets instance;
 
@@ -18,11 +28,16 @@ public final class WildPets extends JavaPlugin {
         return instance;
     }
 
-    private final String version = "v1.1.1";
+    private final String version = "v1.1.2-alpha-1";
 
     @Override
     public void onEnable() {
         instance = this;
+        ponderAPI_integrator = new PonderAPI_Integrator(this);
+        toolbox = getPonderAPI().getToolbox();
+        registerEventHandlers();
+        initializeCommandService();
+        getPonderAPI().setDebug(false);
 
         // create/load config
         if (!(new File("./plugins/WildPets/config.yml").exists())) {
@@ -41,9 +56,6 @@ public final class WildPets extends JavaPlugin {
         // schedule auto save
         Scheduler.getInstance().scheduleAutosave();
 
-        // register events
-        EventRegistry.getInstance().registerEvents();
-
         // load save files
         StorageManager.getInstance().load();
 
@@ -58,8 +70,12 @@ public final class WildPets extends JavaPlugin {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        CommandInterpreter commandInterpreter = new CommandInterpreter();
-        return commandInterpreter.interpretCommand(sender, label, args);
+        if (args.length == 0) {
+            DefaultCommand defaultCommand = new DefaultCommand();
+            return defaultCommand.execute(sender);
+        }
+
+        return getPonderAPI().getCommandService().interpretCommand(sender, label, args);
     }
 
     public String getVersion() {
@@ -70,7 +86,29 @@ public final class WildPets extends JavaPlugin {
         return getConfig().getBoolean("configOptions.debugMode");
     }
 
-    private boolean isVersionMismatched() {
+    public boolean isVersionMismatched() {
         return !getConfig().getString("version").equalsIgnoreCase(getVersion());
+    }
+
+    private void registerEventHandlers() {
+        ArrayList<Listener> listeners = new ArrayList<>();
+        listeners.add(new DamageEffectsAndDeathHandler());
+        listeners.add(new InteractionHandler());
+        listeners.add(new JoinHandler());
+        listeners.add(new MoveHandler());
+        getToolbox().getEventHandlerRegistry().registerEventHandlers(listeners, this);
+    }
+
+    private void initializeCommandService() {
+        ArrayList<ICommand> commands = new ArrayList<>(Arrays.asList(
+                new CallCommand(), new CheckAccessCommand(), new ConfigCommand(),
+                new FollowCommand(), new GrantAccessCommand(), new HelpCommand(),
+                new InfoCommand(), new ListCommand(), new LocateCommand(),
+                new LockCommand(), new RenameCommand(), new RevokeAccessCommand(),
+                new SelectCommand(), new SetFreeCommand(), new StatsCommand(),
+                new StayCommand(), new TameCommand(), new UnlockCommand(),
+                new WanderCommand()
+        ));
+        getPonderAPI().getCommandService().initialize(commands, "That command wasn't found.");
     }
 }

@@ -5,8 +5,25 @@ import dansplugins.wildpets.objects.Pet;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import preponderous.ponder.misc.AbstractCommand;
 
-public class FollowCommand {
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class FollowCommand extends AbstractCommand {
+
+    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("follow"));
+    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("wp.follow"));
+
+    @Override
+    public ArrayList<String> getNames() {
+        return names;
+    }
+
+    @Override
+    public ArrayList<String> getPermissions() {
+        return permissions;
+    }
 
     public boolean execute(CommandSender sender) {
 
@@ -16,7 +33,7 @@ public class FollowCommand {
 
         Player player = (Player) sender;
 
-        Pet pet = EphemeralData.getInstance().getPetSelectionForPlayer(player);
+        Pet pet = EphemeralData.getInstance().getPetSelectionForPlayer(player.getUniqueId());
 
         if (pet == null) {
             player.sendMessage(ChatColor.RED + "No pet selected.");
@@ -26,6 +43,11 @@ public class FollowCommand {
         pet.setFollowing();
         player.sendMessage(ChatColor.GREEN + pet.getName() + " is now following you.");
         return true;
+    }
+
+    @Override
+    public boolean execute(CommandSender commandSender, String[] strings) {
+        return execute(commandSender);
     }
 
 }
