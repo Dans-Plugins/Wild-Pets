@@ -30,7 +30,9 @@ public class RevokeAccessCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender, String[] strings) {
-        return execute(commandSender);
+        // TODO: implement
+        commandSender.sendMessage(ChatColor.RED + "This command isn't implemented yet.");
+        return true;
     }
 
 }
