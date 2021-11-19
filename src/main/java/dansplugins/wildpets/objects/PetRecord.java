@@ -43,6 +43,14 @@ public class PetRecord implements Savable {
         this.assignedID = assignedID;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public Map<String, String> save() {
         // TODO: implement

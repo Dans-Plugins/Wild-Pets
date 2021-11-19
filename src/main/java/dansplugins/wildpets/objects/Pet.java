@@ -109,6 +109,10 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         player.sendMessage(ChatColor.AQUA + "Owner: " + WildPets.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(ownerUUID));
         player.sendMessage(ChatColor.AQUA + "State: " + movementState);
         player.sendMessage(ChatColor.AQUA + "Locked: " + locked);
+        player.sendMessage(ChatColor.AQUA + "Parents: " + getParentNamesSeparatedByCommas());
+        if (childIDs.size() > 0) {
+            player.sendMessage(ChatColor.AQUA + "Children: " + getChildrenNamessSeparatedByCommas());
+        }
         if (WildPets.getInstance().isDebugEnabled()) {
             player.sendMessage(ChatColor.AQUA + "[DEBUG] uniqueID: " + uniqueID.toString());
             player.sendMessage(ChatColor.AQUA + "[DEBUG] ownerUUID: " + ownerUUID.toString());
@@ -255,13 +259,37 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
     }
 
     private String getParentNamesSeparatedByCommas() {
-        // TODO: implement
-        return null;
+        String toReturn = "";
+        int count = 0;
+        for (UUID uuid : parentIDs) {
+            PetRecord petRecord = PersistentData.getInstance().getPetRecord(uuid);
+            if (petRecord == null) {
+                continue;
+            }
+            toReturn = toReturn + petRecord.getName();
+            count++;
+            if (count != parentIDs.size()) {
+                toReturn = toReturn + ", ";
+            }
+        }
+        return toReturn;
     }
 
     private String getChildrenNamessSeparatedByCommas() {
-        // TOOD: implement
-        return null;
+        String toReturn = "";
+        int count = 0;
+        for (UUID uuid : childIDs) {
+            PetRecord petRecord = PersistentData.getInstance().getPetRecord(uuid);
+            if (petRecord == null) {
+                continue;
+            }
+            toReturn = toReturn + petRecord.getName();
+            count++;
+            if (count != childIDs.size()) {
+                toReturn = toReturn + ", ";
+            }
+        }
+        return toReturn;
     }
 
     @Override
