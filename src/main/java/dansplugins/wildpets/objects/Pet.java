@@ -117,6 +117,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
             if (childIDs.size() > 0) {
                 player.sendMessage(ChatColor.AQUA + "[DEBUG] Children: " + getChildrenIDsSeparatedByCommas());
             }
+            player.sendMessage(ChatColor.AQUA + "[DEBUG] Pet Record Existent: " + (PersistentData.getInstance().getPetRecord(uniqueID) != null));
         }
     }
 
