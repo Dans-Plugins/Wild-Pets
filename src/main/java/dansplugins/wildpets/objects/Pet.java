@@ -12,12 +12,14 @@ import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import preponderous.ponder.modifiers.Lockable;
+import preponderous.ponder.modifiers.Savable;
 
 import java.lang.reflect.Type;
 import java.util.*;
 
-public class Pet implements Lockable {
+public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
 
     // persistent
     private UUID uniqueID;
@@ -28,8 +30,8 @@ public class Pet implements Lockable {
     private int lastKnownX = -1;
     private int lastKnownY = -1;
     private int lastKnownZ = -1;
-    private boolean locked = false; // TODO: make persistent
-    private HashSet<UUID> accessList = new HashSet<>(); // TODO: make persistent
+    private boolean locked = false;
+    private HashSet<UUID> accessList = new HashSet<>();
 
     // ephemeral
     private Location stayingLocation;
@@ -96,6 +98,8 @@ public class Pet implements Lockable {
         if (entity != null) {
             entity.setCustomName(ChatColor.GREEN + name);
         }
+
+        getPetRecord().setName(name);
     }
 
     public int getAssignedID() {
@@ -108,10 +112,19 @@ public class Pet implements Lockable {
         player.sendMessage(ChatColor.AQUA + "Owner: " + WildPets.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(ownerUUID));
         player.sendMessage(ChatColor.AQUA + "State: " + movementState);
         player.sendMessage(ChatColor.AQUA + "Locked: " + locked);
+        player.sendMessage(ChatColor.AQUA + "Parents: " + getParentNamesSeparatedByCommas());
+        if (childIDs.size() > 0) {
+            player.sendMessage(ChatColor.AQUA + "Children: " + getChildrenNamesSeparatedByCommas());
+        }
         if (WildPets.getInstance().isDebugEnabled()) {
             player.sendMessage(ChatColor.AQUA + "[DEBUG] uniqueID: " + uniqueID.toString());
             player.sendMessage(ChatColor.AQUA + "[DEBUG] ownerUUID: " + ownerUUID.toString());
             player.sendMessage(ChatColor.AQUA + "[DEBUG] assignedID: " + assignedID);
+            player.sendMessage(ChatColor.AQUA + "[DEBUG] Parents: " + getParentsUUIDsSeparatedByCommas());
+            if (childIDs.size() > 0) {
+                player.sendMessage(ChatColor.AQUA + "[DEBUG] Children: " + getChildrenUUIDsSeparatedByCommas());
+            }
+            player.sendMessage(ChatColor.AQUA + "[DEBUG] Pet Record Existent: " + (PersistentData.getInstance().getPetRecord(uniqueID) != null));
         }
     }
 
@@ -222,8 +235,73 @@ public class Pet implements Lockable {
         locked = b;
     }
 
+    public PetRecord getPetRecord() { // should this have @NotNull?
+        return PersistentData.getInstance().getPetRecord(uniqueID);
+    }
+
+    private String getParentsUUIDsSeparatedByCommas() {
+        String toReturn = "";
+        int count = 0;
+        for (UUID uuid : parentIDs) {
+            toReturn = toReturn + uuid.toString();
+            count++;
+            if (count != parentIDs.size()) {
+                toReturn = toReturn + ", ";
+            }
+        }
+        return toReturn;
+    }
+
+    private String getChildrenUUIDsSeparatedByCommas() {
+        String toReturn = "";
+        int count = 0;
+        for (UUID uuid : childIDs) {
+            toReturn = toReturn + uuid.toString();
+            count++;
+            if (count != childIDs.size()) {
+                toReturn = toReturn + ", ";
+            }
+        }
+        return toReturn;
+    }
+
+    private String getParentNamesSeparatedByCommas() {
+        String toReturn = "";
+        int count = 0;
+        for (UUID uuid : parentIDs) {
+            PetRecord petRecord = PersistentData.getInstance().getPetRecord(uuid);
+            if (petRecord == null) {
+                continue;
+            }
+            toReturn = toReturn + petRecord.getName();
+            count++;
+            if (count != parentIDs.size()) {
+                toReturn = toReturn + ", ";
+            }
+        }
+        return toReturn;
+    }
+
+    private String getChildrenNamesSeparatedByCommas() {
+        String toReturn = "";
+        int count = 0;
+        for (UUID uuid : childIDs) {
+            PetRecord petRecord = PersistentData.getInstance().getPetRecord(uuid);
+            if (petRecord == null) {
+                continue;
+            }
+            toReturn = toReturn + petRecord.getName();
+            count++;
+            if (count != childIDs.size()) {
+                toReturn = toReturn + ", ";
+            }
+        }
+        return toReturn;
+    }
+
+    @Override
     public Map<String, String> save() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         Map<String, String> saveMap = new HashMap<>();
         saveMap.put("uniqueID", gson.toJson(uniqueID));
@@ -236,11 +314,14 @@ public class Pet implements Lockable {
         saveMap.put("lastKnownZ", gson.toJson(lastKnownZ));
         saveMap.put("locked", gson.toJson(locked));
         saveMap.put("accessList", gson.toJson(accessList));
+        saveMap.put("parentIDs", gson.toJson(this.parentIDs));
+        saveMap.put("childIDs", gson.toJson(this.childIDs));
 
         return saveMap;
     }
 
-    private void load(Map<String, String> data) {
+    @Override
+    public void load(Map<String, String> data) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         Type hashsetTypeUUID = new TypeToken<HashSet<UUID>>(){}.getType();
@@ -267,5 +348,9 @@ public class Pet implements Lockable {
 
         locked = Boolean.parseBoolean(data.getOrDefault("locked", "false"));
         accessList = gson.fromJson(data.getOrDefault("accessList", "[]"), hashsetTypeUUID);
+
+        parentIDs = gson.fromJson(data.getOrDefault("parentIDs", "[]"), hashsetTypeUUID);
+        childIDs =  gson.fromJson(data.getOrDefault("childIDs", "[]"), hashsetTypeUUID);
     }
+
 }

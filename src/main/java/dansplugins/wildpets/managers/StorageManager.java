@@ -7,6 +7,7 @@ import com.google.gson.stream.JsonReader;
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.objects.Pet;
+import dansplugins.wildpets.objects.PetRecord;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -22,6 +23,7 @@ public class StorageManager {
 
     private final static String FILE_PATH = "./plugins/WildPets/";
     private final static String PETS_FILE_NAME = "pets.json";
+    private final static String PET_RECORDS_FILE_NAME = "petRecords.json";
 
     private final static Type LIST_MAP_TYPE = new TypeToken<ArrayList<HashMap<String, String>>>(){}.getType();
 
@@ -39,6 +41,7 @@ public class StorageManager {
     }
 
     public void save() {
+        savePetRecords();
         savePets();
         if (ConfigManager.getInstance().hasBeenAltered()) {
             WildPets.getInstance().saveConfig();
@@ -46,6 +49,7 @@ public class StorageManager {
     }
 
     public void load() {
+        loadPetRecords();
         loadPets();
     }
 
@@ -56,14 +60,23 @@ public class StorageManager {
             pets.add(pet.save());
         }
 
-        writeOutFiles(pets);
+        writeOutFiles(pets, PETS_FILE_NAME);
     }
 
-    private void writeOutFiles(List<Map<String, String>> saveData) {
+    private void savePetRecords() {
+        List<Map<String, String>> petRecords = new ArrayList<>();
+        for (PetRecord petRecord : PersistentData.getInstance().getPetRecords()){
+            petRecords.add(petRecord.save());
+        }
+
+        writeOutFiles(petRecords, PET_RECORDS_FILE_NAME);
+    }
+
+    private void writeOutFiles(List<Map<String, String>> saveData, String fileName) {
         try {
             File parentFolder = new File(FILE_PATH);
             parentFolder.mkdir();
-            File file = new File(FILE_PATH + PETS_FILE_NAME);
+            File file = new File(FILE_PATH + fileName);
             file.createNewFile();
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
             outputStreamWriter.write(gson.toJson(saveData));
@@ -92,6 +105,18 @@ public class StorageManager {
 
             }
             PersistentData.getInstance().getPetList(pet.getOwnerUUID()).addPet(pet);
+            PersistentData.getInstance().addPetRecord(pet); // will not result in duplicates because petRecords is a hashset
+        }
+    }
+
+    private void loadPetRecords() {
+        ArrayList<HashMap<String, String>> data = loadDataFromFilename(FILE_PATH + PET_RECORDS_FILE_NAME);
+
+        ArrayList<PetRecord> petRecords = new ArrayList<>();
+
+        for (Map<String, String> petRecordData : data) {
+            PetRecord petRecord = new PetRecord(petRecordData);
+            petRecords.add(petRecord);
         }
     }
 
