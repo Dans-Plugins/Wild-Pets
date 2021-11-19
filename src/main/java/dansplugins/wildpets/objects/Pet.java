@@ -113,9 +113,9 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
             player.sendMessage(ChatColor.AQUA + "[DEBUG] uniqueID: " + uniqueID.toString());
             player.sendMessage(ChatColor.AQUA + "[DEBUG] ownerUUID: " + ownerUUID.toString());
             player.sendMessage(ChatColor.AQUA + "[DEBUG] assignedID: " + assignedID);
-            player.sendMessage(ChatColor.AQUA + "[DEBUG] Parents: " + getParentsIDsSeparatedByCommas());
+            player.sendMessage(ChatColor.AQUA + "[DEBUG] Parents: " + getParentsUUIDsSeparatedByCommas());
             if (childIDs.size() > 0) {
-                player.sendMessage(ChatColor.AQUA + "[DEBUG] Children: " + getChildrenIDsSeparatedByCommas());
+                player.sendMessage(ChatColor.AQUA + "[DEBUG] Children: " + getChildrenUUIDsSeparatedByCommas());
             }
             player.sendMessage(ChatColor.AQUA + "[DEBUG] Pet Record Existent: " + (PersistentData.getInstance().getPetRecord(uniqueID) != null));
         }
@@ -228,11 +228,11 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         locked = b;
     }
 
-    private String getParentsIDsSeparatedByCommas() {
+    private String getParentsUUIDsSeparatedByCommas() {
         String toReturn = "";
         int count = 0;
-        for (int ID : parentIDs) {
-            toReturn = toReturn + ID;
+        for (UUID uuid : parentIDs) {
+            toReturn = toReturn + uuid.toString();
             count++;
             if (count != parentIDs.size()) {
                 toReturn = toReturn + ", ";
@@ -241,11 +241,11 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         return toReturn;
     }
 
-    private String getChildrenIDsSeparatedByCommas() {
+    private String getChildrenUUIDsSeparatedByCommas() {
         String toReturn = "";
         int count = 0;
-        for (int ID : childIDs) {
-            toReturn = toReturn + ID;
+        for (UUID uuid : childIDs) {
+            toReturn = toReturn + uuid.toString();
             count++;
             if (count != childIDs.size()) {
                 toReturn = toReturn + ", ";
@@ -290,7 +290,6 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         Type hashsetTypeUUID = new TypeToken<HashSet<UUID>>(){}.getType();
-        Type hashsetTypeInteger = new TypeToken<HashSet<Integer>>(){}.getType();
 
         uniqueID = UUID.fromString(gson.fromJson(data.get("uniqueID"), String.class));
         ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
@@ -315,7 +314,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         locked = Boolean.parseBoolean(data.getOrDefault("locked", "false"));
         accessList = gson.fromJson(data.getOrDefault("accessList", "[]"), hashsetTypeUUID);
 
-        parentIDs = gson.fromJson(data.getOrDefault("parentIDs", "[]"), hashsetTypeInteger);
-        childIDs =  gson.fromJson(data.getOrDefault("childIDs", "[]"), hashsetTypeInteger);
+        parentIDs = gson.fromJson(data.getOrDefault("parentIDs", "[]"), hashsetTypeUUID);
+        childIDs =  gson.fromJson(data.getOrDefault("childIDs", "[]"), hashsetTypeUUID);
     }
 }

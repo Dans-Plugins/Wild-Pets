@@ -28,27 +28,20 @@ public class BreedEventHandler implements Listener {
         Pet petParent1 = PersistentData.getInstance().getPet(parent1);
         Pet petParent2 = PersistentData.getInstance().getPet(parent2);
 
-        PersistentData.getInstance().addNewPet(player, child);
-
         if (petParent1 != null || petParent2 != null) {
+            PersistentData.getInstance().addNewPet(player, child);
             Pet newPet = PersistentData.getInstance().getPet(child);
             EphemeralData.getInstance().selectPetForPlayer(newPet, player.getUniqueId());
             player.sendMessage(ChatColor.AQUA + "You have a new pet named " + newPet.getName() + " and it is now your selected pet.");
 
             if (petParent1 != null) {
-                newPet.addParent(petParent1.getAssignedID());
-                petParent1.addChild(newPet.getAssignedID());
-            }
-            else {
-                newPet.addParent(-1);
+                newPet.addParent(petParent1.getUniqueID());
+                petParent1.addChild(newPet.getUniqueID());
             }
 
             if (petParent2 != null) {
-                newPet.addParent(petParent2.getAssignedID());
-                petParent2.addChild(newPet.getAssignedID());
-            }
-            else {
-                newPet.addParent(-1);
+                newPet.addParent(petParent2.getUniqueID());
+                petParent2.addChild(newPet.getUniqueID());
             }
         }
     }

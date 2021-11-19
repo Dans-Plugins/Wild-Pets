@@ -1,32 +1,33 @@
 package dansplugins.wildpets.objects;
 
 import java.util.HashSet;
+import java.util.UUID;
 
 public abstract class AbstractFamilialEntity {
-    protected HashSet<Integer> parentIDs = new HashSet<>();
-    protected HashSet<Integer> childIDs = new HashSet<>();
+    protected HashSet<UUID> parentIDs = new HashSet<>();
+    protected HashSet<UUID> childIDs = new HashSet<>();
 
-    public HashSet<Integer> getParentIDs() {
+    public HashSet<UUID> getParentUUIDs() {
         return parentIDs;
     }
 
-    public boolean addParent(int ID) {
-        return parentIDs.add(ID);
+    public boolean addParent(UUID uuid) {
+        return parentIDs.add(uuid);
     }
 
-    public boolean removeParent(int ID) {
-        return parentIDs.remove(ID);
+    public boolean removeParent(UUID uuid) {
+        return parentIDs.remove(uuid);
     }
 
-    public HashSet<Integer> getChildIDs() {
+    public HashSet<UUID> getChildUUIDs() {
         return childIDs;
     }
 
-    public boolean addChild(int ID) {
-        return childIDs.add(ID);
+    public boolean addChild(UUID uuid) {
+        return childIDs.add(uuid);
     }
 
-    public boolean removeChild(int ID) {
-        return childIDs.remove(ID);
+    public boolean removeChild(UUID uuid) {
+        return childIDs.remove(uuid);
     }
 }
