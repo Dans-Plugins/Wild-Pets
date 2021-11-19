@@ -12,6 +12,7 @@ import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import preponderous.ponder.modifiers.Lockable;
 import preponderous.ponder.modifiers.Savable;
 
@@ -97,6 +98,8 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         if (entity != null) {
             entity.setCustomName(ChatColor.GREEN + name);
         }
+
+        getPetRecord().setName(name);
     }
 
     public int getAssignedID() {
@@ -232,6 +235,10 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         locked = b;
     }
 
+    public PetRecord getPetRecord() { // should this have @NotNull?
+        return PersistentData.getInstance().getPetRecord(uniqueID);
+    }
+
     private String getParentsUUIDsSeparatedByCommas() {
         String toReturn = "";
         int count = 0;
@@ -345,4 +352,5 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         parentIDs = gson.fromJson(data.getOrDefault("parentIDs", "[]"), hashsetTypeUUID);
         childIDs =  gson.fromJson(data.getOrDefault("childIDs", "[]"), hashsetTypeUUID);
     }
+
 }
