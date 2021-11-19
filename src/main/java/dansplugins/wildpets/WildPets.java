@@ -105,7 +105,7 @@ public final class WildPets extends AbstractPonderPlugin {
                 new LockCommand(), new RenameCommand(), new RevokeAccessCommand(),
                 new SelectCommand(), new SetFreeCommand(), new StatsCommand(),
                 new StayCommand(), new TameCommand(), new UnlockCommand(),
-                new WanderCommand()
+                new WanderCommand(), new GatherCommand()
         ));
         getPonderAPI().getCommandService().initialize(commands, "That command wasn't found.");
     }

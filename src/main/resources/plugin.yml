@@ -47,5 +47,7 @@ permissions:
     default: true
   wp.revokeaccess:
     default: true
+  wp.gather:
+    default: true
   wp.config:
     default: op
