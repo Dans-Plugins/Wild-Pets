@@ -38,6 +38,11 @@ public class GatherCommand extends AbstractCommand {
 
         PetList petList = PersistentData.getInstance().getPetList(player.getUniqueId());
 
+        if (petList.getNumPets() == 0) {
+            player.sendMessage(ChatColor.RED + "You don't have any pets.");
+            return false;
+        }
+
         for (Pet pet : petList.getPets()) {
             Entity entity = Bukkit.getEntity(pet.getUniqueID());
             if (entity != null) {
@@ -45,7 +50,7 @@ public class GatherCommand extends AbstractCommand {
 
             }
         }
-        player.sendMessage(ChatColor.GREEN + "Your pets gather near you.");
+        player.sendMessage(ChatColor.GREEN + "Your pets gather nearby.");
         return true;
     }
 
