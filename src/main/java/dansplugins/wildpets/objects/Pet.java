@@ -112,6 +112,10 @@ public class Pet extends AbstractFamilialEntity implements Lockable {
             player.sendMessage(ChatColor.AQUA + "[DEBUG] uniqueID: " + uniqueID.toString());
             player.sendMessage(ChatColor.AQUA + "[DEBUG] ownerUUID: " + ownerUUID.toString());
             player.sendMessage(ChatColor.AQUA + "[DEBUG] assignedID: " + assignedID);
+            player.sendMessage(ChatColor.AQUA + "[DEBUG] Parents: " + getParentsIDsSeparatedByCommas());
+            if (childIDs.size() > 0) {
+                player.sendMessage(ChatColor.AQUA + "[DEBUG] Children: " + getChildrenIDsSeparatedByCommas());
+            }
         }
     }
 
@@ -220,6 +224,42 @@ public class Pet extends AbstractFamilialEntity implements Lockable {
 
     public void setLocked(boolean b) {
         locked = b;
+    }
+
+    private String getParentsIDsSeparatedByCommas() {
+        String toReturn = "";
+        int count = 0;
+        for (int ID : parentIDs) {
+            toReturn = toReturn + ID;
+            count++;
+            if (count != parentIDs.size()) {
+                toReturn = toReturn + ", ";
+            }
+        }
+        return toReturn;
+    }
+
+    private String getChildrenIDsSeparatedByCommas() {
+        String toReturn = "";
+        int count = 0;
+        for (int ID : parentIDs) {
+            toReturn = toReturn + ID;
+            count++;
+            if (count != parentIDs.size()) {
+                toReturn = toReturn + ", ";
+            }
+        }
+        return toReturn;
+    }
+
+    private String getParentNamesSeparatedByCommas() {
+        // TODO: implement
+        return null;
+    }
+
+    private String getChildrenNamessSeparatedByCommas() {
+        // TOOD: implement
+        return null;
     }
 
     public Map<String, String> save() {
