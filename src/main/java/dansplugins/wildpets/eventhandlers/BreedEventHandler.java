@@ -34,13 +34,14 @@ public class BreedEventHandler implements Listener {
             EphemeralData.getInstance().selectPetForPlayer(newPet, player.getUniqueId());
             player.sendMessage(ChatColor.AQUA + "You have a new pet named " + newPet.getName() + " and it is now your selected pet.");
 
+            newPet.addParent(parent1.getUniqueId());
+            newPet.addParent(parent2.getUniqueId());
+
             if (petParent1 != null) {
-                newPet.addParent(petParent1.getUniqueID());
                 petParent1.addChild(newPet.getUniqueID());
             }
 
             if (petParent2 != null) {
-                newPet.addParent(petParent2.getUniqueID());
                 petParent2.addChild(newPet.getUniqueID());
             }
         }
