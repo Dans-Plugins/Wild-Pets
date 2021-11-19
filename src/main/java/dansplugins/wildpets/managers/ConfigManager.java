@@ -77,6 +77,12 @@ public class ConfigManager {
             getConfig().set(configOptionsPrefix + "preventMountingLockedPets", true);
         }
 
+        // TODO: add config option for whether or not pets should be invulnerable to damage
+
+        // TODO: add config option for whether or not lineage information should be shown
+
+        // TODO: add config option for whether or not entities born to pets should also be pets
+
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
         HashMap<String, String> defaultOptions = new HashMap<>();
