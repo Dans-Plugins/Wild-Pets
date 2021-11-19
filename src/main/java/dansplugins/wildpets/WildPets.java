@@ -2,10 +2,7 @@ package dansplugins.wildpets;
 
 import dansplugins.wildpets.bstats.Metrics;
 import dansplugins.wildpets.commands.*;
-import dansplugins.wildpets.eventhandlers.DamageEffectsAndDeathHandler;
-import dansplugins.wildpets.eventhandlers.InteractionHandler;
-import dansplugins.wildpets.eventhandlers.JoinAndQuitHandler;
-import dansplugins.wildpets.eventhandlers.MoveHandler;
+import dansplugins.wildpets.eventhandlers.*;
 import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.managers.EntityConfigManager;
 import dansplugins.wildpets.managers.StorageManager;
@@ -96,6 +93,7 @@ public final class WildPets extends AbstractPonderPlugin {
         listeners.add(new InteractionHandler());
         listeners.add(new JoinAndQuitHandler());
         listeners.add(new MoveHandler());
+        listeners.add(new BreedEventHandler());
         getToolbox().getEventHandlerRegistry().registerEventHandlers(listeners, this);
     }
 
