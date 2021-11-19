@@ -290,6 +290,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         Type hashsetTypeUUID = new TypeToken<HashSet<UUID>>(){}.getType();
+        Type hashsetTypeInteger = new TypeToken<HashSet<Integer>>(){}.getType();
 
         uniqueID = UUID.fromString(gson.fromJson(data.get("uniqueID"), String.class));
         ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
@@ -314,7 +315,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         locked = Boolean.parseBoolean(data.getOrDefault("locked", "false"));
         accessList = gson.fromJson(data.getOrDefault("accessList", "[]"), hashsetTypeUUID);
 
-        parentIDs = gson.fromJson(data.getOrDefault("parentIDs", "[]"), hashsetTypeUUID);
-        childIDs =  gson.fromJson(data.getOrDefault("childIDs", "[]"), hashsetTypeUUID);
+        parentIDs = gson.fromJson(data.getOrDefault("parentIDs", "[]"), hashsetTypeInteger);
+        childIDs =  gson.fromJson(data.getOrDefault("childIDs", "[]"), hashsetTypeInteger);
     }
 }
