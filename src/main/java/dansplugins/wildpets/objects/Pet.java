@@ -242,10 +242,10 @@ public class Pet extends AbstractFamilialEntity implements Lockable {
     private String getChildrenIDsSeparatedByCommas() {
         String toReturn = "";
         int count = 0;
-        for (int ID : parentIDs) {
+        for (int ID : childIDs) {
             toReturn = toReturn + ID;
             count++;
-            if (count != parentIDs.size()) {
+            if (count != childIDs.size()) {
                 toReturn = toReturn + ", ";
             }
         }
