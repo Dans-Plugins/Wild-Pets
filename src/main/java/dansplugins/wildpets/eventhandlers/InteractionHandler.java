@@ -226,9 +226,6 @@ public class InteractionHandler implements Listener {
             // TODO: implement
         }
         else {
-            if (pet == null) {
-                return;
-            }
 
             if (!EphemeralData.getInstance().hasRightClickCooldown(player.getUniqueId())) {
                 setRightClickCooldown(player, ConfigManager.getInstance().getInt("rightClickViewCooldown"));
@@ -236,6 +233,7 @@ public class InteractionHandler implements Listener {
                 pet.sendInfoToPlayer(player);
 
                 if (ConfigManager.getInstance().getBoolean("rightClickToSelect")) {
+
                     if (!pet.getOwnerUUID().equals(player.getUniqueId())) {
                         return;
                     }
@@ -245,13 +243,19 @@ public class InteractionHandler implements Listener {
                         EphemeralData.getInstance().selectPetForPlayer(pet, player.getUniqueId());
                         player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
                     }
+
                 }
             }
 
-            if (!pet.getOwnerUUID().equals(player.getUniqueId()) && !pet.getAccessList().contains(player.getUniqueId())) {
-                player.sendMessage(ChatColor.RED + "You don't have access to this pet.");
-                event.setCancelled(true);
-            }
+        }
+
+        if (pet == null) {
+            return;
+        }
+
+        if (pet.getLocked() && !pet.getOwnerUUID().equals(player.getUniqueId()) && !pet.getAccessList().contains(player.getUniqueId())) {
+            player.sendMessage(ChatColor.RED + "You don't have access to this pet.");
+            event.setCancelled(true);
         }
 
     }
