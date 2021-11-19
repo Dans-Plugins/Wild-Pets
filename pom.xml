@@ -6,7 +6,7 @@
 
     <groupId>dansplugins</groupId>
     <artifactId>WildPets</artifactId>
-    <version>v1.3.2-alpha-1</version>
+    <version>v1.3.2-alpha-2</version>
     <packaging>jar</packaging>
 
     <name>Wild Pets</name>
@@ -67,7 +67,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.17.1-R0.1-SNAPSHOT</version>
+            <version>1.13.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
