@@ -28,7 +28,7 @@ public final class WildPets extends AbstractPonderPlugin {
         return instance;
     }
 
-    private final String version = "v1.2.1-alpha-1";
+    private final String version = "v1.2.1";
 
     @Override
     public void onEnable() {

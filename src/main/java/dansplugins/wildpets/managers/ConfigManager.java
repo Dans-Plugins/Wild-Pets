@@ -121,7 +121,8 @@ public class ConfigManager {
             } else if (option.equalsIgnoreCase("rightClickViewCooldown")
                     || option.equalsIgnoreCase("secondsBetweenSchedulingAttempts")
                     || option.equalsIgnoreCase("maxScheduleAttempts")
-                    || option.equalsIgnoreCase("petNameCharacterLimit")) {
+                    || option.equalsIgnoreCase("petNameCharacterLimit")
+                    || option.equalsIgnoreCase("petLimit")) {
                 getConfig().set(configOptionsPrefix + option, Integer.parseInt(value));
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
             } else if (option.equalsIgnoreCase("debugMode")
