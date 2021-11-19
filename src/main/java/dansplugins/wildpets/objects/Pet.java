@@ -111,7 +111,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         player.sendMessage(ChatColor.AQUA + "Locked: " + locked);
         player.sendMessage(ChatColor.AQUA + "Parents: " + getParentNamesSeparatedByCommas());
         if (childIDs.size() > 0) {
-            player.sendMessage(ChatColor.AQUA + "Children: " + getChildrenNamessSeparatedByCommas());
+            player.sendMessage(ChatColor.AQUA + "Children: " + getChildrenNamesSeparatedByCommas());
         }
         if (WildPets.getInstance().isDebugEnabled()) {
             player.sendMessage(ChatColor.AQUA + "[DEBUG] uniqueID: " + uniqueID.toString());
@@ -275,7 +275,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         return toReturn;
     }
 
-    private String getChildrenNamessSeparatedByCommas() {
+    private String getChildrenNamesSeparatedByCommas() {
         String toReturn = "";
         int count = 0;
         for (UUID uuid : childIDs) {
