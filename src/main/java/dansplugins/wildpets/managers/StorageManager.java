@@ -92,6 +92,7 @@ public class StorageManager {
 
             }
             PersistentData.getInstance().getPetList(pet.getOwnerUUID()).addPet(pet);
+            PersistentData.getInstance().addPetRecord(pet); // will not result in duplicates because petRecords is a hashset
         }
     }
 

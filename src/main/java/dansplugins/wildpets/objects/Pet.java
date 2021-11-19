@@ -13,11 +13,12 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import preponderous.ponder.modifiers.Lockable;
+import preponderous.ponder.modifiers.Savable;
 
 import java.lang.reflect.Type;
 import java.util.*;
 
-public class Pet extends AbstractFamilialEntity implements Lockable {
+public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
 
     // persistent
     private UUID uniqueID;
@@ -262,6 +263,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable {
         return null;
     }
 
+    @Override
     public Map<String, String> save() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -282,7 +284,8 @@ public class Pet extends AbstractFamilialEntity implements Lockable {
         return saveMap;
     }
 
-    private void load(Map<String, String> data) {
+    @Override
+    public void load(Map<String, String> data) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         Type hashsetTypeUUID = new TypeToken<HashSet<UUID>>(){}.getType();

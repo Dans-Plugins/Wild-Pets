@@ -2,10 +2,12 @@ package dansplugins.wildpets.data;
 
 import dansplugins.wildpets.objects.Pet;
 import dansplugins.wildpets.objects.PetList;
+import dansplugins.wildpets.objects.PetRecord;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
 
 public class PersistentData {
@@ -13,6 +15,7 @@ public class PersistentData {
     private static PersistentData instance;
 
     private ArrayList<PetList> petLists = new ArrayList<>();
+    private HashSet<PetRecord> petRecords = new HashSet<>();
 
     private PersistentData() {
 
@@ -31,6 +34,7 @@ public class PersistentData {
 
     public boolean addNewPet(Player player, Entity entity) {
         Pet newPet = new Pet(entity, player.getUniqueId());
+        addPetRecord(newPet);
         PetList petList = getPetList(player.getUniqueId());
 
         petList.addPet(newPet);
@@ -86,5 +90,38 @@ public class PersistentData {
             toReturn.addAll(petList.getPets());
         }
         return toReturn;
+    }
+
+    // ---
+
+    public HashSet<PetRecord> getPetRecords() {
+        return petRecords;
+    }
+
+    public boolean addPetRecord(Pet pet) {
+        return petRecords.add(new PetRecord(pet));
+    }
+
+    public boolean removePetRecord(UUID entityUUID) {
+        PetRecord recordToRemove = null;
+        for (PetRecord record : petRecords) {
+            if (record.getUniqueID().equals(entityUUID)) {
+                recordToRemove = record;
+                break;
+            }
+        }
+        if (recordToRemove == null) {
+            return false;
+        }
+        return petRecords.remove(recordToRemove);
+    }
+
+    public PetRecord getPetRecord(UUID entityUUID) {
+        for (PetRecord record : petRecords) {
+            if (record.getUniqueID().equals(entityUUID)) {
+                return record;
+            }
+        }
+        return null;
     }
 }
