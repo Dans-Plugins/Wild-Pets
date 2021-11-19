@@ -1,10 +1,12 @@
 package dansplugins.wildpets.objects;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import preponderous.ponder.modifiers.Savable;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.lang.reflect.Type;
+import java.util.*;
 
 public class PetRecord implements Savable {
     private UUID uniqueID;
@@ -17,6 +19,10 @@ public class PetRecord implements Savable {
         name = pet.getName();
         ownerUUID = pet.getOwnerUUID();
         assignedID = pet.getAssignedID();
+    }
+
+    public PetRecord(Map<String, String> data) {
+        this.load(data);
     }
 
     public UUID getUniqueID() {
@@ -53,13 +59,25 @@ public class PetRecord implements Savable {
 
     @Override
     public Map<String, String> save() {
-        // TODO: implement
-        return null;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        Map<String, String> saveMap = new HashMap<>();
+        saveMap.put("uniqueID", gson.toJson(uniqueID));
+        saveMap.put("owner", gson.toJson(ownerUUID));
+        saveMap.put("assignedID", gson.toJson(assignedID));
+        saveMap.put("name", gson.toJson(name));
+
+        return saveMap;
     }
 
     @Override
-    public void load(Map<String, String> map) {
-        // TODO: implement
+    public void load(Map<String, String> data) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        uniqueID = UUID.fromString(gson.fromJson(data.get("uniqueID"), String.class));
+        ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
+        assignedID = Integer.parseInt(gson.fromJson(data.get("assignedID"), String.class));
+        name = gson.fromJson(data.get("name"), String.class);
     }
 
     @Override
