@@ -1,5 +1,6 @@
 package dansplugins.wildpets.eventhandlers;
 
+import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.objects.Pet;
 import org.bukkit.ChatColor;
@@ -31,7 +32,8 @@ public class BreedEventHandler implements Listener {
 
         if (petParent1 != null || petParent2 != null) {
             Pet newPet = PersistentData.getInstance().getPet(child);
-            player.sendMessage(ChatColor.AQUA + "You have a new pet! Type /wp select " + newPet.getName() + " to select it.");
+            EphemeralData.getInstance().selectPetForPlayer(newPet, player.getUniqueId());
+            player.sendMessage(ChatColor.AQUA + "You have a new pet named " + newPet.getName() + " and it is now your selected pet.");
 
             if (petParent1 != null) {
                 newPet.addParent(petParent1.getAssignedID());
