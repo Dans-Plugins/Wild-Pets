@@ -17,7 +17,7 @@ import preponderous.ponder.modifiers.Lockable;
 import java.lang.reflect.Type;
 import java.util.*;
 
-public class Pet implements Lockable {
+public class Pet extends AbstractFamilialEntity implements Lockable {
 
     // persistent
     private UUID uniqueID;
@@ -28,8 +28,8 @@ public class Pet implements Lockable {
     private int lastKnownX = -1;
     private int lastKnownY = -1;
     private int lastKnownZ = -1;
-    private boolean locked = false; // TODO: make persistent
-    private HashSet<UUID> accessList = new HashSet<>(); // TODO: make persistent
+    private boolean locked = false;
+    private HashSet<UUID> accessList = new HashSet<>();
 
     // ephemeral
     private Location stayingLocation;
@@ -223,7 +223,7 @@ public class Pet implements Lockable {
     }
 
     public Map<String, String> save() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         Map<String, String> saveMap = new HashMap<>();
         saveMap.put("uniqueID", gson.toJson(uniqueID));
@@ -236,6 +236,8 @@ public class Pet implements Lockable {
         saveMap.put("lastKnownZ", gson.toJson(lastKnownZ));
         saveMap.put("locked", gson.toJson(locked));
         saveMap.put("accessList", gson.toJson(accessList));
+        saveMap.put("parentIDs", gson.toJson(this.parentIDs));
+        saveMap.put("childIDs", gson.toJson(this.childIDs));
 
         return saveMap;
     }
@@ -267,5 +269,8 @@ public class Pet implements Lockable {
 
         locked = Boolean.parseBoolean(data.getOrDefault("locked", "false"));
         accessList = gson.fromJson(data.getOrDefault("accessList", "[]"), hashsetTypeUUID);
+
+        parentIDs = gson.fromJson(data.getOrDefault("parentIDs", "[]"), hashsetTypeUUID);
+        childIDs =  gson.fromJson(data.getOrDefault("childIDs", "[]"), hashsetTypeUUID);
     }
 }
