@@ -112,7 +112,9 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         player.sendMessage(ChatColor.AQUA + "Owner: " + WildPets.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(ownerUUID));
         player.sendMessage(ChatColor.AQUA + "State: " + movementState);
         player.sendMessage(ChatColor.AQUA + "Locked: " + locked);
-        player.sendMessage(ChatColor.AQUA + "Parents: " + getParentNamesSeparatedByCommas());
+        if (parentIDs.size() > 0) {
+            player.sendMessage(ChatColor.AQUA + "Parents: " + getParentNamesSeparatedByCommas());
+        }
         if (childIDs.size() > 0) {
             player.sendMessage(ChatColor.AQUA + "Children: " + getChildrenNamesSeparatedByCommas());
         }
@@ -120,7 +122,9 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
             player.sendMessage(ChatColor.AQUA + "[DEBUG] uniqueID: " + uniqueID.toString());
             player.sendMessage(ChatColor.AQUA + "[DEBUG] ownerUUID: " + ownerUUID.toString());
             player.sendMessage(ChatColor.AQUA + "[DEBUG] assignedID: " + assignedID);
-            player.sendMessage(ChatColor.AQUA + "[DEBUG] Parents: " + getParentsUUIDsSeparatedByCommas());
+            if (parentIDs.size() > 0) {
+                player.sendMessage(ChatColor.AQUA + "[DEBUG] Parents: " + getParentsUUIDsSeparatedByCommas());
+            }
             if (childIDs.size() > 0) {
                 player.sendMessage(ChatColor.AQUA + "[DEBUG] Children: " + getChildrenUUIDsSeparatedByCommas());
             }
