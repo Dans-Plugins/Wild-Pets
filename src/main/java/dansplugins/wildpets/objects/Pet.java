@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import dansplugins.wildpets.Scheduler;
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
+import dansplugins.wildpets.managers.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
@@ -112,11 +113,13 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         player.sendMessage(ChatColor.AQUA + "Owner: " + WildPets.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(ownerUUID));
         player.sendMessage(ChatColor.AQUA + "State: " + movementState);
         player.sendMessage(ChatColor.AQUA + "Locked: " + locked);
-        if (parentIDs.size() > 0) {
-            player.sendMessage(ChatColor.AQUA + "Parents: " + getParentNamesSeparatedByCommas());
-        }
-        if (childIDs.size() > 0) {
-            player.sendMessage(ChatColor.AQUA + "Children: " + getChildrenNamesSeparatedByCommas());
+        if (ConfigManager.getInstance().getBoolean("showLineageInfo")) {
+            if (parentIDs.size() > 0) {
+                player.sendMessage(ChatColor.AQUA + "Parents: " + getParentNamesSeparatedByCommas());
+            }
+            if (childIDs.size() > 0) {
+                player.sendMessage(ChatColor.AQUA + "Children: " + getChildrenNamesSeparatedByCommas());
+            }
         }
         if (WildPets.getInstance().isDebugEnabled()) {
             player.sendMessage(ChatColor.AQUA + "[DEBUG] uniqueID: " + uniqueID.toString());

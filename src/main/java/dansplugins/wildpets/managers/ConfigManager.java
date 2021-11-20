@@ -76,12 +76,15 @@ public class ConfigManager {
         if (!getConfig().isSet(configOptionsPrefix + "preventMountingLockedPets")) {
             getConfig().set(configOptionsPrefix + "preventMountingLockedPets", true);
         }
-
-        // TODO: add config option for whether or not pets should be invulnerable to damage
-
-        // TODO: add config option for whether or not lineage information should be shown
-
-        // TODO: add config option for whether or not entities born to pets should also be pets
+        if (!getConfig().isSet(configOptionsPrefix + "damageToPetsEnabled")) {
+            getConfig().set(configOptionsPrefix + "damageToPetsEnabled", false);
+        }
+        if (!getConfig().isSet(configOptionsPrefix + "showLineageInfo")) {
+            getConfig().set(configOptionsPrefix + "showLineageInfo", true);
+        }
+        if (!getConfig().isSet(configOptionsPrefix + "bornPetsEnabled")) {
+            getConfig().set(configOptionsPrefix + "bornPetsEnabled", true);
+        }
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = EntityConfigManager.getInstance().getDefaultConfiguration();
@@ -133,7 +136,10 @@ public class ConfigManager {
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
             } else if (option.equalsIgnoreCase("debugMode")
                     || option.equalsIgnoreCase("rightClickToSelect")
-                    || option.equalsIgnoreCase("preventMountingLockedPets")) {
+                    || option.equalsIgnoreCase("preventMountingLockedPets")
+                    || option.equalsIgnoreCase("damageToPetsEnabled")
+                    || option.equalsIgnoreCase("showLineageInfo")
+                    || option.equalsIgnoreCase("bornPetsEnabled")) {
                 getConfig().set(configOptionsPrefix + option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
             } else if (option.equalsIgnoreCase("secondsBetweenStayTeleports")) { // no doubles yet
@@ -164,7 +170,10 @@ public class ConfigManager {
                 + ", secondsBetweenSchedulingAttempts: " + getInt("secondsBetweenSchedulingAttempts")
                 + ", maxScheduleAttempts: " + getInt("maxScheduleAttempts")
                 + ", petNameCharacterLimit: " + getInt("petNameCharacterLimit")
-                + ", preventMountingLockedPets: " + getInt("preventMountingLockedPets"));
+                + ", preventMountingLockedPets: " + getInt("preventMountingLockedPets")
+                + ", damageToPetsEnabled: " + getBoolean("damageToPetsEnabled")
+                + ", showLineageInfo: " + getBoolean("bornPetsEnabled")
+                + ", bornPetsEnabled: " + getBoolean("bornPetsEnabled"));
         sender.sendMessage(ChatColor.AQUA + "====================");
         sender.sendMessage(ChatColor.AQUA + "Note: Entity configurations are not shown.");
         sender.sendMessage(ChatColor.AQUA + "====================");
