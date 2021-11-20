@@ -172,7 +172,8 @@ public class ConfigManager {
                 + ", petNameCharacterLimit: " + getInt("petNameCharacterLimit")
                 + ", preventMountingLockedPets: " + getInt("preventMountingLockedPets")
                 + ", damageToPetsEnabled: " + getBoolean("damageToPetsEnabled")
-                + ", showLineageInfo: " + getBoolean("bornPetsEnabled"));
+                + ", showLineageInfo: " + getBoolean("bornPetsEnabled")
+                + ", bornPetsEnabled: " + getBoolean("bornPetsEnabled"));
         sender.sendMessage(ChatColor.AQUA + "====================");
         sender.sendMessage(ChatColor.AQUA + "Note: Entity configurations are not shown.");
         sender.sendMessage(ChatColor.AQUA + "====================");
