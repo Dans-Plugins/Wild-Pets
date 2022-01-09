@@ -9,29 +9,30 @@ import dansplugins.wildpets.managers.StorageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
-import preponderous.ponder.AbstractPonderPlugin;
-import preponderous.ponder.misc.PonderAPI_Integrator;
-import preponderous.ponder.misc.specification.ICommand;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
+import preponderous.ponder.minecraft.abs.PonderPlugin;
+import preponderous.ponder.minecraft.spigot.misc.PonderAPI_Integrator;
+import preponderous.ponder.minecraft.spigot.tools.EventHandlerRegistry;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public final class WildPets extends AbstractPonderPlugin {
-  
+/**
+ * @author Daniel McCoy Stephenson
+ */
+public final class WildPets extends PonderPlugin {
     private static WildPets instance;
+    private final String pluginVersion = "v" + getDescription().getVersion();
 
     public static WildPets getInstance() {
         return instance;
     }
 
-    private final String version = "v1.3.2";
-
     @Override
     public void onEnable() {
         instance = this;
         ponderAPI_integrator = new PonderAPI_Integrator(this);
-        toolbox = getPonderAPI().getToolbox();
         registerEventHandlers();
         initializeCommandService();
         getPonderAPI().setDebug(false);
@@ -76,7 +77,7 @@ public final class WildPets extends AbstractPonderPlugin {
     }
 
     public String getVersion() {
-        return version;
+        return pluginVersion;
     }
 
     public boolean isDebugEnabled() {
@@ -94,11 +95,12 @@ public final class WildPets extends AbstractPonderPlugin {
         listeners.add(new JoinAndQuitHandler());
         listeners.add(new MoveHandler());
         listeners.add(new BreedEventHandler());
-        getToolbox().getEventHandlerRegistry().registerEventHandlers(listeners, this);
+        EventHandlerRegistry eventHandlerRegistry = new EventHandlerRegistry(getPonderAPI());
+        eventHandlerRegistry.registerEventHandlers(listeners, this);
     }
 
     private void initializeCommandService() {
-        ArrayList<ICommand> commands = new ArrayList<>(Arrays.asList(
+        ArrayList<AbstractPluginCommand> commands = new ArrayList<>(Arrays.asList(
                 new CallCommand(), new CheckAccessCommand(), new ConfigCommand(),
                 new FollowCommand(), new GrantAccessCommand(), new HelpCommand(),
                 new InfoCommand(), new ListCommand(), new LocateCommand(),

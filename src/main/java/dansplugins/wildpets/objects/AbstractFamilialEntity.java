@@ -3,6 +3,9 @@ package dansplugins.wildpets.objects;
 import java.util.HashSet;
 import java.util.UUID;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public abstract class AbstractFamilialEntity {
     protected HashSet<UUID> parentIDs = new HashSet<>();
     protected HashSet<UUID> childIDs = new HashSet<>();

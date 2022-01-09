@@ -7,6 +7,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class JoinAndQuitHandler implements Listener {
 
     @EventHandler()
@@ -20,5 +23,4 @@ public class JoinAndQuitHandler implements Listener {
     public void handle(PlayerQuitEvent event) {
         EphemeralData.getInstance().clearPlayerFromLists(event.getPlayer());
     }
-
 }

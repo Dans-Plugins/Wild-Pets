@@ -4,24 +4,18 @@ import dansplugins.wildpets.data.EphemeralData;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import preponderous.ponder.misc.AbstractCommand;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 
-public class TameCommand extends AbstractCommand {
+/**
+ * @author Daniel McCoy Stephenson
+ */
+public class TameCommand extends AbstractPluginCommand {
 
-    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("tame"));
-    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("wp.tame"));
-
-    @Override
-    public ArrayList<String> getNames() {
-        return names;
-    }
-
-    @Override
-    public ArrayList<String> getPermissions() {
-        return permissions;
+    public TameCommand() {
+        super(new ArrayList<>(Arrays.asList("tame")), new ArrayList<>(Arrays.asList("wp.tame")));
     }
 
     @Override
@@ -52,5 +46,4 @@ public class TameCommand extends AbstractCommand {
 
         return execute(sender);
     }
-
 }

@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class PetList {
 
     private UUID ownerUUID;

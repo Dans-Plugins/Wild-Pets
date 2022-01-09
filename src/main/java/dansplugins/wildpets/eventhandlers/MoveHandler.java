@@ -13,6 +13,9 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.ArrayList;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class MoveHandler implements Listener {
 
     @EventHandler()
@@ -38,5 +41,4 @@ public class MoveHandler implements Listener {
             }
         }
     }
-
 }

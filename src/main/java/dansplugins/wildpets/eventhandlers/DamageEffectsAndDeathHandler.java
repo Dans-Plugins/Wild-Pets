@@ -9,8 +9,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class DamageEffectsAndDeathHandler implements Listener {
 
     @EventHandler()
@@ -42,52 +46,4 @@ public class DamageEffectsAndDeathHandler implements Listener {
             }
         }
     }
-
-    // the methods below are probably not needed anymore
-/*
-    @EventHandler()
-    public void handle(PotionSplashEvent event) {
-        Pet pet = PersistentData.getInstance().getPet(event.getEntity());
-        if (pet != null) {
-            if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Cancelling PotionSplashEvent event to protect " + pet.getName() + "."); }
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler()
-    public void handle(EntityDamageByBlockEvent event) {
-        Pet pet = PersistentData.getInstance().getPet(event.getEntity());
-        if (pet != null) {
-            if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Cancelling EntityDamageByBlockEvent event to protect " + pet.getName() + "."); }
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler()
-    public void handle(EntityDamageByEntityEvent event) {
-        Pet pet = PersistentData.getInstance().getPet(event.getEntity());
-        if (pet != null) {
-            if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Cancelling EntityDamageByEntity event to protect " + pet.getName() + "."); }
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler()
-    public void handle(AreaEffectCloudApplyEvent event) {
-        Pet pet = PersistentData.getInstance().getPet(event.getEntity());
-        if (pet != null) {
-            if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Cancelling AreaEffectCloudApply event to protect " + pet.getName() + "."); }
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler()
-    public void handle(LingeringPotionSplashEvent event) {
-        Pet pet = PersistentData.getInstance().getPet(event.getEntity());
-        if (pet != null) {
-            if (WildPets.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Cancelling LingeringPotionSplash event to protect " + pet.getName() + "."); }
-            event.setCancelled(true);
-        }
-    }
-*/
 }

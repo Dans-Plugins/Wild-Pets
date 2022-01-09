@@ -9,14 +9,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
-    To add a new config option, the following methods must be altered:
-    - handleVersionMismatch()
-    - setConfigOption()
-    - saveConfigDefaults()
-    - sendConfigList()
+/**
+ * @author Daniel McCoy Stephenson
+ *     To add a new config option, the following methods must be altered:
+ *     - handleVersionMismatch()
+ *     - setConfigOption()
+ *     - saveConfigDefaults()
+ *     - sendConfigList()
  */
-
 public class ConfigManager {
 
     private static ConfigManager instance;
@@ -202,5 +202,4 @@ public class ConfigManager {
     public String getString(String option) {
         return getConfig().getString(configOptionsPrefix + option);
     }
-
 }

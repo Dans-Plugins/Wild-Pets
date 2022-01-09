@@ -18,10 +18,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.spigotmc.event.entity.EntityMountEvent;
+import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
 
 import java.util.Random;
 import java.util.UUID;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class InteractionHandler implements Listener {
 
     @EventHandler()
@@ -210,8 +214,11 @@ public class InteractionHandler implements Listener {
             }
 
             player.sendMessage(ChatColor.AQUA + "The following players have access to this pet:");
+
+            UUIDChecker uuidChecker = new UUIDChecker();
+
             for (UUID uuid : pet.getAccessList()) {
-                String playerName = WildPets.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(uuid);
+                String playerName = uuidChecker.findPlayerNameBasedOnUUID(uuid);
                 if (playerName != null) {
                     player.sendMessage(ChatColor.AQUA + playerName);
                 }
@@ -304,5 +311,4 @@ public class InteractionHandler implements Listener {
         if (WildPets.getInstance().isDebugEnabled()) { System.out.println("Dice landed on " + generatedNumber * 100 + ". " + chanceToFail * 100 + " was required."); }
         return generatedNumber > chanceToFail;
     }
-
 }

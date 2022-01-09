@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class EntityConfigManager {
 
     private static EntityConfigManager instance;

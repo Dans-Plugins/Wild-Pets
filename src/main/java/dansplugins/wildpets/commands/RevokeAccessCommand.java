@@ -2,24 +2,18 @@ package dansplugins.wildpets.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import preponderous.ponder.misc.AbstractCommand;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 
-public class RevokeAccessCommand extends AbstractCommand {
+/**
+ * @author Daniel McCoy Stephenson
+ */
+public class RevokeAccessCommand extends AbstractPluginCommand {
 
-    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("revokeaccess"));
-    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("wp.revokeaccess"));
-
-    @Override
-    public ArrayList<String> getNames() {
-        return names;
-    }
-
-    @Override
-    public ArrayList<String> getPermissions() {
-        return permissions;
+    public RevokeAccessCommand() {
+        super(new ArrayList<>(Arrays.asList("revokeaccess")), new ArrayList<>(Arrays.asList("wp.revokeaccess")));
     }
 
     public boolean execute(CommandSender sender) {
@@ -34,5 +28,4 @@ public class RevokeAccessCommand extends AbstractCommand {
         commandSender.sendMessage(ChatColor.RED + "This command isn't implemented yet.");
         return true;
     }
-
 }
