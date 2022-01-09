@@ -10,7 +10,6 @@ import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * @author Daniel McCoy Stephenson

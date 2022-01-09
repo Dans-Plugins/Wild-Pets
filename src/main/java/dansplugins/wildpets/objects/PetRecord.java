@@ -4,8 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import preponderous.ponder.misc.Savable;
 
-import java.lang.reflect.Type;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Daniel McCoy Stephenson
