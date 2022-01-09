@@ -11,6 +11,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityBreedEvent;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class BreedEventHandler implements Listener {
 
     @EventHandler()
@@ -49,5 +52,4 @@ public class BreedEventHandler implements Listener {
             }
         }
     }
-
 }

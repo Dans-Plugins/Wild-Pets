@@ -13,13 +13,16 @@ import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import preponderous.ponder.modifiers.Lockable;
-import preponderous.ponder.modifiers.Savable;
+import preponderous.ponder.minecraft.spigot.modifiers.Lockable;
+import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
+import preponderous.ponder.misc.Savable;
 
 import java.lang.reflect.Type;
 import java.util.*;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
 
     // persistent
@@ -41,10 +44,11 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
     private int teleportTaskID = -1;
 
     public Pet(Entity entity, UUID playerOwner) {
+        UUIDChecker uuidChecker = new UUIDChecker();
         uniqueID = entity.getUniqueId();
         ownerUUID = playerOwner;
         assignedID = PersistentData.getInstance().getPetList(ownerUUID).getNewID();
-        name = WildPets.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(ownerUUID) + "'s_Pet_" + assignedID;
+        name = uuidChecker.findPlayerNameBasedOnUUID(ownerUUID) + "'s_Pet_" + assignedID;
         movementState = "Wandering";
         setLastKnownLocation(entity.getLocation());
 
@@ -108,9 +112,10 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
     }
 
     public void sendInfoToPlayer(Player player) {
+        UUIDChecker uuidChecker = new UUIDChecker();
         player.sendMessage(ChatColor.AQUA + "=== Pet Info ===");
         player.sendMessage(ChatColor.AQUA + "Name: " + name);
-        player.sendMessage(ChatColor.AQUA + "Owner: " + WildPets.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(ownerUUID));
+        player.sendMessage(ChatColor.AQUA + "Owner: " + uuidChecker.findPlayerNameBasedOnUUID(ownerUUID));
         player.sendMessage(ChatColor.AQUA + "State: " + movementState);
         player.sendMessage(ChatColor.AQUA + "Locked: " + locked);
         if (ConfigManager.getInstance().getBoolean("showLineageInfo")) {
@@ -359,5 +364,4 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         parentIDs = gson.fromJson(data.getOrDefault("parentIDs", "[]"), hashsetTypeUUID);
         childIDs =  gson.fromJson(data.getOrDefault("childIDs", "[]"), hashsetTypeUUID);
     }
-
 }

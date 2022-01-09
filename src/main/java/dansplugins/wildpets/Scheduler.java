@@ -9,6 +9,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class Scheduler {
 
     private static Scheduler instance;

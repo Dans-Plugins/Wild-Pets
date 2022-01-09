@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class StorageManager {
 
     private static StorageManager instance;
@@ -130,5 +133,4 @@ public class StorageManager {
         }
         return new ArrayList<>();
     }
-
 }

@@ -2,6 +2,9 @@ package dansplugins.wildpets.objects;
 
 import org.bukkit.Material;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class EntityConfig {
 
     private String type;

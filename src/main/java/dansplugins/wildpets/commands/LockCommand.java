@@ -4,24 +4,19 @@ import dansplugins.wildpets.data.EphemeralData;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import preponderous.ponder.misc.AbstractCommand;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
-public class LockCommand extends AbstractCommand {
+/**
+ * @author Daniel McCoy Stephenson
+ */
+public class LockCommand extends AbstractPluginCommand {
 
-    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("lock"));
-    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("wp.lock"));
-
-    @Override
-    public ArrayList<String> getNames() {
-        return names;
-    }
-
-    @Override
-    public ArrayList<String> getPermissions() {
-        return permissions;
+    public LockCommand() {
+        super(new ArrayList<>(Arrays.asList("lock")), new ArrayList<>(Arrays.asList("wp.lock")));
     }
 
     public boolean execute(CommandSender sender) {
@@ -41,5 +36,4 @@ public class LockCommand extends AbstractCommand {
     public boolean execute(CommandSender commandSender, String[] strings) {
         return execute(commandSender);
     }
-
 }

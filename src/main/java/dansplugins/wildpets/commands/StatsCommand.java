@@ -3,26 +3,21 @@ package dansplugins.wildpets.commands;
 import dansplugins.wildpets.data.PersistentData;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import preponderous.ponder.misc.AbstractCommand;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
-public class StatsCommand extends AbstractCommand {
+/**
+ * @author Daniel McCoy Stephenson
+ */
+public class StatsCommand extends AbstractPluginCommand {
 
     // TODO: add statistics object with persistent data like number of times players have attempted to tame
 
-    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("stats"));
-    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("wp.stats"));
-
-    @Override
-    public ArrayList<String> getNames() {
-        return names;
-    }
-
-    @Override
-    public ArrayList<String> getPermissions() {
-        return permissions;
+    public StatsCommand() {
+        super(new ArrayList<>(Arrays.asList("stats")), new ArrayList<>(Arrays.asList("wp.stats")));
     }
 
     public boolean execute(CommandSender sender) {
@@ -35,5 +30,4 @@ public class StatsCommand extends AbstractCommand {
     public boolean execute(CommandSender commandSender, String[] strings) {
         return execute(commandSender);
     }
-
 }

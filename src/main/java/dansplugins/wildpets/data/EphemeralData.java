@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class EphemeralData {
 
     private static EphemeralData instance;
@@ -204,5 +207,4 @@ public class EphemeralData {
         setPlayerAsNotTaming(player);
         setPlayerAsNotSelecting(player);
     }
-
 }

@@ -5,24 +5,19 @@ import dansplugins.wildpets.objects.Pet;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import preponderous.ponder.misc.AbstractCommand;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
-public class StayCommand extends AbstractCommand {
+/**
+ * @author Daniel McCoy Stephenson
+ */
+public class StayCommand extends AbstractPluginCommand {
 
-    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("stay"));
-    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("wp.stay"));
-
-    @Override
-    public ArrayList<String> getNames() {
-        return names;
-    }
-
-    @Override
-    public ArrayList<String> getPermissions() {
-        return permissions;
+    public StayCommand() {
+        super(new ArrayList<>(Arrays.asList("stay")), new ArrayList<>(Arrays.asList("wp.stay")));
     }
 
     public boolean execute(CommandSender sender) {
@@ -49,5 +44,4 @@ public class StayCommand extends AbstractCommand {
     public boolean execute(CommandSender commandSender, String[] strings) {
         return execute(commandSender);
     }
-
 }
