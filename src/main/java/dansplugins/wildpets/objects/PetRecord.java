@@ -2,7 +2,8 @@ package dansplugins.wildpets.objects;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import preponderous.ponder.misc.Savable;
+
+import preponderous.ponder.misc.abs.Savable;
 
 import java.util.HashMap;
 import java.util.Map;

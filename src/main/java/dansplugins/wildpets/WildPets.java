@@ -6,13 +6,15 @@ import dansplugins.wildpets.eventhandlers.*;
 import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.managers.EntityConfigManager;
 import dansplugins.wildpets.managers.StorageManager;
+import dansplugins.wildpets.utils.Scheduler;
+import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
+import preponderous.ponder.minecraft.bukkit.services.CommandService;
+import preponderous.ponder.minecraft.bukkit.tools.EventHandlerRegistry;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
-import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
-import preponderous.ponder.minecraft.abs.PonderPlugin;
-import preponderous.ponder.minecraft.spigot.misc.PonderAPI_Integrator;
-import preponderous.ponder.minecraft.spigot.tools.EventHandlerRegistry;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,9 +23,10 @@ import java.util.Arrays;
 /**
  * @author Daniel McCoy Stephenson
  */
-public final class WildPets extends PonderPlugin {
+public final class WildPets extends PonderBukkitPlugin {
     private static WildPets instance;
     private final String pluginVersion = "v" + getDescription().getVersion();
+    private CommandService commandService;
 
     public static WildPets getInstance() {
         return instance;
@@ -32,10 +35,8 @@ public final class WildPets extends PonderPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        ponderAPI_integrator = new PonderAPI_Integrator(this);
         registerEventHandlers();
         initializeCommandService();
-        getPonderAPI().setDebug(false);
 
         // create/load config
         if (!(new File("./plugins/WildPets/config.yml").exists())) {
@@ -50,14 +51,12 @@ public final class WildPets extends PonderPlugin {
             reloadConfig();
             EntityConfigManager.getInstance().initializeWithConfig();
         }
-
-        // schedule auto save
         Scheduler.getInstance().scheduleAutosave();
-
-        // load save files
         StorageManager.getInstance().load();
+        handlebStatsIntegration();
+    }
 
-        // bStats
+    private void handlebStatsIntegration() {
         int pluginId = 12332;
         Metrics metrics = new Metrics(this, pluginId);
     }
@@ -73,7 +72,7 @@ public final class WildPets extends PonderPlugin {
             return defaultCommand.execute(sender);
         }
 
-        return getPonderAPI().getCommandService().interpretCommand(sender, label, args);
+        return commandService.interpretAndExecuteCommand(sender, label, args);
     }
 
     public String getVersion() {
@@ -95,7 +94,7 @@ public final class WildPets extends PonderPlugin {
         listeners.add(new JoinAndQuitHandler());
         listeners.add(new MoveHandler());
         listeners.add(new BreedEventHandler());
-        EventHandlerRegistry eventHandlerRegistry = new EventHandlerRegistry(getPonderAPI());
+        EventHandlerRegistry eventHandlerRegistry = new EventHandlerRegistry();
         eventHandlerRegistry.registerEventHandlers(listeners, this);
     }
 
@@ -109,6 +108,6 @@ public final class WildPets extends PonderPlugin {
                 new StayCommand(), new TameCommand(), new UnlockCommand(),
                 new WanderCommand(), new GatherCommand()
         ));
-        getPonderAPI().getCommandService().initialize(commands, "That command wasn't found.");
+        commandService.initialize(commands, "That command wasn't found.");
     }
 }

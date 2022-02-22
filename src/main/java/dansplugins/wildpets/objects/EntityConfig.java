@@ -6,7 +6,6 @@ import org.bukkit.Material;
  * @author Daniel McCoy Stephenson
  */
 public class EntityConfig {
-
     private String type;
     private double chanceToSucceed;
     private Material requiredTamingItem;

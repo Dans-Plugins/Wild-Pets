@@ -3,19 +3,21 @@ package dansplugins.wildpets.objects;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import dansplugins.wildpets.Scheduler;
+
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.managers.ConfigManager;
+import dansplugins.wildpets.utils.Scheduler;
+import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
+import preponderous.ponder.misc.abs.Lockable;
+import preponderous.ponder.misc.abs.Savable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import preponderous.ponder.minecraft.spigot.modifiers.Lockable;
-import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
-import preponderous.ponder.misc.Savable;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -23,7 +25,7 @@ import java.util.*;
 /**
  * @author Daniel McCoy Stephenson
  */
-public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
+public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savable {
 
     // persistent
     private UUID uniqueID;
@@ -239,7 +241,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable, Savable {
         return new ArrayList<>(accessList);
     }
 
-    public boolean getLocked() {
+    public boolean isLocked() {
         return locked;
     }
 

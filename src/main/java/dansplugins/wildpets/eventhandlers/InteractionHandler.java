@@ -1,6 +1,5 @@
 package dansplugins.wildpets.eventhandlers;
 
-import dansplugins.wildpets.Scheduler;
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
@@ -8,6 +7,9 @@ import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.managers.EntityConfigManager;
 import dansplugins.wildpets.objects.EntityConfig;
 import dansplugins.wildpets.objects.Pet;
+import dansplugins.wildpets.utils.Scheduler;
+import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -18,7 +20,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.spigotmc.event.entity.EntityMountEvent;
-import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
 
 import java.util.Random;
 import java.util.UUID;
