@@ -3,9 +3,9 @@ package dansplugins.wildpets;
 import dansplugins.wildpets.bstats.Metrics;
 import dansplugins.wildpets.commands.*;
 import dansplugins.wildpets.eventhandlers.*;
-import dansplugins.wildpets.managers.ConfigManager;
-import dansplugins.wildpets.managers.EntityConfigManager;
-import dansplugins.wildpets.managers.StorageManager;
+import dansplugins.wildpets.services.LocalConfigService;
+import dansplugins.wildpets.services.LocalEntityConfigService;
+import dansplugins.wildpets.services.LocalStorageService;
 import dansplugins.wildpets.utils.Scheduler;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
@@ -26,46 +26,69 @@ import java.util.Arrays;
 public final class WildPets extends PonderBukkitPlugin {
     private static WildPets instance;
     private final String pluginVersion = "v" + getDescription().getVersion();
-    private CommandService commandService;
+    private CommandService commandService = new CommandService(getPonder());
 
+     /**
+     * This can be used to get the instance of the main class that is managed by itself.
+     * @return The managed instance of the main class.
+     */
     public static WildPets getInstance() {
         return instance;
     }
 
+     /**
+     * This runs when the server starts.
+     */
     @Override
     public void onEnable() {
         instance = this;
         registerEventHandlers();
         initializeCommandService();
-
-        // create/load config
-        if (!(new File("./plugins/WildPets/config.yml").exists())) {
-            EntityConfigManager.getInstance().initializeWithDefaults();
-            ConfigManager.getInstance().saveMissingConfigDefaultsIfNotPresent();
-        }
-        else {
-            // pre load compatibility checks
-            if (isVersionMismatched()) {
-                ConfigManager.getInstance().saveMissingConfigDefaultsIfNotPresent();
-            }
-            reloadConfig();
-            EntityConfigManager.getInstance().initializeWithConfig();
-        }
+        initializeConfig();
         Scheduler.getInstance().scheduleAutosave();
-        StorageManager.getInstance().load();
+        LocalStorageService.getInstance().load();
         handlebStatsIntegration();
     }
 
-    private void handlebStatsIntegration() {
-        int pluginId = 12332;
-        Metrics metrics = new Metrics(this, pluginId);
+    private void initializeConfig() {
+        if (configFileExists()) {
+            performCompatibilityChecks();
+        }
+        else {
+            LocalEntityConfigService.getInstance().initializeWithDefaults();
+            LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
+        }
     }
 
+    private boolean configFileExists() {
+        return new File("./plugins/" + getName() + "/config.yml").exists();
+    }
+
+    private void performCompatibilityChecks() {
+        if (isVersionMismatched()) {
+            LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
+        }
+        reloadConfig();
+        LocalEntityConfigService.getInstance().initializeWithConfig();
+    }
+
+    /**
+     * This runs when the server stops.
+     */
     @Override
     public void onDisable() {
-        StorageManager.getInstance().save();
+        LocalStorageService.getInstance().save();
     }
 
+    /**
+     * This method handles commands sent to the minecraft server and interprets them if the label matches one of the core commands.
+     * @param sender The sender of the command.
+     * @param cmd The command that was sent. This is unused.
+     * @param label The core command that has been invoked.
+     * @param args Arguments of the core command. Often sub-commands.
+     * @return A boolean indicating whether the execution of the command was successful.
+     */
+    @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 0) {
             DefaultCommand defaultCommand = new DefaultCommand();
@@ -75,18 +98,43 @@ public final class WildPets extends PonderBukkitPlugin {
         return commandService.interpretAndExecuteCommand(sender, label, args);
     }
 
+    /**
+     * This can be used to get the version of the plugin.
+     * @return A string containing the version preceded by 'v'
+     */
     public String getVersion() {
         return pluginVersion;
     }
 
+    /**
+     * Checks if debug is enabled.
+     * @return Whether debug is enabled.
+     */
     public boolean isDebugEnabled() {
-        return getConfig().getBoolean("configOptions.debugMode");
+        return LocalConfigService.getInstance().getBoolean("debugMode");
     }
 
+    /**
+     * Checks if the version is mismatched.
+     * @return A boolean indicating if the version is mismatched.
+     */
     public boolean isVersionMismatched() {
-        return !getConfig().getString("version").equalsIgnoreCase(getVersion());
+        String configVersion = this.getConfig().getString("version");
+        if (configVersion == null || this.getVersion() == null) {
+            return false;
+        } else {
+            return !configVersion.equalsIgnoreCase(this.getVersion());
+        }
     }
 
+    private void handlebStatsIntegration() {
+        int pluginId = 12332;
+        new Metrics(this, pluginId);
+    }
+
+    /**
+     * Registers the event handlers of the plugin using Ponder.
+     */
     private void registerEventHandlers() {
         ArrayList<Listener> listeners = new ArrayList<>();
         listeners.add(new DamageEffectsAndDeathHandler());
@@ -98,6 +146,9 @@ public final class WildPets extends PonderBukkitPlugin {
         eventHandlerRegistry.registerEventHandlers(listeners, this);
     }
 
+    /**
+     * Initializes Ponder's command service with the plugin's commands.
+     */
     private void initializeCommandService() {
         ArrayList<AbstractPluginCommand> commands = new ArrayList<>(Arrays.asList(
                 new CallCommand(), new CheckAccessCommand(), new ConfigCommand(),

@@ -1,10 +1,12 @@
 package dansplugins.wildpets.commands;
 
-import dansplugins.wildpets.managers.ConfigManager;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+
+import dansplugins.wildpets.services.LocalConfigService;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -30,7 +32,7 @@ public class ConfigCommand extends AbstractPluginCommand {
         }
 
         if (args[0].equalsIgnoreCase("show")) {
-            ConfigManager.getInstance().sendConfigList(sender);
+            LocalConfigService.getInstance().sendConfigList(sender);
             return true;
         }
         else if (args[0].equalsIgnoreCase("set")) {
@@ -39,7 +41,7 @@ public class ConfigCommand extends AbstractPluginCommand {
             }
             String option = args[1];
             String value = args[2];
-            ConfigManager.getInstance().setConfigOption(option, value, sender);
+            LocalConfigService.getInstance().setConfigOption(option, value, sender);
             return true;
         }
         else {

@@ -1,10 +1,11 @@
 package dansplugins.wildpets.objects;
 
-import dansplugins.wildpets.managers.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+
+import dansplugins.wildpets.services.LocalConfigService;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -93,7 +94,7 @@ public class PetList {
         int newID = -1;
         do {
             Random random = new Random();
-            newID = random.nextInt(ConfigManager.getInstance().getInt("petLimit") * 10);
+            newID = random.nextInt(LocalConfigService.getInstance().getInt("petLimit") * 10);
         } while (isIDTaken(newID));
 
         return newID;

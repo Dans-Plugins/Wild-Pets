@@ -2,8 +2,9 @@ package dansplugins.wildpets.eventhandlers;
 
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.objects.Pet;
+import dansplugins.wildpets.services.LocalConfigService;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -19,7 +20,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
 
     @EventHandler()
     public void handle(EntityDamageEvent event) {
-        if (ConfigManager.getInstance().getBoolean("damageToPetsEnabled")) {
+        if (LocalConfigService.getInstance().getBoolean("damageToPetsEnabled")) {
             return;
         }
         Pet pet = PersistentData.getInstance().getPet(event.getEntity());

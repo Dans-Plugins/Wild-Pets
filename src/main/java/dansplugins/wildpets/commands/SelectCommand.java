@@ -2,8 +2,8 @@ package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.objects.Pet;
+import dansplugins.wildpets.services.LocalConfigService;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
@@ -29,7 +29,7 @@ public class SelectCommand extends AbstractPluginCommand {
 
         Player player = (Player) commandSender;
 
-        if (ConfigManager.getInstance().getBoolean("rightClickToSelect")) {
+        if (LocalConfigService.getInstance().getBoolean("rightClickToSelect")) {
             player.sendMessage(ChatColor.RED + "Usage: /wp select (petName)");
             return false;
         }
@@ -48,7 +48,7 @@ public class SelectCommand extends AbstractPluginCommand {
         Player player = (Player) sender;
 
         if (args[0].equalsIgnoreCase("cancel")) {
-            if (ConfigManager.getInstance().getBoolean("rightClickToSelect")) {
+            if (LocalConfigService.getInstance().getBoolean("rightClickToSelect")) {
                 player.sendMessage(ChatColor.RED + "Usage: /wp select (petName)");
                 return false;
             }

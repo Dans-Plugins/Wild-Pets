@@ -2,8 +2,8 @@ package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.objects.Pet;
+import dansplugins.wildpets.services.LocalConfigService;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
@@ -57,7 +57,7 @@ public class RenameCommand extends AbstractPluginCommand {
             return false;
         }
 
-        int characterLimit = ConfigManager.getInstance().getInt("petNameCharacterLimit");
+        int characterLimit = LocalConfigService.getInstance().getInt("petNameCharacterLimit");
         if (newName.length() > characterLimit) {
             player.sendMessage(ChatColor.RED + "Your pet's name can't contain more than " + characterLimit + " characters.");
             return false;

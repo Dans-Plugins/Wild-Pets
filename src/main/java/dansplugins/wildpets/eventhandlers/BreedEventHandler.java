@@ -2,8 +2,9 @@ package dansplugins.wildpets.eventhandlers;
 
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.managers.ConfigManager;
 import dansplugins.wildpets.objects.Pet;
+import dansplugins.wildpets.services.LocalConfigService;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -40,7 +41,7 @@ public class BreedEventHandler implements Listener {
             petParent2.addChild(child.getUniqueId());
         }
 
-        if (ConfigManager.getInstance().getBoolean("bornPetsEnabled")) {
+        if (LocalConfigService.getInstance().getBoolean("bornPetsEnabled")) {
             if (petParent1 != null || petParent2 != null) {
                 PersistentData.getInstance().addNewPet(player, child);
                 Pet newPet = PersistentData.getInstance().getPet(child);

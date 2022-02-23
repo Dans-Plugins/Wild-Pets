@@ -6,7 +6,7 @@ import com.google.gson.reflect.TypeToken;
 
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.managers.ConfigManager;
+import dansplugins.wildpets.services.LocalConfigService;
 import dansplugins.wildpets.utils.Scheduler;
 import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
 import preponderous.ponder.misc.abs.Lockable;
@@ -120,7 +120,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         player.sendMessage(ChatColor.AQUA + "Owner: " + uuidChecker.findPlayerNameBasedOnUUID(ownerUUID));
         player.sendMessage(ChatColor.AQUA + "State: " + movementState);
         player.sendMessage(ChatColor.AQUA + "Locked: " + locked);
-        if (ConfigManager.getInstance().getBoolean("showLineageInfo")) {
+        if (LocalConfigService.getInstance().getBoolean("showLineageInfo")) {
             if (parentIDs.size() > 0) {
                 player.sendMessage(ChatColor.AQUA + "Parents: " + getParentNamesSeparatedByCommas());
             }

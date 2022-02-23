@@ -1,11 +1,13 @@
 package dansplugins.wildpets.commands;
 
-import dansplugins.wildpets.managers.ConfigManager;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import dansplugins.wildpets.services.LocalConfigService;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -29,7 +31,7 @@ public class HelpCommand extends AbstractPluginCommand {
         player.sendMessage(ChatColor.AQUA + "/wp help - View a list of helpful commands.");
         player.sendMessage(ChatColor.AQUA + "/wp tame - Tame an entity.");
         player.sendMessage(ChatColor.AQUA + "/wp list - List tamed pets.");
-        if (!ConfigManager.getInstance().getBoolean("rightClickToSelect")) {
+        if (!LocalConfigService.getInstance().getBoolean("rightClickToSelect")) {
             player.sendMessage(ChatColor.AQUA + "/wp select - Select a pet by interaction.");
         }
         player.sendMessage(ChatColor.AQUA + "/wp select (petName) - Select a pet by name.");
