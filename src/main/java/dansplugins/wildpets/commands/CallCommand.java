@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class CallCommand extends AbstractPluginCommand {
 
     public CallCommand() {
-        super(new ArrayList<>(Arrays.asList("default")), new ArrayList<>(Arrays.asList("wp.call")));
+        super(new ArrayList<>(Arrays.asList("call")), new ArrayList<>(Arrays.asList("wp.call")));
     }
 
     public boolean execute(CommandSender sender) {
