@@ -37,7 +37,6 @@ public class HelpCommand extends AbstractPluginCommand {
         player.sendMessage(ChatColor.AQUA + "/wp select (petName) - Select a pet by name.");
         player.sendMessage(ChatColor.AQUA + "/wp info - View selected pet info.");
         player.sendMessage(ChatColor.AQUA + "/wp rename (newName) - Rename selected pet.");
-        player.sendMessage(ChatColor.AQUA + "/wp stay - Make selected pet stay.");
         player.sendMessage(ChatColor.AQUA + "/wp wander - Make selected pet wander.");
         player.sendMessage(ChatColor.AQUA + "/wp follow - Make selected pet follow you.");
         player.sendMessage(ChatColor.AQUA + "/wp call - Call selected pet to come to you.");

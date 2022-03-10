@@ -156,8 +156,8 @@ public final class WildPets extends PonderBukkitPlugin {
                 new InfoCommand(), new ListCommand(), new LocateCommand(),
                 new LockCommand(), new RenameCommand(), new RevokeAccessCommand(),
                 new SelectCommand(), new SetFreeCommand(), new StatsCommand(),
-                new StayCommand(), new TameCommand(), new UnlockCommand(),
-                new WanderCommand(), new GatherCommand()
+                new TameCommand(), new UnlockCommand(), new WanderCommand(),
+                new GatherCommand()
         ));
         commandService.initialize(commands, "That command wasn't found.");
     }

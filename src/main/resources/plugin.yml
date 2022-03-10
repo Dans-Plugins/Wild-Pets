@@ -19,8 +19,6 @@ permissions:
     default: true
   wp.info:
     default: true
-  wp.stay:
-    default: true
   wp.wander:
     default: true
   wp.list:

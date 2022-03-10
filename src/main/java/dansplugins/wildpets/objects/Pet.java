@@ -40,7 +40,6 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
     private HashSet<UUID> accessList = new HashSet<>();
 
     // ephemeral
-    private Location stayingLocation;
     private int schedulerTaskID = -1;
     private int scheduleAttempts = 0;
     private int teleportTaskID = -1;
@@ -154,18 +153,9 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
 
     public void setWandering() {
         movementState = "Wandering";
-        Scheduler.getInstance().cancelTeleportTask(this); // TODO: find a better solution for this
-    }
-
-    public void setStaying() {
-        movementState = "Staying";
-        Scheduler.getInstance().attemptToScheduleTeleportTask(this); // TODO: find a better solution for this
     }
 
     public void setFollowing() {
-        if (movementState != null && movementState.equals("Staying")) {
-            Scheduler.getInstance().cancelTeleportTask(this);
-        }
         movementState = "Following";
     }
 
@@ -195,14 +185,6 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
 
     public void setTeleportTaskID(int teleportTaskID) {
         this.teleportTaskID = teleportTaskID;
-    }
-
-    public Location getStayingLocation() {
-        return stayingLocation;
-    }
-
-    public void setStayingLocation(Location location) {
-        stayingLocation = location;
     }
 
     private void setLastKnownLocation(Location location) {
@@ -352,9 +334,6 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
 
         if (state.equalsIgnoreCase("Wandering")) {
             setWandering();
-        }
-        else if (state.equalsIgnoreCase("Staying")) {
-            setStaying();
         }
         else if (state.equalsIgnoreCase("Following")) {
             setFollowing();
