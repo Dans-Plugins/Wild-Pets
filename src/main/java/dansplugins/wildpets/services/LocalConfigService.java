@@ -58,14 +58,8 @@ public class LocalConfigService {
         if (!getConfig().isSet(configOptionsPrefix + "rightClickViewCooldown")) {
             getConfig().set(configOptionsPrefix + "rightClickViewCooldown", 3);
         }
-        if (!getConfig().isSet(configOptionsPrefix + "secondsBetweenStayTeleports")) {
-            getConfig().set(configOptionsPrefix + "secondsBetweenStayTeleports", 0.5);
-        }
         if (!getConfig().isSet(configOptionsPrefix + "rightClickToSelect")) {
             getConfig().set(configOptionsPrefix + "rightClickToSelect", true);
-        }
-        if (!getConfig().isSet(configOptionsPrefix + "secondsBetweenSchedulingAttempts")) {
-            getConfig().set(configOptionsPrefix + "secondsBetweenSchedulingAttempts", 60);
         }
         if (!getConfig().isSet(configOptionsPrefix + "maxScheduleAttempts")) {
             getConfig().set(configOptionsPrefix + "maxScheduleAttempts", 1440);
@@ -128,7 +122,6 @@ public class LocalConfigService {
                 sender.sendMessage(ChatColor.RED + "Cannot set version.");
                 return;
             } else if (option.equalsIgnoreCase("rightClickViewCooldown")
-                    || option.equalsIgnoreCase("secondsBetweenSchedulingAttempts")
                     || option.equalsIgnoreCase("maxScheduleAttempts")
                     || option.equalsIgnoreCase("petNameCharacterLimit")
                     || option.equalsIgnoreCase("petLimit")) {
@@ -142,7 +135,7 @@ public class LocalConfigService {
                     || option.equalsIgnoreCase("bornPetsEnabled")) {
                 getConfig().set(configOptionsPrefix + option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
-            } else if (option.equalsIgnoreCase("secondsBetweenStayTeleports")) { // no doubles yet
+            } else if (option.equalsIgnoreCase("C")) { // no doubles yet
                 getConfig().set(configOptionsPrefix + option, Double.parseDouble(value));
                 sender.sendMessage(ChatColor.GREEN + "Double set.");
             } else {
@@ -165,7 +158,6 @@ public class LocalConfigService {
                 + ", petLimit: " + getString("petLimit")
                 + ", cancelTamingAfterFailedAttempt: " + getString("cancelTamingAfterFailedAttempt")
                 + ", rightClickViewCooldown: " + getInt("rightClickViewCooldown")
-                + ", secondsBetweenStayTeleports: " + getDouble("secondsBetweenStayTeleports")
                 + ", rightClickToSelect: " + getBoolean("rightClickToSelect")
                 + ", secondsBetweenSchedulingAttempts: " + getInt("secondsBetweenSchedulingAttempts")
                 + ", maxScheduleAttempts: " + getInt("maxScheduleAttempts")
