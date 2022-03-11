@@ -2,13 +2,9 @@ package dansplugins.wildpets.utils;
 
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.EphemeralData;
-import dansplugins.wildpets.objects.Pet;
-import dansplugins.wildpets.services.LocalConfigService;
 import dansplugins.wildpets.services.LocalStorageService;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 /**

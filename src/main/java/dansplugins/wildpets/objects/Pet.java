@@ -7,7 +7,6 @@ import com.google.gson.reflect.TypeToken;
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.services.LocalConfigService;
-import dansplugins.wildpets.utils.Scheduler;
 import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
 import preponderous.ponder.misc.abs.Lockable;
 import preponderous.ponder.misc.abs.Savable;
@@ -38,11 +37,6 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
     private int lastKnownZ = -1;
     private boolean locked = false;
     private HashSet<UUID> accessList = new HashSet<>();
-
-    // ephemeral
-    private int schedulerTaskID = -1;
-    private int scheduleAttempts = 0;
-    private int teleportTaskID = -1;
 
     public Pet(Entity entity, UUID playerOwner) {
         UUIDChecker uuidChecker = new UUIDChecker();
@@ -161,30 +155,6 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
 
     public String getMovementState() {
         return movementState;
-    }
-
-    public int getSchedulerTaskID() {
-        return schedulerTaskID;
-    }
-
-    public void setSchedulerTaskID(int schedulerTaskID) {
-        this.schedulerTaskID = schedulerTaskID;
-    }
-
-    public int getScheduleAttempts() {
-        return scheduleAttempts;
-    }
-
-    public void incrementScheduleAttempts() {
-        this.scheduleAttempts++;
-    }
-
-    public int getTeleportTaskID() {
-        return teleportTaskID;
-    }
-
-    public void setTeleportTaskID(int teleportTaskID) {
-        this.teleportTaskID = teleportTaskID;
     }
 
     private void setLastKnownLocation(Location location) {
@@ -337,6 +307,9 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         }
         else if (state.equalsIgnoreCase("Following")) {
             setFollowing();
+        }
+        else {
+            setWandering();
         }
 
         locked = Boolean.parseBoolean(data.getOrDefault("locked", "false"));

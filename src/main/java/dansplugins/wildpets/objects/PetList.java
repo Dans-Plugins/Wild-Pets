@@ -75,7 +75,6 @@ public class PetList {
         for (Pet pet : getPets()) {
             Entity entity = Bukkit.getEntity(pet.getUniqueID());
 
-            ChatColor color;
             if (entity != null) {
                 player.sendMessage(ChatColor.AQUA + pet.getName());
             }
