@@ -6,7 +6,7 @@
 
     <groupId>dansplugins</groupId>
     <artifactId>WildPets</artifactId>
-    <version>1.4.2-ALPHA</version>
+    <version>1.4.2</version>
     <packaging>jar</packaging>
 
     <name>Wild Pets</name>
