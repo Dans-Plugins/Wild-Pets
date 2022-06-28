@@ -6,7 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import dansplugins.wildpets.services.LocalConfigService;
+import dansplugins.wildpets.services.ConfigService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,9 +15,11 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public class HelpCommand extends AbstractPluginCommand {
+    private final ConfigService configService;
 
-    public HelpCommand() {
+    public HelpCommand(ConfigService configService) {
         super(new ArrayList<>(Arrays.asList("help")), new ArrayList<>(Arrays.asList("wp.help")));
+        this.configService = configService;
     }
 
     public boolean execute(CommandSender sender) {
@@ -31,7 +33,7 @@ public class HelpCommand extends AbstractPluginCommand {
         player.sendMessage(ChatColor.AQUA + "/wp help - View a list of helpful commands.");
         player.sendMessage(ChatColor.AQUA + "/wp tame - Tame an entity.");
         player.sendMessage(ChatColor.AQUA + "/wp list - List tamed pets.");
-        if (!LocalConfigService.getInstance().getBoolean("rightClickToSelect")) {
+        if (!configService.getBoolean("rightClickToSelect")) {
             player.sendMessage(ChatColor.AQUA + "/wp select - Select a pet by interaction.");
         }
         player.sendMessage(ChatColor.AQUA + "/wp select (petName) - Select a pet by name.");

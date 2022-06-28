@@ -6,7 +6,7 @@ import com.google.gson.reflect.TypeToken;
 
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.services.LocalConfigService;
+import dansplugins.wildpets.services.ConfigService;
 import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
 import preponderous.ponder.misc.abs.Lockable;
 import preponderous.ponder.misc.abs.Savable;
@@ -25,6 +25,9 @@ import java.util.*;
  * @author Daniel McCoy Stephenson
  */
 public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savable {
+    private final PersistentData persistentData;
+    private final WildPets wildPets;
+    private final ConfigService configService;
 
     // persistent
     private UUID uniqueID;
@@ -38,11 +41,14 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
     private boolean locked = false;
     private HashSet<UUID> accessList = new HashSet<>();
 
-    public Pet(Entity entity, UUID playerOwner) {
+    public Pet(PersistentData persistentData, WildPets wildPets, ConfigService configService, Entity entity, UUID playerOwner) {
+        this.persistentData = persistentData;
+        this.wildPets = wildPets;
+        this.configService = configService;
         UUIDChecker uuidChecker = new UUIDChecker();
         uniqueID = entity.getUniqueId();
         ownerUUID = playerOwner;
-        assignedID = PersistentData.getInstance().getPetList(ownerUUID).getNewID();
+        assignedID = this.persistentData.getPetList(ownerUUID).getNewID();
         name = uuidChecker.findPlayerNameBasedOnUUID(ownerUUID) + "'s_Pet_" + assignedID;
         movementState = "Wandering";
         setLastKnownLocation(entity.getLocation());
@@ -55,12 +61,15 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
 
         accessList.add(playerOwner);
 
-        if (WildPets.getInstance().isDebugEnabled()) {
+        if (this.wildPets.isDebugEnabled()) {
             System.out.println("[DEBUG] Pet instantiated!");
         }
     }
 
-    public Pet(Map<String, String> petData) {
+    public Pet(Map<String, String> petData, PersistentData persistentData, WildPets wildPets, ConfigService configService) {
+        this.persistentData = persistentData;
+        this.wildPets = wildPets;
+        this.configService = configService;
         this.load(petData);
     }
 
@@ -113,7 +122,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         player.sendMessage(ChatColor.AQUA + "Owner: " + uuidChecker.findPlayerNameBasedOnUUID(ownerUUID));
         player.sendMessage(ChatColor.AQUA + "State: " + movementState);
         player.sendMessage(ChatColor.AQUA + "Locked: " + locked);
-        if (LocalConfigService.getInstance().getBoolean("showLineageInfo")) {
+        if (configService.getBoolean("showLineageInfo")) {
             if (parentIDs.size() > 0) {
                 player.sendMessage(ChatColor.AQUA + "Parents: " + getParentNamesSeparatedByCommas());
             }
@@ -121,7 +130,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
                 player.sendMessage(ChatColor.AQUA + "Children: " + getChildrenNamesSeparatedByCommas());
             }
         }
-        if (WildPets.getInstance().isDebugEnabled()) {
+        if (wildPets.isDebugEnabled()) {
             player.sendMessage(ChatColor.AQUA + "[DEBUG] uniqueID: " + uniqueID.toString());
             player.sendMessage(ChatColor.AQUA + "[DEBUG] ownerUUID: " + ownerUUID.toString());
             player.sendMessage(ChatColor.AQUA + "[DEBUG] assignedID: " + assignedID);
@@ -131,7 +140,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
             if (childIDs.size() > 0) {
                 player.sendMessage(ChatColor.AQUA + "[DEBUG] Children: " + getChildrenUUIDsSeparatedByCommas());
             }
-            player.sendMessage(ChatColor.AQUA + "[DEBUG] Pet Record Existent: " + (PersistentData.getInstance().getPetRecord(uniqueID) != null));
+            player.sendMessage(ChatColor.AQUA + "[DEBUG] Pet Record Existent: " + (persistentData.getPetRecord(uniqueID) != null));
         }
     }
 
@@ -202,7 +211,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
     }
 
     public PetRecord getPetRecord() { // should this have @NotNull?
-        return PersistentData.getInstance().getPetRecord(uniqueID);
+        return persistentData.getPetRecord(uniqueID);
     }
 
     private String getParentsUUIDsSeparatedByCommas() {
@@ -235,7 +244,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         String toReturn = "";
         int count = 0;
         for (UUID uuid : parentIDs) {
-            PetRecord petRecord = PersistentData.getInstance().getPetRecord(uuid);
+            PetRecord petRecord = persistentData.getPetRecord(uuid);
             if (petRecord == null) {
                 continue;
             }
@@ -252,7 +261,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         String toReturn = "";
         int count = 0;
         for (UUID uuid : childIDs) {
-            PetRecord petRecord = PersistentData.getInstance().getPetRecord(uuid);
+            PetRecord petRecord = persistentData.getPetRecord(uuid);
             if (petRecord == null) {
                 continue;
             }

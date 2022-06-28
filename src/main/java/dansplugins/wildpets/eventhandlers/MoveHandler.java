@@ -17,6 +17,11 @@ import java.util.ArrayList;
  * @author Daniel McCoy Stephenson
  */
 public class MoveHandler implements Listener {
+    private final PersistentData persistentData;
+
+    public MoveHandler(PersistentData persistentData) {
+        this.persistentData = persistentData;
+    }
 
     @EventHandler()
     public void handle(PlayerMoveEvent event) {
@@ -30,7 +35,7 @@ public class MoveHandler implements Listener {
             return;
         }
         Player player = event.getPlayer();
-        PetList petList = PersistentData.getInstance().getPetList(player.getUniqueId());
+        PetList petList = persistentData.getPetList(player.getUniqueId());
         ArrayList<Pet> followingPets = petList.getFollowingPets();
         if (followingPets.size() != 0) {
             for (Pet pet : followingPets) {

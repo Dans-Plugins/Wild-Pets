@@ -1,9 +1,9 @@
 package dansplugins.wildpets.utils;
 
 import dansplugins.wildpets.WildPets;
-import dansplugins.wildpets.data.EphemeralData;
-import dansplugins.wildpets.services.LocalStorageService;
 
+import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.services.StorageService;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -11,39 +11,35 @@ import org.bukkit.entity.Player;
  * @author Daniel McCoy Stephenson
  */
 public class Scheduler {
+    private final WildPets wildPets;
+    private final EphemeralData ephemeralData;
+    private final StorageService storageService;
 
-    private static Scheduler instance;
-
-    private Scheduler() {
-
+    public Scheduler(WildPets wildPets, EphemeralData ephemeralData, StorageService storageService) {
+        this.wildPets = wildPets;
+        this.ephemeralData = ephemeralData;
+        this.storageService = storageService;
     }
 
-    public static Scheduler getInstance() {
-        if (instance == null) {
-            instance = new Scheduler();
-        }
-        return instance;
-    }
-
-    public static void scheduleRightClickCooldownSetter(Player player, int seconds) {
-        WildPets.getInstance().getServer().getScheduler().runTaskLater(WildPets.getInstance(), new Runnable() {
+    public void scheduleRightClickCooldownSetter(Player player, int seconds) {
+        wildPets.getServer().getScheduler().runTaskLater(wildPets, new Runnable() {
             @Override
             public void run() {
-                EphemeralData.getInstance().setRightClickCooldown(player.getUniqueId(), false);
+                ephemeralData.setRightClickCooldown(player.getUniqueId(), false);
 
             }
         }, seconds * 20);
     }
 
     public void scheduleAutosave() {
-        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("Scheduling hourly autosave."); }
+        if (wildPets.isDebugEnabled()) { System.out.println("Scheduling hourly autosave."); }
         int delay = 60 * 60; // 1 hour
         int secondsUntilRepeat = 60 * 60; // 1 hour
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(WildPets.getInstance(), new Runnable() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(wildPets, new Runnable() {
             @Override
             public void run() {
-                if (WildPets.getInstance().isDebugEnabled()) { System.out.println("Wild Pets is saving. This will happen hourly."); }
-                LocalStorageService.getInstance().save();
+                if (wildPets.isDebugEnabled()) { System.out.println("Wild Pets is saving. This will happen hourly."); }
+                storageService.save();
             }
         }, delay * 20, secondsUntilRepeat * 20);
     }

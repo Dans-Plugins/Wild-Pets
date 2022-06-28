@@ -16,9 +16,11 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public class CallCommand extends AbstractPluginCommand {
+    private final EphemeralData ephemeralData;
 
-    public CallCommand() {
+    public CallCommand(EphemeralData ephemeralData) {
         super(new ArrayList<>(Arrays.asList("call")), new ArrayList<>(Arrays.asList("wp.call")));
+        this.ephemeralData = ephemeralData;
     }
 
     public boolean execute(CommandSender sender) {
@@ -29,7 +31,7 @@ public class CallCommand extends AbstractPluginCommand {
 
         Player player = (Player) sender;
 
-        Pet pet = EphemeralData.getInstance().getPetSelectionForPlayer(player.getUniqueId());
+        Pet pet = ephemeralData.getPetSelectionForPlayer(player.getUniqueId());
 
         if (pet == null) {
             player.sendMessage(ChatColor.RED + "No pet selected.");

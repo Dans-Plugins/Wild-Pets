@@ -2,10 +2,12 @@ package dansplugins.wildpets;
 
 import dansplugins.wildpets.bstats.Metrics;
 import dansplugins.wildpets.commands.*;
+import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.eventhandlers.*;
-import dansplugins.wildpets.services.LocalConfigService;
-import dansplugins.wildpets.services.LocalEntityConfigService;
-import dansplugins.wildpets.services.LocalStorageService;
+import dansplugins.wildpets.services.ConfigService;
+import dansplugins.wildpets.services.EntityConfigService;
+import dansplugins.wildpets.services.StorageService;
 import dansplugins.wildpets.utils.Scheduler;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
@@ -24,29 +26,28 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public final class WildPets extends PonderBukkitPlugin {
-    private static WildPets instance;
     private final String pluginVersion = "v" + getDescription().getVersion();
     private CommandService commandService = new CommandService(getPonder());
 
-     /**
-     * This can be used to get the instance of the main class that is managed by itself.
-     * @return The managed instance of the main class.
-     */
-    public static WildPets getInstance() {
-        return instance;
-    }
+    private final EphemeralData ephemeralData = new EphemeralData();
+    private final ConfigService configService = new ConfigService(this, entityConfigService); // TODO: fix circular dependency
+    private final PersistentData persistentData = new PersistentData(this, configService);
+    private final StorageService storageService = new StorageService(configService, this, persistentData);
+    private final EntityConfigService entityConfigService = new EntityConfigService(this, configService);
+    private final Scheduler scheduler = new Scheduler(this, ephemeralData, storageService);
 
+
+    
      /**
      * This runs when the server starts.
      */
     @Override
     public void onEnable() {
-        instance = this;
         registerEventHandlers();
         initializeCommandService();
         initializeConfig();
-        Scheduler.getInstance().scheduleAutosave();
-        LocalStorageService.getInstance().load();
+        scheduler.scheduleAutosave();
+        storageService.load();
         handlebStatsIntegration();
     }
 
@@ -55,8 +56,8 @@ public final class WildPets extends PonderBukkitPlugin {
             performCompatibilityChecks();
         }
         else {
-            LocalEntityConfigService.getInstance().initializeWithDefaults();
-            LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
+            entityConfigService.initializeWithDefaults();
+            configService.saveMissingConfigDefaultsIfNotPresent();
         }
     }
 
@@ -66,10 +67,10 @@ public final class WildPets extends PonderBukkitPlugin {
 
     private void performCompatibilityChecks() {
         if (isVersionMismatched()) {
-            LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
+            configService.saveMissingConfigDefaultsIfNotPresent();
         }
         reloadConfig();
-        LocalEntityConfigService.getInstance().initializeWithConfig();
+        entityConfigService.initializeWithConfig();
     }
 
     /**
@@ -77,7 +78,7 @@ public final class WildPets extends PonderBukkitPlugin {
      */
     @Override
     public void onDisable() {
-        LocalStorageService.getInstance().save();
+        storageService.save();
     }
 
     /**
@@ -91,7 +92,7 @@ public final class WildPets extends PonderBukkitPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 0) {
-            DefaultCommand defaultCommand = new DefaultCommand();
+            DefaultCommand defaultCommand = new DefaultCommand(this);
             return defaultCommand.execute(sender);
         }
 
@@ -111,7 +112,7 @@ public final class WildPets extends PonderBukkitPlugin {
      * @return Whether debug is enabled.
      */
     public boolean isDebugEnabled() {
-        return LocalConfigService.getInstance().getBoolean("debugMode");
+        return configService.getBoolean("debugMode");
     }
 
     /**
@@ -137,11 +138,11 @@ public final class WildPets extends PonderBukkitPlugin {
      */
     private void registerEventHandlers() {
         ArrayList<Listener> listeners = new ArrayList<>();
-        listeners.add(new DamageEffectsAndDeathHandler());
-        listeners.add(new InteractionHandler());
-        listeners.add(new JoinAndQuitHandler());
-        listeners.add(new MoveHandler());
-        listeners.add(new BreedEventHandler());
+        listeners.add(new DamageEffectsAndDeathHandler(configService, persistentData, this));
+        listeners.add(new InteractionHandler(entityConfigService, persistentData, ephemeralData, this, configService, scheduler));
+        listeners.add(new JoinAndQuitHandler(persistentData, ephemeralData));
+        listeners.add(new MoveHandler(persistentData));
+        listeners.add(new BreedEventHandler(persistentData, configService, ephemeralData));
         EventHandlerRegistry eventHandlerRegistry = new EventHandlerRegistry();
         eventHandlerRegistry.registerEventHandlers(listeners, this);
     }
@@ -151,13 +152,13 @@ public final class WildPets extends PonderBukkitPlugin {
      */
     private void initializeCommandService() {
         ArrayList<AbstractPluginCommand> commands = new ArrayList<>(Arrays.asList(
-                new CallCommand(), new CheckAccessCommand(), new ConfigCommand(),
-                new FollowCommand(), new GrantAccessCommand(), new HelpCommand(),
-                new InfoCommand(), new ListCommand(), new LocateCommand(),
-                new LockCommand(), new RenameCommand(), new RevokeAccessCommand(),
-                new SelectCommand(), new SetFreeCommand(), new StatsCommand(),
-                new TameCommand(), new UnlockCommand(), new WanderCommand(),
-                new GatherCommand()
+                new CallCommand(ephemeralData), new CheckAccessCommand(ephemeralData), new ConfigCommand(configService),
+                new FollowCommand(ephemeralData), new HelpCommand(configService),
+                new InfoCommand(ephemeralData), new ListCommand(persistentData), new LocateCommand(ephemeralData),
+                new LockCommand(ephemeralData), new RenameCommand(ephemeralData, persistentData, configService),
+                new SelectCommand(configService, ephemeralData, persistentData), new SetFreeCommand(ephemeralData, persistentData), new StatsCommand(persistentData),
+                new TameCommand(ephemeralData), new UnlockCommand(ephemeralData), new WanderCommand(ephemeralData),
+                new GatherCommand(persistentData)
         ));
         commandService.initialize(commands, "That command wasn't found.");
     }

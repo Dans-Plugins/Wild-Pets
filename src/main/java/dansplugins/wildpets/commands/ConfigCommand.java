@@ -5,7 +5,7 @@ import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import dansplugins.wildpets.services.LocalConfigService;
+import dansplugins.wildpets.services.ConfigService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,9 +14,11 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public class ConfigCommand extends AbstractPluginCommand {
+    private final ConfigService configService;
 
-    public ConfigCommand() {
+    public ConfigCommand(ConfigService configService) {
         super(new ArrayList<>(Arrays.asList("config")), new ArrayList<>(Arrays.asList("wp.config")));
+        this.configService = configService;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class ConfigCommand extends AbstractPluginCommand {
         }
 
         if (args[0].equalsIgnoreCase("show")) {
-            LocalConfigService.getInstance().sendConfigList(sender);
+            configService.sendConfigList(sender);
             return true;
         }
         else if (args[0].equalsIgnoreCase("set")) {
@@ -41,7 +43,7 @@ public class ConfigCommand extends AbstractPluginCommand {
             }
             String option = args[1];
             String value = args[2];
-            LocalConfigService.getInstance().setConfigOption(option, value, sender);
+            configService.setConfigOption(option, value, sender);
             return true;
         }
         else {

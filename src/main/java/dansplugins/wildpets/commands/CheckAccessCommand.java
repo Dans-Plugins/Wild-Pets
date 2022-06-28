@@ -13,9 +13,11 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public class CheckAccessCommand extends AbstractPluginCommand {
+    private final EphemeralData ephemeralData;
 
-    public CheckAccessCommand() {
+    public CheckAccessCommand(EphemeralData ephemeralData) {
         super(new ArrayList<>(Arrays.asList("checkaccess")), new ArrayList<>(Arrays.asList("wp.checkaccess")));
+        this.ephemeralData = ephemeralData;
     }
 
     public boolean execute(CommandSender sender) {
@@ -26,7 +28,7 @@ public class CheckAccessCommand extends AbstractPluginCommand {
 
         Player player = (Player) sender;
 
-        EphemeralData.getInstance().setPlayerAsCheckingAccess(player.getUniqueId());
+        ephemeralData.setPlayerAsCheckingAccess(player.getUniqueId());
         player.sendMessage(ChatColor.GREEN + "Right click a pet check who has access to it");
         return true;
     }

@@ -11,16 +11,23 @@ import org.bukkit.event.player.PlayerQuitEvent;
  * @author Daniel McCoy Stephenson
  */
 public class JoinAndQuitHandler implements Listener {
+    private final PersistentData persistentData;
+    private final EphemeralData ephemeralData;
+
+    public JoinAndQuitHandler(PersistentData persistentData, EphemeralData ephemeralData) {
+        this.persistentData = persistentData;
+        this.ephemeralData = ephemeralData;
+    }
 
     @EventHandler()
     public void handle(PlayerJoinEvent event) {
-        if (PersistentData.getInstance().getPetList(event.getPlayer().getUniqueId()) == null) {
-            PersistentData.getInstance().createPetListForPlayer(event.getPlayer().getUniqueId());
+        if (persistentData.getPetList(event.getPlayer().getUniqueId()) == null) {
+            persistentData.createPetListForPlayer(event.getPlayer().getUniqueId());
         }
     }
 
     @EventHandler()
     public void handle(PlayerQuitEvent event) {
-        EphemeralData.getInstance().clearPlayerFromLists(event.getPlayer());
+        ephemeralData.clearPlayerFromLists(event.getPlayer());
     }
 }

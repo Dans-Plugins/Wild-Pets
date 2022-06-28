@@ -13,9 +13,11 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public class TameCommand extends AbstractPluginCommand {
+    private final EphemeralData ephemeralData;
 
-    public TameCommand() {
+    public TameCommand(EphemeralData ephemeralData) {
         super(new ArrayList<>(Arrays.asList("tame")), new ArrayList<>(Arrays.asList("wp.tame")));
+        this.ephemeralData = ephemeralData;
     }
 
     @Override
@@ -26,7 +28,7 @@ public class TameCommand extends AbstractPluginCommand {
 
         Player player = (Player) commandSender;
 
-        EphemeralData.getInstance().setPlayerAsTaming(player.getUniqueId());
+        ephemeralData.setPlayerAsTaming(player.getUniqueId());
         player.sendMessage(ChatColor.GREEN + "Right click on an entity to tame it. Type '/wp tame cancel' to cancel taming.");
         return true;
     }
@@ -39,7 +41,7 @@ public class TameCommand extends AbstractPluginCommand {
         Player player = (Player) sender;
 
         if (args[0].equalsIgnoreCase("cancel")) {
-            EphemeralData.getInstance().setPlayerAsNotTaming(player.getUniqueId());
+            ephemeralData.setPlayerAsNotTaming(player.getUniqueId());
             player.sendMessage(ChatColor.GREEN + "Taming cancelled.");
             return true;
         }

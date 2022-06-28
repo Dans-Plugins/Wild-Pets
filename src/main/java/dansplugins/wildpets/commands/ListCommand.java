@@ -16,9 +16,11 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public class ListCommand extends AbstractPluginCommand {
+    private final PersistentData persistentData;
 
-    public ListCommand() {
+    public ListCommand(PersistentData persistentData) {
         super(new ArrayList<>(Arrays.asList("list")), new ArrayList<>(Arrays.asList("wp.list")));
+        this.persistentData = persistentData;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class ListCommand extends AbstractPluginCommand {
         }
 
         Player player = (Player) commandSender;
-        PersistentData.getInstance().sendListOfPetsToPlayer(player);
+        persistentData.sendListOfPetsToPlayer(player);
         return true;
     }
 
@@ -48,7 +50,7 @@ public class ListCommand extends AbstractPluginCommand {
             player.sendMessage(ChatColor.RED + "That player wasn't found.");
             return false;
         }
-        PetList petList = PersistentData.getInstance().getPetList(targetPlayer.getUniqueId());
+        PetList petList = persistentData.getPetList(targetPlayer.getUniqueId());
         petList.sendListOfPetsToPlayer(player);
         return true;
     }
