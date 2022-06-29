@@ -13,9 +13,11 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public class UnlockCommand extends AbstractPluginCommand {
+    private final EphemeralData ephemeralData;
 
-    public UnlockCommand() {
+    public UnlockCommand(EphemeralData ephemeralData) {
         super(new ArrayList<>(Arrays.asList("unlock")), new ArrayList<>(Arrays.asList("wp.unlock")));
+        this.ephemeralData = ephemeralData;
     }
 
     public boolean execute(CommandSender sender) {
@@ -26,7 +28,7 @@ public class UnlockCommand extends AbstractPluginCommand {
 
         Player player = (Player) sender;
 
-        EphemeralData.getInstance().setPlayerAsUnlocking(player.getUniqueId());
+        ephemeralData.setPlayerAsUnlocking(player.getUniqueId());
         player.sendMessage(ChatColor.GREEN + "Right click one of your pets to unlock it.");
         return true;
     }

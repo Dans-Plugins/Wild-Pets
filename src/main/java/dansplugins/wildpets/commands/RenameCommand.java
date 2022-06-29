@@ -3,7 +3,7 @@ package dansplugins.wildpets.commands;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
 import dansplugins.wildpets.objects.Pet;
-import dansplugins.wildpets.services.LocalConfigService;
+import dansplugins.wildpets.services.ConfigService;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
@@ -16,9 +16,15 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public class RenameCommand extends AbstractPluginCommand {
+    private final EphemeralData ephemeralData;
+    private final PersistentData persistentData;
+    private final ConfigService configService;
 
-    public RenameCommand() {
+    public RenameCommand(EphemeralData ephemeralData, PersistentData persistentData, ConfigService configService) {
         super(new ArrayList<>(Arrays.asList("rename")), new ArrayList<>(Arrays.asList("wp.rename")));
+        this.ephemeralData = ephemeralData;
+        this.persistentData = persistentData;
+        this.configService = configService;
     }
 
     @Override
@@ -40,14 +46,14 @@ public class RenameCommand extends AbstractPluginCommand {
 
         String newName = args[0];
 
-        Pet pet = EphemeralData.getInstance().getPetSelectionForPlayer(player.getUniqueId());
+        Pet pet = ephemeralData.getPetSelectionForPlayer(player.getUniqueId());
 
         if (pet == null) {
             player.sendMessage(ChatColor.RED + "No pet selected.");
             return false;
         }
 
-        if (PersistentData.getInstance().getPetList(player.getUniqueId()).isNameTaken(newName)) {
+        if (persistentData.getPetList(player.getUniqueId()).isNameTaken(newName)) {
             player.sendMessage(ChatColor.RED + "That name is already taken by one of your pets.");
             return false;
         }
@@ -57,7 +63,7 @@ public class RenameCommand extends AbstractPluginCommand {
             return false;
         }
 
-        int characterLimit = LocalConfigService.getInstance().getInt("petNameCharacterLimit");
+        int characterLimit = configService.getInt("petNameCharacterLimit");
         if (newName.length() > characterLimit) {
             player.sendMessage(ChatColor.RED + "Your pet's name can't contain more than " + characterLimit + " characters.");
             return false;

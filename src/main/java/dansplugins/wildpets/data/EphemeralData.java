@@ -11,9 +11,6 @@ import java.util.UUID;
  * @author Daniel McCoy Stephenson
  */
 public class EphemeralData {
-
-    private static EphemeralData instance;
-
     // action lists
     private HashSet<UUID> tamingPlayers = new HashSet<>();
     private HashSet<UUID> selectingPlayers = new HashSet<>();
@@ -28,18 +25,7 @@ public class EphemeralData {
 
     // cooldown lists
     private HashSet<UUID> playersWithRightClickCooldown = new HashSet<>();
-
-    private EphemeralData() {
-
-    }
-
-    public static EphemeralData getInstance() {
-        if (instance == null) {
-            instance = new EphemeralData();
-        }
-        return instance;
-    }
-
+    
     // -----
 
     public void setPlayerAsTaming(UUID player) {

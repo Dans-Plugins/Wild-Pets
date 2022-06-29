@@ -12,16 +12,18 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public class StatsCommand extends AbstractPluginCommand {
+    private final PersistentData persistentData;
 
     // TODO: add statistics object with persistent data like number of times players have attempted to tame
 
-    public StatsCommand() {
+    public StatsCommand(PersistentData persistentData) {
         super(new ArrayList<>(Arrays.asList("stats")), new ArrayList<>(Arrays.asList("wp.stats")));
+        this.persistentData = persistentData;
     }
 
     public boolean execute(CommandSender sender) {
         sender.sendMessage(ChatColor.AQUA + "=== Wild Pets Statistics ===");
-        sender.sendMessage(ChatColor.AQUA + "Number of Pets: " + PersistentData.getInstance().getAllPets().size());
+        sender.sendMessage(ChatColor.AQUA + "Number of Pets: " + persistentData.getAllPets().size());
         return true;
     }
 

@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import dansplugins.wildpets.services.LocalConfigService;
+import dansplugins.wildpets.services.ConfigService;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,12 +15,14 @@ import java.util.UUID;
  * @author Daniel McCoy Stephenson
  */
 public class PetList {
+    private final ConfigService configService;
 
     private UUID ownerUUID;
 
     private ArrayList<Pet> pets = new ArrayList<>();
 
-    public PetList(UUID playerUUID) {
+    public PetList(ConfigService configService, UUID playerUUID) {
+        this.configService = configService;
         ownerUUID = playerUUID;
     }
 
@@ -93,7 +95,7 @@ public class PetList {
         int newID = -1;
         do {
             Random random = new Random();
-            newID = random.nextInt(LocalConfigService.getInstance().getInt("petLimit") * 10);
+            newID = random.nextInt(configService.getInt("petLimit") * 10);
         } while (isIDTaken(newID));
 
         return newID;

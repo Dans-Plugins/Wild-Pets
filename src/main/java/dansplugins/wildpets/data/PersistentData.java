@@ -1,8 +1,10 @@
 package dansplugins.wildpets.data;
 
+import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.objects.Pet;
 import dansplugins.wildpets.objects.PetList;
 import dansplugins.wildpets.objects.PetRecord;
+import dansplugins.wildpets.services.ConfigService;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -14,21 +16,15 @@ import java.util.UUID;
  * @author Daniel McCoy Stephenson
  */
 public class PersistentData {
-
-    private static PersistentData instance;
+    private final WildPets wildPets;
+    private final ConfigService configService;
 
     private ArrayList<PetList> petLists = new ArrayList<>();
     private HashSet<PetRecord> petRecords = new HashSet<>();
 
-    private PersistentData() {
-
-    }
-
-    public static PersistentData getInstance() {
-        if (instance == null) {
-            instance = new PersistentData();
-        }
-        return instance;
+    public PersistentData(WildPets wildPets, ConfigService configService) {
+        this.wildPets = wildPets;
+        this.configService = configService;
     }
 
     public ArrayList<PetList> getPetLists() {
@@ -36,7 +32,7 @@ public class PersistentData {
     }
 
     public boolean addNewPet(Player player, Entity entity) {
-        Pet newPet = new Pet(entity, player.getUniqueId());
+        Pet newPet = new Pet(this, wildPets, configService, entity, player.getUniqueId());
         addPetRecord(newPet);
         PetList petList = getPetList(player.getUniqueId());
 
@@ -68,7 +64,7 @@ public class PersistentData {
     }
 
     public void createPetListForPlayer(UUID playerUUID) {
-        PetList newPetList = new PetList(playerUUID);
+        PetList newPetList = new PetList(configService, playerUUID);
         getPetLists().add(newPetList);
     }
 

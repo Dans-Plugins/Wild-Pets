@@ -15,9 +15,13 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public class SetFreeCommand extends AbstractPluginCommand {
+    private final EphemeralData ephemeralData;
+    private final PersistentData persistentData;
 
-    public SetFreeCommand() {
+    public SetFreeCommand(EphemeralData ephemeralData, PersistentData persistentData) {
         super(new ArrayList<>(Arrays.asList("setfree")), new ArrayList<>(Arrays.asList("wp.setfree")));
+        this.ephemeralData = ephemeralData;
+        this.persistentData = persistentData;
     }
 
     public boolean execute(CommandSender sender) {
@@ -27,7 +31,7 @@ public class SetFreeCommand extends AbstractPluginCommand {
 
         Player player = (Player) sender;
 
-        Pet pet = EphemeralData.getInstance().getPetSelectionForPlayer(player.getUniqueId());
+        Pet pet = ephemeralData.getPetSelectionForPlayer(player.getUniqueId());
 
         if (pet == null) {
             player.sendMessage(ChatColor.RED + "No pet selected.");
@@ -36,9 +40,9 @@ public class SetFreeCommand extends AbstractPluginCommand {
 
         String petName = pet.getName();
 
-        PersistentData.getInstance().removePet(pet);
+        persistentData.removePet(pet);
         player.sendMessage(ChatColor.GREEN + petName + " has been set free.");
-        EphemeralData.getInstance().clearPetSelectionForPlayer(player.getUniqueId());
+        ephemeralData.clearPetSelectionForPlayer(player.getUniqueId());
         return true;
     }
 

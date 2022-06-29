@@ -17,9 +17,11 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public class GatherCommand extends AbstractPluginCommand {
+    private final PersistentData persistentData;
 
-    public GatherCommand() {
+    public GatherCommand(PersistentData persistentData) {
         super(new ArrayList<>(Arrays.asList("gather")), new ArrayList<>(Arrays.asList("wp.gather")));
+        this.persistentData = persistentData;
     }
 
     @Override
@@ -30,7 +32,7 @@ public class GatherCommand extends AbstractPluginCommand {
         }
         Player player = (Player) commandSender;
 
-        PetList petList = PersistentData.getInstance().getPetList(player.getUniqueId());
+        PetList petList = persistentData.getPetList(player.getUniqueId());
 
         if (petList.getNumPets() == 0) {
             player.sendMessage(ChatColor.RED + "You don't have any pets.");

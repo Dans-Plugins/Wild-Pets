@@ -3,10 +3,9 @@ package dansplugins.wildpets.eventhandlers;
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.objects.EntityConfig;
 import dansplugins.wildpets.objects.Pet;
-import dansplugins.wildpets.services.LocalConfigService;
-import dansplugins.wildpets.services.LocalEntityConfigService;
+import dansplugins.wildpets.services.ConfigService;
+import dansplugins.wildpets.services.EntityConfigService;
 import dansplugins.wildpets.utils.Scheduler;
 import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
 
@@ -28,18 +27,31 @@ import java.util.UUID;
  * @author Daniel McCoy Stephenson
  */
 public class InteractionHandler implements Listener {
+    private final EntityConfigService entityConfigService;
+    private final PersistentData persistentData;
+    private final EphemeralData ephemeralData;
+    private final WildPets wildPets;
+    private final ConfigService configService;
+    private final Scheduler scheduler;
+
+    public InteractionHandler(EntityConfigService entityConfigService, PersistentData persistentData, EphemeralData ephemeralData, WildPets wildPets, ConfigService configService, Scheduler scheduler) {
+        this.entityConfigService = entityConfigService;
+        this.persistentData = persistentData;
+        this.ephemeralData = ephemeralData;
+        this.wildPets = wildPets;
+        this.configService = configService;
+        this.scheduler = scheduler;
+    }
 
     @EventHandler()
     public void handle(PlayerInteractEntityEvent event) {
         Entity clickedEntity = event.getRightClicked();
-
-        EntityConfig entityConfig = LocalEntityConfigService.getInstance().acquireConfiguration(clickedEntity);
-
+        
         Player player = event.getPlayer();
         
-        Pet pet = PersistentData.getInstance().getPet(clickedEntity);
+        Pet pet = persistentData.getPet(clickedEntity);
 
-        if (EphemeralData.getInstance().isPlayerTaming(player.getUniqueId())) {
+        if (ephemeralData.isPlayerTaming(player.getUniqueId())) {
             setRightClickCooldown(player, 1);
 
             if (clickedEntity instanceof Player) {
@@ -49,51 +61,51 @@ public class InteractionHandler implements Listener {
 
             if (!(clickedEntity instanceof LivingEntity)) {
                 player.sendMessage(ChatColor.RED + "You can only tame living entities.");
-                EphemeralData.getInstance().setPlayerAsNotTaming(player.getUniqueId());
+                ephemeralData.setPlayerAsNotTaming(player.getUniqueId());
                 return;
             }
 
             if (pet != null) {
                 player.sendMessage(ChatColor.RED + "That entity is already a pet.");
-                EphemeralData.getInstance().setPlayerAsNotTaming(player.getUniqueId());
+                ephemeralData.setPlayerAsNotTaming(player.getUniqueId());
                 return;
             }
 
-            if (WildPets.getInstance().isDebugEnabled() && entityConfig.getType().equalsIgnoreCase("default")) {
+            if (wildPets.isDebugEnabled() && entityConfigService.acquireConfiguration(clickedEntity).getType().equalsIgnoreCase("default")) {
                 player.sendMessage(ChatColor.BLUE + "[DEBUG] This entity doesn't have a configuration.");
             }
 
-            if (!entityConfig.isEnabled()) {
+            if (!entityConfigService.acquireConfiguration(clickedEntity).isEnabled()) {
                 player.sendMessage(ChatColor.RED + "Taming has been disabled for this entity.");
                 return;
             }
 
-            int numPets = PersistentData.getInstance().getPetList(player.getUniqueId()).getNumPets();
-            int petLimit = LocalConfigService.getInstance().getInt("petLimit");
-            if (WildPets.getInstance().isDebugEnabled()) {
+            int numPets = persistentData.getPetList(player.getUniqueId()).getNumPets();
+            int petLimit = configService.getInt("petLimit");
+            if (wildPets.isDebugEnabled()) {
                 System.out.println("[DEBUG] Number of pets: " + numPets);
                 System.out.println("[DEBUG] Pet Limit: " + petLimit);
             }
             if (numPets >= petLimit) {
                 player.sendMessage(ChatColor.RED + "You have reached your pet limit.");
-                EphemeralData.getInstance().setPlayerAsNotTaming(player.getUniqueId());
+                ephemeralData.setPlayerAsNotTaming(player.getUniqueId());
                 return;
             }
 
             ItemStack itemStack = player.getInventory().getItemInMainHand();
-            Material requiredMaterial = entityConfig.getRequiredTamingItem();
-            int requiredAmount = entityConfig.getTamingItemAmount();
+            Material requiredMaterial = entityConfigService.acquireConfiguration(clickedEntity).getRequiredTamingItem();
+            int requiredAmount = entityConfigService.acquireConfiguration(clickedEntity).getTamingItemAmount();
             if (itemStack.getType() != requiredMaterial || itemStack.getAmount() < requiredAmount) {
                 player.sendMessage(ChatColor.RED + "You need to use " + requiredAmount + " " + requiredMaterial.name().toLowerCase() + " to tame this entity.");
-                EphemeralData.getInstance().setPlayerAsNotTaming(player.getUniqueId());
+                ephemeralData.setPlayerAsNotTaming(player.getUniqueId());
                 return;
             }
 
             // handle chance to tame
-            if (!rollDice(entityConfig.getChanceToSucceed())) {
+            if (!rollDice(entityConfigService.acquireConfiguration(clickedEntity).getChanceToSucceed())) {
                 player.sendMessage(ChatColor.RED + "Taming failed.");
-                if (LocalConfigService.getInstance().getBoolean("cancelTamingAfterFailedAttempt")) {
-                    EphemeralData.getInstance().setPlayerAsNotTaming(player.getUniqueId());
+                if (configService.getBoolean("cancelTamingAfterFailedAttempt")) {
+                    ephemeralData.setPlayerAsNotTaming(player.getUniqueId());
                 }
                 if (itemStack.getAmount() > requiredAmount) {
                     player.getInventory().setItemInMainHand(new ItemStack(itemStack.getType(), itemStack.getAmount() - requiredAmount));
@@ -104,9 +116,9 @@ public class InteractionHandler implements Listener {
                 return;
             }
 
-            PersistentData.getInstance().addNewPet(player, clickedEntity);
+            persistentData.addNewPet(player, clickedEntity);
             player.sendMessage(ChatColor.GREEN + "Tamed.");
-            EphemeralData.getInstance().setPlayerAsNotTaming(player.getUniqueId());
+            ephemeralData.setPlayerAsNotTaming(player.getUniqueId());
 
             if (itemStack.getAmount() > requiredAmount) {
                 player.getInventory().setItemInMainHand(new ItemStack(itemStack.getType(), itemStack.getAmount() - requiredAmount));
@@ -115,102 +127,102 @@ public class InteractionHandler implements Listener {
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
             }
 
-            EphemeralData.getInstance().selectPetForPlayer(PersistentData.getInstance().getPet(clickedEntity), player.getUniqueId());
+            ephemeralData.selectPetForPlayer(persistentData.getPet(clickedEntity), player.getUniqueId());
         }
-        else if (EphemeralData.getInstance().isPlayerSelecting(player.getUniqueId())) {
+        else if (ephemeralData.isPlayerSelecting(player.getUniqueId())) {
             setRightClickCooldown(player, 1);
 
             if (pet == null) {
                 player.sendMessage(ChatColor.RED + "That entity is not a pet.");
-                EphemeralData.getInstance().setPlayerAsNotSelecting(player.getUniqueId());
+                ephemeralData.setPlayerAsNotSelecting(player.getUniqueId());
                 return;
             }
 
-            if (PersistentData.getInstance().getPlayersPet(player, clickedEntity) == null) {
+            if (persistentData.getPlayersPet(player, clickedEntity) == null) {
                 player.sendMessage(ChatColor.RED + "That entity is not your pet.");
-                EphemeralData.getInstance().setPlayerAsNotSelecting(player.getUniqueId());
+                ephemeralData.setPlayerAsNotSelecting(player.getUniqueId());
                 return;
             }
 
-            EphemeralData.getInstance().selectPetForPlayer(pet, player.getUniqueId());
+            ephemeralData.selectPetForPlayer(pet, player.getUniqueId());
             player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
-            EphemeralData.getInstance().setPlayerAsNotSelecting(player.getUniqueId());
+            ephemeralData.setPlayerAsNotSelecting(player.getUniqueId());
         }
-        else if (EphemeralData.getInstance().isPlayerLocking(player.getUniqueId())) {
+        else if (ephemeralData.isPlayerLocking(player.getUniqueId())) {
 
             if (pet == null) {
                 player.sendMessage(ChatColor.RED + "This entity isn't a pet.");
-                EphemeralData.getInstance().setPlayerAsNotLocking(player.getUniqueId());
+                ephemeralData.setPlayerAsNotLocking(player.getUniqueId());
                 return;
             }
 
             if (!pet.getOwnerUUID().equals(player.getUniqueId())) {
                 player.sendMessage(ChatColor.RED + "This is not your pet.");
-                EphemeralData.getInstance().setPlayerAsNotLocking(player.getUniqueId());
+                ephemeralData.setPlayerAsNotLocking(player.getUniqueId());
                 return;
             }
 
             boolean locked = pet.isLocked();
             if (locked) {
                 player.sendMessage(ChatColor.RED + "This pet is already locked.");
-                EphemeralData.getInstance().setPlayerAsNotLocking(player.getUniqueId());
+                ephemeralData.setPlayerAsNotLocking(player.getUniqueId());
                 return;
             }
             pet.setLocked(true);
             player.sendMessage(ChatColor.GREEN + "This pet has been locked.");
-            EphemeralData.getInstance().setPlayerAsNotLocking(player.getUniqueId());
+            ephemeralData.setPlayerAsNotLocking(player.getUniqueId());
             event.setCancelled(true);
         }
-        else if (EphemeralData.getInstance().isPlayerUnlocking(player.getUniqueId())) {
+        else if (ephemeralData.isPlayerUnlocking(player.getUniqueId())) {
 
             if (pet == null) {
                 player.sendMessage(ChatColor.RED + "This entity isn't a pet.");
-                EphemeralData.getInstance().setPlayerAsNotUnlocking(player.getUniqueId());
+                ephemeralData.setPlayerAsNotUnlocking(player.getUniqueId());
                 return;
             }
 
             if (!pet.getOwnerUUID().equals(player.getUniqueId())) {
                 player.sendMessage(ChatColor.RED + "This is not your pet.");
-                EphemeralData.getInstance().setPlayerAsNotUnlocking(player.getUniqueId());
+                ephemeralData.setPlayerAsNotUnlocking(player.getUniqueId());
                 return;
             }
 
             boolean locked = pet.isLocked();
             if (!locked) {
                 player.sendMessage(ChatColor.RED + "This pet is already unlocked.");
-                EphemeralData.getInstance().setPlayerAsNotUnlocking(player.getUniqueId());
+                ephemeralData.setPlayerAsNotUnlocking(player.getUniqueId());
                 return;
             }
             pet.setLocked(false);
             player.sendMessage(ChatColor.GREEN + "This pet has been unlocked.");
-            EphemeralData.getInstance().setPlayerAsNotUnlocking(player.getUniqueId());
+            ephemeralData.setPlayerAsNotUnlocking(player.getUniqueId());
             event.setCancelled(true);
         }
-        else if (EphemeralData.getInstance().isPlayerCheckingAccess(player.getUniqueId())) {
+        else if (ephemeralData.isPlayerCheckingAccess(player.getUniqueId())) {
 
             if (pet == null) {
                 player.sendMessage(ChatColor.RED + "This entity isn't a pet.");
-                EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player.getUniqueId());
-                EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player.getUniqueId());
+                ephemeralData.setPlayerAsNotCheckingAccess(player.getUniqueId());
+                ephemeralData.setPlayerAsNotCheckingAccess(player.getUniqueId());
                 return;
             }
 
             boolean locked = pet.isLocked();
             if (!locked) {
                 player.sendMessage(ChatColor.RED + "This pet isn't locked.");
-                EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player.getUniqueId());
+                ephemeralData.setPlayerAsNotCheckingAccess(player.getUniqueId());
                 return;
             }
 
             if (pet.getAccessList().size() == 0) {
                 player.sendMessage(ChatColor.RED + "No one has access to this pet.");
-                EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player.getUniqueId());
+                ephemeralData.setPlayerAsNotCheckingAccess(player.getUniqueId());
                 return;
             }
 
             if (pet.getAccessList().size() == 1 && pet.getAccessList().get(0).equals(player.getUniqueId())) {
                 player.sendMessage(ChatColor.RED + "No one has access to this pet but you.");
-                EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player.getUniqueId());
+                ephemeralData.setPlayerAsNotCheckingAccess(player.getUniqueId());
                 return;
             }
 
@@ -224,35 +236,35 @@ public class InteractionHandler implements Listener {
                     player.sendMessage(ChatColor.AQUA + playerName);
                 }
             }
-            EphemeralData.getInstance().setPlayerAsNotCheckingAccess(player.getUniqueId());
+            ephemeralData.setPlayerAsNotCheckingAccess(player.getUniqueId());
             event.setCancelled(true);
         }
-        else if (EphemeralData.getInstance().isPlayerGrantingAccess(player.getUniqueId())) {
+        else if (ephemeralData.isPlayerGrantingAccess(player.getUniqueId())) {
             // TODO: implement
         }
-        else if (EphemeralData.getInstance().isPlayerRevokingAccess(player.getUniqueId())) {
+        else if (ephemeralData.isPlayerRevokingAccess(player.getUniqueId())) {
             // TODO: implement
         }
         else {
 
-            if (!EphemeralData.getInstance().hasRightClickCooldown(player.getUniqueId())) {
+            if (!ephemeralData.hasRightClickCooldown(player.getUniqueId())) {
                 if (pet == null) {
                     return;
                 }
 
-                setRightClickCooldown(player, LocalConfigService.getInstance().getInt("rightClickViewCooldown"));
+                setRightClickCooldown(player, configService.getInt("rightClickViewCooldown"));
 
                 pet.sendInfoToPlayer(player);
 
-                if (LocalConfigService.getInstance().getBoolean("rightClickToSelect")) {
+                if (configService.getBoolean("rightClickToSelect")) {
 
                     if (!pet.getOwnerUUID().equals(player.getUniqueId())) {
                         return;
                     }
 
-                    Pet petSelection = EphemeralData.getInstance().getPetSelectionForPlayer(player.getUniqueId());
+                    Pet petSelection = ephemeralData.getPetSelectionForPlayer(player.getUniqueId());
                     if (petSelection == null || !petSelection.getUniqueID().equals(pet.getUniqueID())) {
-                        EphemeralData.getInstance().selectPetForPlayer(pet, player.getUniqueId());
+                        ephemeralData.selectPetForPlayer(pet, player.getUniqueId());
                         player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
                     }
 
@@ -281,7 +293,7 @@ public class InteractionHandler implements Listener {
         Player player = (Player) entity;
 
         Entity mount = event.getMount();
-        Pet pet = PersistentData.getInstance().getPet(mount);
+        Pet pet = persistentData.getPet(mount);
         if (pet == null) {
             return;
         }
@@ -300,16 +312,16 @@ public class InteractionHandler implements Listener {
     }
 
     private void setRightClickCooldown(Player player, int seconds) {
-        EphemeralData.getInstance().setRightClickCooldown(player.getUniqueId(), true);
-        Scheduler.scheduleRightClickCooldownSetter(player, seconds);
+        ephemeralData.setRightClickCooldown(player.getUniqueId(), true);
+        scheduler.scheduleRightClickCooldownSetter(player, seconds);
     }
 
     private boolean rollDice(double chanceToSucceed) {
         double chanceToFail = 1 - chanceToSucceed;
-        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("Rolling dice! Chance to fail: " + chanceToFail * 100 + "%"); }
+        if (wildPets.isDebugEnabled()) { System.out.println("Rolling dice! Chance to fail: " + chanceToFail * 100 + "%"); }
         Random random = new Random();
         double generatedNumber = random.nextDouble();
-        if (WildPets.getInstance().isDebugEnabled()) { System.out.println("Dice landed on " + generatedNumber * 100 + ". " + chanceToFail * 100 + " was required."); }
+        if (wildPets.isDebugEnabled()) { System.out.println("Dice landed on " + generatedNumber * 100 + ". " + chanceToFail * 100 + " was required."); }
         return generatedNumber > chanceToFail;
     }
 }
