@@ -27,17 +27,15 @@ import java.util.Arrays;
  */
 public final class WildPets extends PonderBukkitPlugin {
     private final String pluginVersion = "v" + getDescription().getVersion();
-    private CommandService commandService = new CommandService(getPonder());
 
+    private final CommandService commandService = new CommandService(getPonder());
     private final EphemeralData ephemeralData = new EphemeralData();
-    private final ConfigService configService = new ConfigService(this, entityConfigService); // TODO: fix circular dependency
+    private final EntityConfigService entityConfigService = new EntityConfigService(this);
+    private final ConfigService configService = new ConfigService(this, entityConfigService);
     private final PersistentData persistentData = new PersistentData(this, configService);
     private final StorageService storageService = new StorageService(configService, this, persistentData);
-    private final EntityConfigService entityConfigService = new EntityConfigService(this, configService);
     private final Scheduler scheduler = new Scheduler(this, ephemeralData, storageService);
 
-
-    
      /**
      * This runs when the server starts.
      */
