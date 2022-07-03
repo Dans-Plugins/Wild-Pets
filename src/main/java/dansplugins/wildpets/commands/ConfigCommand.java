@@ -23,7 +23,7 @@ public class ConfigCommand extends AbstractPluginCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        commandSender.sendMessage(ChatColor.RED + "Usage: /wp set (option) (value)");
+        commandSender.sendMessage(ChatColor.RED + "Usage: /wp config <set|show> (option) (value)");
         return false;
     }
 
