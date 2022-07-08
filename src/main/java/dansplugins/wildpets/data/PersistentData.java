@@ -19,8 +19,8 @@ public class PersistentData {
     private final WildPets wildPets;
     private final ConfigService configService;
 
-    private ArrayList<PetList> petLists = new ArrayList<>();
-    private HashSet<PetRecord> petRecords = new HashSet<>();
+    private final ArrayList<PetList> petLists = new ArrayList<>();
+    private final HashSet<PetRecord> petRecords = new HashSet<>();
 
     public PersistentData(WildPets wildPets, ConfigService configService) {
         this.wildPets = wildPets;

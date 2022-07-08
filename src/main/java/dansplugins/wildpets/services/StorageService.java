@@ -31,7 +31,7 @@ public class StorageService {
 
     private final static Type LIST_MAP_TYPE = new TypeToken<ArrayList<HashMap<String, String>>>(){}.getType();
 
-    private Gson gson = new GsonBuilder().setPrettyPrinting().create();;
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();;
 
     public StorageService(ConfigService configService, WildPets wildPets, PersistentData persistentData) {
         this.configService = configService;

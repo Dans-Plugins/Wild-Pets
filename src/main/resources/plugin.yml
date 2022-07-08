@@ -39,12 +39,6 @@ permissions:
     default: true
   wp.unlock:
     default: true
-  wp.checkaccess:
-    default: true
-  wp.grantaccess:
-    default: true
-  wp.revokeaccess:
-    default: true
   wp.gather:
     default: true
   wp.config:

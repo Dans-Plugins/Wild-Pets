@@ -6,11 +6,11 @@ import org.bukkit.Material;
  * @author Daniel McCoy Stephenson
  */
 public class EntityConfig {
-    private String type;
-    private double chanceToSucceed;
-    private Material requiredTamingItem;
-    private int tamingItemAmount;
-    private boolean enabled;
+    private final String type;
+    private final double chanceToSucceed;
+    private final Material requiredTamingItem;
+    private final int tamingItemAmount;
+    private final boolean enabled;
 
     public EntityConfig(String inputType, double inputChanceToSucceed, Material inputRequiredTamingItem, int inputTamingItemAmount, boolean inputEnabled) {
         type = inputType;

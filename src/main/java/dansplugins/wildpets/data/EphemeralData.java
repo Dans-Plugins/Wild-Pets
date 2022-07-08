@@ -12,19 +12,19 @@ import java.util.UUID;
  */
 public class EphemeralData {
     // action lists
-    private HashSet<UUID> tamingPlayers = new HashSet<>();
-    private HashSet<UUID> selectingPlayers = new HashSet<>();
-    private HashSet<UUID> lockingPlayers = new HashSet<>();
-    private HashSet<UUID> unlockingPlayers = new HashSet<>();
-    private HashSet<UUID> accessCheckingPlayers = new HashSet<>();
-    private HashMap<UUID, UUID> accessGrantingPlayers = new HashMap<>(); // TODO: add associated methods
-    private HashMap<UUID, UUID> accessRevokingPlayers = new HashMap<>(); // TODO: add associated methods
+    private final HashSet<UUID> tamingPlayers = new HashSet<>();
+    private final HashSet<UUID> selectingPlayers = new HashSet<>();
+    private final HashSet<UUID> lockingPlayers = new HashSet<>();
+    private final HashSet<UUID> unlockingPlayers = new HashSet<>();
+    private final HashSet<UUID> accessCheckingPlayers = new HashSet<>();
+    private final HashMap<UUID, UUID> accessGrantingPlayers = new HashMap<>(); // TODO: add associated methods
+    private final HashMap<UUID, UUID> accessRevokingPlayers = new HashMap<>(); // TODO: add associated methods
 
     // selections list
-    private HashMap<UUID, Pet> selections = new HashMap<>();
+    private final HashMap<UUID, Pet> selections = new HashMap<>();
 
     // cooldown lists
-    private HashSet<UUID> playersWithRightClickCooldown = new HashSet<>();
+    private final HashSet<UUID> playersWithRightClickCooldown = new HashSet<>();
     
     // -----
 

@@ -29,7 +29,6 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
     private final WildPets wildPets;
     private final ConfigService configService;
 
-    // persistent
     private UUID uniqueID;
     private UUID ownerUUID;
     private int assignedID;

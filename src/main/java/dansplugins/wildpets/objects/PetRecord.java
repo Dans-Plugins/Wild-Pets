@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public class PetRecord implements Savable {
     private UUID uniqueID;
-    String name;
+    private String name;
     private UUID ownerUUID;
     private int assignedID;
 

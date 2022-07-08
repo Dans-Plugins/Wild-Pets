@@ -45,9 +45,6 @@ public class HelpCommand extends AbstractPluginCommand {
         player.sendMessage(ChatColor.AQUA + "/wp locate - Locate your selected pet.");
         player.sendMessage(ChatColor.AQUA + "/wp lock - Lock your pet.");
         player.sendMessage(ChatColor.AQUA + "/wp unlock - Unock your pet.");
-        player.sendMessage(ChatColor.AQUA + "/wp checkaccess - Check who has access to your pet.");
-        player.sendMessage(ChatColor.AQUA + "/wp grantaccess - Grant someone access to your pet.");
-        player.sendMessage(ChatColor.AQUA + "/wp revokeaccess - Revoke access for someone to your pet.");
         player.sendMessage(ChatColor.AQUA + "/wp gather - Gather your pets in one place.");
         player.sendMessage(ChatColor.AQUA + "/wp config - View or set config options.");
         return true;

@@ -17,9 +17,8 @@ import java.util.UUID;
 public class PetList {
     private final ConfigService configService;
 
-    private UUID ownerUUID;
-
-    private ArrayList<Pet> pets = new ArrayList<>();
+    private final UUID ownerUUID;
+    private final ArrayList<Pet> pets = new ArrayList<>();
 
     public PetList(ConfigService configService, UUID playerUUID) {
         this.configService = configService;

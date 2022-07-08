@@ -28,7 +28,7 @@ public class Scheduler {
                 ephemeralData.setRightClickCooldown(player.getUniqueId(), false);
 
             }
-        }, seconds * 20);
+        }, seconds * 20L);
     }
 
     public void scheduleAutosave() {

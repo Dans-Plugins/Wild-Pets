@@ -32,10 +32,6 @@ public class EntityConfigService {
         return getDefaultConfiguration();
     }
 
-    public ArrayList<EntityConfig> getEntityConfigurations() {
-        return entityConfigs;
-    }
-
     public void initializeWithDefaults() {
         entityConfigs = getDefaults();
 
