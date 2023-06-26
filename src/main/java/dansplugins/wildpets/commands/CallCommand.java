@@ -1,7 +1,7 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
-import dansplugins.wildpets.objects.Pet;
+import dansplugins.wildpets.pet.Pet;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.Bukkit;

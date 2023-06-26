@@ -1,8 +1,8 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
-import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.objects.Pet;
+import dansplugins.wildpets.pet.list.PetListRepository;
+import dansplugins.wildpets.pet.Pet;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
@@ -16,12 +16,12 @@ import java.util.Arrays;
  */
 public class SetFreeCommand extends AbstractPluginCommand {
     private final EphemeralData ephemeralData;
-    private final PersistentData persistentData;
+    private final PetListRepository petListRepository;
 
-    public SetFreeCommand(EphemeralData ephemeralData, PersistentData persistentData) {
+    public SetFreeCommand(EphemeralData ephemeralData, PetListRepository petListRepository) {
         super(new ArrayList<>(Arrays.asList("setfree")), new ArrayList<>(Arrays.asList("wp.setfree")));
         this.ephemeralData = ephemeralData;
-        this.persistentData = persistentData;
+        this.petListRepository = petListRepository;
     }
 
     public boolean execute(CommandSender sender) {
@@ -40,7 +40,7 @@ public class SetFreeCommand extends AbstractPluginCommand {
 
         String petName = pet.getName();
 
-        persistentData.removePet(pet);
+        petListRepository.removePet(pet);
         player.sendMessage(ChatColor.GREEN + petName + " has been set free.");
         ephemeralData.clearPetSelectionForPlayer(player.getUniqueId());
         return true;

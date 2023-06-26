@@ -1,6 +1,6 @@
 package dansplugins.wildpets.data;
 
-import dansplugins.wildpets.objects.Pet;
+import dansplugins.wildpets.pet.Pet;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
