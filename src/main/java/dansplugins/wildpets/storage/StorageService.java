@@ -1,13 +1,15 @@
-package dansplugins.wildpets.services;
+package dansplugins.wildpets.storage;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import dansplugins.wildpets.WildPets;
-import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.objects.Pet;
-import dansplugins.wildpets.objects.PetRecord;
+import dansplugins.wildpets.config.ConfigService;
+import dansplugins.wildpets.pet.list.PetListRepository;
+import dansplugins.wildpets.pet.Pet;
+import dansplugins.wildpets.pet.record.PetRecord;
+import dansplugins.wildpets.pet.record.PetRecordRepository;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -23,7 +25,8 @@ import java.util.Map;
 public class StorageService {
     private final ConfigService configService;
     private final WildPets wildPets;
-    private final PersistentData persistentData;
+    private final PetListRepository petListRepository;
+    private final PetRecordRepository petRecordRepository;
 
     private final static String FILE_PATH = "./plugins/WildPets/";
     private final static String PETS_FILE_NAME = "pets.json";
@@ -33,10 +36,11 @@ public class StorageService {
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();;
 
-    public StorageService(ConfigService configService, WildPets wildPets, PersistentData persistentData) {
+    public StorageService(ConfigService configService, WildPets wildPets, PetListRepository petListRepository, PetRecordRepository petRecordRepository) {
         this.configService = configService;
         this.wildPets = wildPets;
-        this.persistentData = persistentData;
+        this.petListRepository = petListRepository;
+        this.petRecordRepository = new PetRecordRepository();
     }
 
     public void save() {
@@ -55,7 +59,7 @@ public class StorageService {
     private void savePets() {
         // save each pet object individually
         List<Map<String, String>> pets = new ArrayList<>();
-        for (Pet pet : persistentData.getAllPets()){
+        for (Pet pet : petListRepository.getAllPets()){
             pets.add(pet.save());
         }
 
@@ -64,7 +68,7 @@ public class StorageService {
 
     private void savePetRecords() {
         List<Map<String, String>> petRecords = new ArrayList<>();
-        for (PetRecord petRecord : persistentData.getPetRecords()){
+        for (PetRecord petRecord : petRecordRepository.getPetRecords()){
             petRecords.add(petRecord.save());
         }
 
@@ -87,24 +91,24 @@ public class StorageService {
 
     private void loadPets() {
         // load each pet individually and reconstruct pet list objects
-        persistentData.getPetLists().clear();
+        petListRepository.getPetLists().clear();
 
         ArrayList<HashMap<String, String>> data = loadDataFromFilename(FILE_PATH + PETS_FILE_NAME);
 
         ArrayList<Pet> allPets = new ArrayList<>();
 
         for (Map<String, String> petData : data){
-            Pet pet = new Pet(petData, persistentData, wildPets, configService);
+            Pet pet = new Pet(petData);
             allPets.add(pet);
         }
 
         for (Pet pet : allPets) {
-            if (persistentData.getPetList(pet.getOwnerUUID()) == null) {
-                persistentData.createPetListForPlayer(pet.getOwnerUUID());
+            if (petListRepository.getPetList(pet.getOwnerUUID()) == null) {
+                petListRepository.createPetListForPlayer(pet.getOwnerUUID());
 
             }
-            persistentData.getPetList(pet.getOwnerUUID()).addPet(pet);
-            persistentData.addPetRecord(pet); // will not result in duplicates because petRecords is a hashset
+            petListRepository.getPetList(pet.getOwnerUUID()).addPet(pet);
+            petRecordRepository.addPetRecord(pet); // will not result in duplicates because petRecords is a hashset
         }
     }
 

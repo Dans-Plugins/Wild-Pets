@@ -1,9 +1,9 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
-import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.objects.Pet;
-import dansplugins.wildpets.services.ConfigService;
+import dansplugins.wildpets.pet.list.PetListRepository;
+import dansplugins.wildpets.pet.Pet;
+import dansplugins.wildpets.config.ConfigService;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
@@ -18,13 +18,13 @@ import java.util.Arrays;
 public class SelectCommand extends AbstractPluginCommand {
     private final ConfigService configService;
     private final EphemeralData ephemeralData;
-    private final PersistentData persistentData;
+    private final PetListRepository petListRepository;
 
-    public SelectCommand(ConfigService configService, EphemeralData ephemeralData, PersistentData persistentData) {
+    public SelectCommand(ConfigService configService, EphemeralData ephemeralData, PetListRepository petListRepository) {
         super(new ArrayList<>(Arrays.asList("select")), new ArrayList<>(Arrays.asList("wp.select")));
         this.configService = configService;
         this.ephemeralData = ephemeralData;
-        this.persistentData = persistentData;
+        this.petListRepository = petListRepository;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class SelectCommand extends AbstractPluginCommand {
 
         String petName = args[0];
 
-        Pet pet = persistentData.getPlayersPet(player, petName);
+        Pet pet = petListRepository.getPlayersPet(player, petName);
 
         if (pet == null) {
             player.sendMessage(ChatColor.RED + "You don't have any pets named " + petName + ".");

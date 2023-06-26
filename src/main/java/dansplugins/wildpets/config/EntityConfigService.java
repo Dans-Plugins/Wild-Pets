@@ -1,7 +1,6 @@
-package dansplugins.wildpets.services;
+package dansplugins.wildpets.config;
 
 import dansplugins.wildpets.WildPets;
-import dansplugins.wildpets.objects.EntityConfig;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 

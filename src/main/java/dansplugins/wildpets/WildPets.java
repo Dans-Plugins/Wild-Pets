@@ -3,12 +3,13 @@ package dansplugins.wildpets;
 import dansplugins.wildpets.bstats.Metrics;
 import dansplugins.wildpets.commands.*;
 import dansplugins.wildpets.data.EphemeralData;
-import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.eventhandlers.*;
-import dansplugins.wildpets.services.ConfigService;
-import dansplugins.wildpets.services.EntityConfigService;
-import dansplugins.wildpets.services.StorageService;
-import dansplugins.wildpets.utils.Scheduler;
+import dansplugins.wildpets.pet.list.PetListRepository;
+import dansplugins.wildpets.listeners.*;
+import dansplugins.wildpets.config.ConfigService;
+import dansplugins.wildpets.config.EntityConfigService;
+import dansplugins.wildpets.pet.record.PetRecordRepository;
+import dansplugins.wildpets.storage.StorageService;
+import dansplugins.wildpets.scheduler.Scheduler;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
 import preponderous.ponder.minecraft.bukkit.services.CommandService;
@@ -32,8 +33,9 @@ public final class WildPets extends PonderBukkitPlugin {
     private final EphemeralData ephemeralData = new EphemeralData();
     private final EntityConfigService entityConfigService = new EntityConfigService(this);
     private final ConfigService configService = new ConfigService(this, entityConfigService);
-    private final PersistentData persistentData = new PersistentData(this, configService);
-    private final StorageService storageService = new StorageService(configService, this, persistentData);
+    private final PetListRepository petListRepository = new PetListRepository(this, configService);
+    private final PetRecordRepository petRecordRepository = new PetRecordRepository();
+    private final StorageService storageService = new StorageService(configService, this, petListRepository, petRecordRepository);
     private final Scheduler scheduler = new Scheduler(this, ephemeralData, storageService);
 
      /**
@@ -136,11 +138,11 @@ public final class WildPets extends PonderBukkitPlugin {
      */
     private void registerEventHandlers() {
         ArrayList<Listener> listeners = new ArrayList<>();
-        listeners.add(new DamageEffectsAndDeathHandler(configService, persistentData, this));
-        listeners.add(new InteractionHandler(entityConfigService, persistentData, ephemeralData, this, configService, scheduler));
-        listeners.add(new JoinAndQuitHandler(persistentData, ephemeralData));
-        listeners.add(new MoveHandler(persistentData));
-        listeners.add(new BreedEventHandler(persistentData, configService, ephemeralData));
+        listeners.add(new DamageEffectsAndDeathHandler(configService, petListRepository, this));
+        listeners.add(new InteractionHandler(entityConfigService, petListRepository, petRecordRepository, ephemeralData, this, configService, scheduler));
+        listeners.add(new JoinAndQuitHandler(petListRepository, ephemeralData));
+        listeners.add(new MoveHandler(petListRepository));
+        listeners.add(new BreedEventHandler(petListRepository, petRecordRepository, configService, ephemeralData));
         EventHandlerRegistry eventHandlerRegistry = new EventHandlerRegistry();
         eventHandlerRegistry.registerEventHandlers(listeners, this);
     }
@@ -152,11 +154,11 @@ public final class WildPets extends PonderBukkitPlugin {
         ArrayList<AbstractPluginCommand> commands = new ArrayList<>(Arrays.asList(
                 new CallCommand(ephemeralData), new CheckAccessCommand(ephemeralData), new ConfigCommand(configService),
                 new FollowCommand(ephemeralData), new HelpCommand(configService),
-                new InfoCommand(ephemeralData), new ListCommand(persistentData), new LocateCommand(ephemeralData),
-                new LockCommand(ephemeralData), new RenameCommand(ephemeralData, persistentData, configService),
-                new SelectCommand(configService, ephemeralData, persistentData), new SetFreeCommand(ephemeralData, persistentData), new StatsCommand(persistentData),
+                new InfoCommand(ephemeralData, configService, petRecordRepository), new ListCommand(petListRepository), new LocateCommand(ephemeralData),
+                new LockCommand(ephemeralData), new RenameCommand(ephemeralData, petListRepository, petRecordRepository, configService),
+                new SelectCommand(configService, ephemeralData, petListRepository), new SetFreeCommand(ephemeralData, petListRepository), new StatsCommand(petListRepository),
                 new TameCommand(ephemeralData), new UnlockCommand(ephemeralData), new WanderCommand(ephemeralData),
-                new GatherCommand(persistentData)
+                new GatherCommand(petListRepository)
         ));
         commandService.initialize(commands, "That command wasn't found.");
     }
