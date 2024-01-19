@@ -1,0 +1,7 @@
+services:
+  testmcserver:
+    build: .
+    image: wp-test-mc-server
+    container_name: wp-test-mc-server
+    ports:
+      - "25565:25565"
