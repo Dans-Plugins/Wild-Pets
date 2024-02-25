@@ -1,7 +1,9 @@
 package dansplugins.wildpets.commands;
 
+import dansplugins.wildpets.config.ConfigService;
 import dansplugins.wildpets.data.EphemeralData;
-import dansplugins.wildpets.objects.Pet;
+import dansplugins.wildpets.pet.Pet;
+import dansplugins.wildpets.pet.record.PetRecordRepository;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
@@ -15,10 +17,14 @@ import java.util.Arrays;
  */
 public class InfoCommand extends AbstractPluginCommand {
     private final EphemeralData ephemeralData;
+    private final ConfigService configService;
+    private final PetRecordRepository petRecordRepository;
 
-    public InfoCommand(EphemeralData ephemeralData) {
+    public InfoCommand(EphemeralData ephemeralData, ConfigService configService, PetRecordRepository petRecordRepository) {
         super(new ArrayList<>(Arrays.asList("info")), new ArrayList<>(Arrays.asList("wp.info")));
         this.ephemeralData = ephemeralData;
+        this.configService = configService;
+        this.petRecordRepository = petRecordRepository;
     }
 
     public boolean execute(CommandSender sender) {
@@ -35,7 +41,7 @@ public class InfoCommand extends AbstractPluginCommand {
             return false;
         }
 
-        pet.sendInfoToPlayer(player);
+        pet.sendInfoToPlayer(player, configService, petRecordRepository);
         return true;
     }
 

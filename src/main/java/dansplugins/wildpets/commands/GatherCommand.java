@@ -1,8 +1,8 @@
 package dansplugins.wildpets.commands;
 
-import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.objects.Pet;
-import dansplugins.wildpets.objects.PetList;
+import dansplugins.wildpets.pet.list.PetListRepository;
+import dansplugins.wildpets.pet.Pet;
+import dansplugins.wildpets.pet.list.PetList;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.Bukkit;
@@ -17,11 +17,11 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public class GatherCommand extends AbstractPluginCommand {
-    private final PersistentData persistentData;
+    private final PetListRepository petListRepository;
 
-    public GatherCommand(PersistentData persistentData) {
+    public GatherCommand(PetListRepository petListRepository) {
         super(new ArrayList<>(Arrays.asList("gather")), new ArrayList<>(Arrays.asList("wp.gather")));
-        this.persistentData = persistentData;
+        this.petListRepository = petListRepository;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class GatherCommand extends AbstractPluginCommand {
         }
         Player player = (Player) commandSender;
 
-        PetList petList = persistentData.getPetList(player.getUniqueId());
+        PetList petList = petListRepository.getPetList(player.getUniqueId());
 
         if (petList.getNumPets() == 0) {
             player.sendMessage(ChatColor.RED + "You don't have any pets.");

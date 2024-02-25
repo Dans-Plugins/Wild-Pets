@@ -1,9 +1,10 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
-import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.objects.Pet;
-import dansplugins.wildpets.services.ConfigService;
+import dansplugins.wildpets.pet.list.PetListRepository;
+import dansplugins.wildpets.pet.Pet;
+import dansplugins.wildpets.config.ConfigService;
+import dansplugins.wildpets.pet.record.PetRecordRepository;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
@@ -17,13 +18,15 @@ import java.util.Arrays;
  */
 public class RenameCommand extends AbstractPluginCommand {
     private final EphemeralData ephemeralData;
-    private final PersistentData persistentData;
+    private final PetListRepository petListRepository;
+    private final PetRecordRepository petRecordRepository;
     private final ConfigService configService;
 
-    public RenameCommand(EphemeralData ephemeralData, PersistentData persistentData, ConfigService configService) {
+    public RenameCommand(EphemeralData ephemeralData, PetListRepository petListRepository, PetRecordRepository petRecordRepository, ConfigService configService) {
         super(new ArrayList<>(Arrays.asList("rename")), new ArrayList<>(Arrays.asList("wp.rename")));
         this.ephemeralData = ephemeralData;
-        this.persistentData = persistentData;
+        this.petListRepository = petListRepository;
+        this.petRecordRepository = petRecordRepository;
         this.configService = configService;
     }
 
@@ -53,7 +56,7 @@ public class RenameCommand extends AbstractPluginCommand {
             return false;
         }
 
-        if (persistentData.getPetList(player.getUniqueId()).isNameTaken(newName)) {
+        if (petListRepository.getPetList(player.getUniqueId()).isNameTaken(newName)) {
             player.sendMessage(ChatColor.RED + "That name is already taken by one of your pets.");
             return false;
         }
@@ -70,6 +73,7 @@ public class RenameCommand extends AbstractPluginCommand {
         }
 
         pet.setName(newName);
+        petRecordRepository.getPetRecord(pet.getUniqueID()).setName(newName);
         player.sendMessage(ChatColor.GREEN + "Renamed.");
         return true;
     }

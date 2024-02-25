@@ -1,7 +1,7 @@
 package dansplugins.wildpets.commands;
 
-import dansplugins.wildpets.data.PersistentData;
-import dansplugins.wildpets.objects.PetList;
+import dansplugins.wildpets.pet.list.PetListRepository;
+import dansplugins.wildpets.pet.list.PetList;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.Bukkit;
@@ -16,11 +16,11 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public class ListCommand extends AbstractPluginCommand {
-    private final PersistentData persistentData;
+    private final PetListRepository petListRepository;
 
-    public ListCommand(PersistentData persistentData) {
+    public ListCommand(PetListRepository petListRepository) {
         super(new ArrayList<>(Arrays.asList("list")), new ArrayList<>(Arrays.asList("wp.list")));
-        this.persistentData = persistentData;
+        this.petListRepository = petListRepository;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class ListCommand extends AbstractPluginCommand {
         }
 
         Player player = (Player) commandSender;
-        persistentData.sendListOfPetsToPlayer(player);
+        petListRepository.sendListOfPetsToPlayer(player);
         return true;
     }
 
@@ -50,7 +50,7 @@ public class ListCommand extends AbstractPluginCommand {
             player.sendMessage(ChatColor.RED + "That player wasn't found.");
             return false;
         }
-        PetList petList = persistentData.getPetList(targetPlayer.getUniqueId());
+        PetList petList = petListRepository.getPetList(targetPlayer.getUniqueId());
         petList.sendListOfPetsToPlayer(player);
         return true;
     }

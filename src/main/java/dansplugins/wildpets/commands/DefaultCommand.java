@@ -24,6 +24,7 @@ public class DefaultCommand extends AbstractPluginCommand {
         commandSender.sendMessage(ChatColor.AQUA + "Wild Pets " + wildPets.getVersion());
         commandSender.sendMessage(ChatColor.AQUA + "Developer: DanTheTechMan");
         commandSender.sendMessage(ChatColor.AQUA + "Wiki: https://github.com/dmccoystephenson/Wild-Pets/wiki");
+        commandSender.sendMessage(ChatColor.AQUA + "Website: https://dansplugins.com");
         return false;
     }
 

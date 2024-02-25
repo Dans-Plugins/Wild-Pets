@@ -1,7 +1,6 @@
-package dansplugins.wildpets.services;
+package dansplugins.wildpets.config;
 
 import dansplugins.wildpets.WildPets;
-import dansplugins.wildpets.objects.EntityConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -74,6 +73,9 @@ public class ConfigService {
         if (!getConfig().isSet(configOptionsPrefix + "bornPetsEnabled")) {
             getConfig().set(configOptionsPrefix + "bornPetsEnabled", true);
         }
+        if (!getConfig().isSet(configOptionsPrefix + "damageFromPetsEnabled")) {
+            getConfig().set(configOptionsPrefix + "damageFromPetsEnabled", false);
+        }
 
         // save default entity configuration
         EntityConfig defaultEntityConfig = entityConfigService.getDefaultConfiguration();
@@ -127,7 +129,8 @@ public class ConfigService {
                     || option.equalsIgnoreCase("preventMountingLockedPets")
                     || option.equalsIgnoreCase("damageToPetsEnabled")
                     || option.equalsIgnoreCase("showLineageInfo")
-                    || option.equalsIgnoreCase("bornPetsEnabled")) {
+                    || option.equalsIgnoreCase("bornPetsEnabled")
+                    || option.equalsIgnoreCase("damageFromPetsEnabled")) {
                 getConfig().set(configOptionsPrefix + option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
             } else if (option.equalsIgnoreCase("C")) { // no doubles yet
@@ -160,7 +163,8 @@ public class ConfigService {
                 + ", preventMountingLockedPets: " + getInt("preventMountingLockedPets")
                 + ", damageToPetsEnabled: " + getBoolean("damageToPetsEnabled")
                 + ", showLineageInfo: " + getBoolean("bornPetsEnabled")
-                + ", bornPetsEnabled: " + getBoolean("bornPetsEnabled"));
+                + ", bornPetsEnabled: " + getBoolean("bornPetsEnabled")
+                + ", damageFromPetsEnabled: " + getBoolean("damageFromPetsEnabled"));
         sender.sendMessage(ChatColor.AQUA + "====================");
         sender.sendMessage(ChatColor.AQUA + "Note: Entity configurations are not shown.");
         sender.sendMessage(ChatColor.AQUA + "====================");
