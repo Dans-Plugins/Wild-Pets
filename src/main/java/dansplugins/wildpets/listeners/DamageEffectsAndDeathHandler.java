@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
@@ -54,6 +55,19 @@ public class DamageEffectsAndDeathHandler implements Listener {
             else {
                 if (wildPets.isDebugEnabled()) { System.out.println("[DEBUG] Something went wrong removing " + name + " from the persistent data."); }
             }
+        }
+    }
+
+    @EventHandler()
+    public void handle(EntityDamageByEntityEvent event) {
+        if (configService.getBoolean("damageFromPetsEnabled")) {
+            return;
+        }
+        // if attacker is a pet, cancel
+        Pet pet = petListRepository.getPet(event.getDamager());
+        if (pet != null) {
+            if (wildPets.isDebugEnabled()) { System.out.println("[DEBUG] Cancelling EntityDamageEvent event to protect an entity from " + pet.getName() + "."); }
+            event.setCancelled(true);
         }
     }
 }
