@@ -10,6 +10,7 @@ import dansplugins.wildpets.config.EntityConfigService;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
 import dansplugins.wildpets.storage.StorageService;
 import dansplugins.wildpets.scheduler.Scheduler;
+import org.bukkit.ChatColor;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
 import preponderous.ponder.minecraft.bukkit.services.CommandService;
@@ -94,6 +95,11 @@ public final class WildPets extends PonderBukkitPlugin {
         if (args.length == 0) {
             DefaultCommand defaultCommand = new DefaultCommand(this);
             return defaultCommand.execute(sender);
+        }
+
+        if (!sender.hasPermission("wp")) {
+            sender.sendMessage(ChatColor.RED + "You do not have permission to use Wild Pets.");
+            return false;
         }
 
         return commandService.interpretAndExecuteCommand(sender, label, args);

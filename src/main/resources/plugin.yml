@@ -9,6 +9,8 @@ commands:
   wp:
 
 permissions:
+  wp:
+    default: true
   wp.help:
     default: true
   wp.tame:
