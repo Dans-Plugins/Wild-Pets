@@ -5,6 +5,8 @@ import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.config.ConfigService;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
@@ -73,6 +75,11 @@ public class RenameCommand extends AbstractPluginCommand {
         }
 
         pet.setName(newName);
+        Entity entity = Bukkit.getEntity(pet.getUniqueID());
+
+        if (entity != null) {
+            entity.setCustomName(ChatColor.GREEN + pet.getName());
+        }
         petRecordRepository.getPetRecord(pet.getUniqueID()).setName(newName);
         player.sendMessage(ChatColor.GREEN + "Renamed.");
         return true;
