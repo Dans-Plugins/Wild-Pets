@@ -56,8 +56,8 @@ public class BreedEventHandler implements Listener {
         if (configService.getBoolean("bornPetsEnabled")) {
             if (petParent1 != null || petParent2 != null) {
                 petListRepository.addNewPet(player, child);
-                petRecordRepository.addPetRecord((Pet) child);
                 Pet newPet = petListRepository.getPet(child);
+                petRecordRepository.addPetRecord(newPet);
                 ephemeralData.selectPetForPlayer(newPet, player.getUniqueId());
                 player.sendMessage(ChatColor.AQUA + "You have a new pet named " + newPet.getName() + " and it is now your selected pet.");
 

@@ -34,7 +34,7 @@ public final class WildPets extends PonderBukkitPlugin {
     private final EphemeralData ephemeralData = new EphemeralData();
     private final EntityConfigService entityConfigService = new EntityConfigService(this);
     private final ConfigService configService = new ConfigService(this, entityConfigService);
-    private final PetListRepository petListRepository = new PetListRepository(this, configService);
+    private final PetListRepository petListRepository = new PetListRepository(configService);
     private final PetRecordRepository petRecordRepository = new PetRecordRepository();
     private final StorageService storageService = new StorageService(configService, this, petListRepository, petRecordRepository);
     private final Scheduler scheduler = new Scheduler(this, ephemeralData, storageService);

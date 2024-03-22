@@ -29,6 +29,9 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/Wild-Pet
 ## Contributing
 - [Notes for Developers (coming soon)](https://github.com/dmccoystephenson/Wild-Pets/wiki/Developer-Notes)
 
+## Testing
+The unit tests can be executed by reopening the project in the provided dev container & running `mvn test`.
+
 ## Authors and acknowledgement
 Name | Main Contributions
 ------------ | -------------

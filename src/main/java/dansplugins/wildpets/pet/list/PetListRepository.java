@@ -1,27 +1,27 @@
 package dansplugins.wildpets.pet.list;
 
-import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.pet.Pet;
-import dansplugins.wildpets.pet.record.PetRecord;
 import dansplugins.wildpets.config.ConfigService;
+import dansplugins.wildpets.location.WpLocation;
+
+import org.bukkit.ChatColor;
+import org.bukkit.EntityEffect;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.UUID;
 
 /**
  * @author Daniel McCoy Stephenson
  */
 public class PetListRepository {
-    private final WildPets wildPets;
     private final ConfigService configService;
 
     private final ArrayList<PetList> petLists = new ArrayList<>();
 
-    public PetListRepository(WildPets wildPets, ConfigService configService) {
-        this.wildPets = wildPets;
+    public PetListRepository(ConfigService configService) {
         this.configService = configService;
     }
 
@@ -30,10 +30,18 @@ public class PetListRepository {
     }
 
     public boolean addNewPet(Player player, Entity entity) {
-        Pet newPet = new Pet(entity, player.getUniqueId());
+        // create pet
+        Pet newPet = new Pet(entity.getUniqueId(), player.getUniqueId(), player.getName());
         newPet.setAssignedID(getPetList(player.getUniqueId()).getNewID());
-        PetList petList = getPetList(player.getUniqueId());
+        Location bukkitLocation = entity.getLocation();
+        WpLocation wpLocation = new WpLocation(bukkitLocation.getX(), bukkitLocation.getY(), bukkitLocation.getZ());
+        newPet.setLastKnownLocation(wpLocation);
+        entity.setCustomName(ChatColor.GREEN + newPet.getName());
+        entity.setPersistent(true);
+        entity.playEffect(EntityEffect.LOVE_HEARTS);
 
+        // add pet to pet list
+        PetList petList = getPetList(player.getUniqueId());
         petList.addPet(newPet);
         return true;
     }

@@ -2,6 +2,7 @@ package dansplugins.wildpets.listeners;
 
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.info.InfoSender;
 import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.config.ConfigService;
@@ -257,7 +258,8 @@ public class InteractionHandler implements Listener {
 
                 setRightClickCooldown(player, configService.getInt("rightClickViewCooldown"));
 
-                pet.sendInfoToPlayer(player, configService, petRecordRepository);
+                InfoSender infoSender = new InfoSender(configService, petRecordRepository);
+                infoSender.sendInfoToPlayer(player, pet);
 
                 if (configService.getBoolean("rightClickToSelect")) {
 
