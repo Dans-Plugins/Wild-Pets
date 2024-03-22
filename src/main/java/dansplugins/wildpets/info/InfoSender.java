@@ -1,6 +1,7 @@
 package dansplugins.wildpets.info;
 
 import dansplugins.wildpets.config.ConfigService;
+import dansplugins.wildpets.exceptions.PetRecordNotFoundException;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.pet.record.PetRecord;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
@@ -51,8 +52,15 @@ public class InfoSender {
         String toReturn = "";
         int count = 0;
         for (UUID uuid : pet.getParentUUIDs()) {
-            PetRecord petRecord = petRecordRepository.getPetRecord(uuid);
-            if (petRecord == null) {
+            PetRecord petRecord;
+            try {
+                petRecord = petRecordRepository.getPetRecord(uuid);
+            } catch (PetRecordNotFoundException e) {
+                toReturn = toReturn + "Unknown";
+                count++;
+                if (count != pet.getParentUUIDs().size()) {
+                    toReturn = toReturn + ", ";
+                }
                 continue;
             }
             toReturn = toReturn + petRecord.getName();
@@ -68,8 +76,15 @@ public class InfoSender {
         String toReturn = "";
         int count = 0;
         for (UUID uuid : pet.getChildUUIDs()) {
-            PetRecord petRecord = petRecordRepository.getPetRecord(uuid);
-            if (petRecord == null) {
+            PetRecord petRecord;
+            try {
+                petRecord = petRecordRepository.getPetRecord(uuid);
+            } catch (PetRecordNotFoundException e) {
+                toReturn = toReturn + "Unknown";
+                count++;
+                if (count != pet.getChildUUIDs().size()) {
+                    toReturn = toReturn + ", ";
+                }
                 continue;
             }
             toReturn = toReturn + petRecord.getName();
