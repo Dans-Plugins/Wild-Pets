@@ -5,7 +5,7 @@ import org.junit.Test;
 public class WpLocationTest {
 
     @Test
-    public void testConstructor() {
+    public void testInitialization() {
         WpLocation location = new WpLocation(0, 0, 0);
         assert(location.getX() == 0);
         assert(location.getY() == 0);

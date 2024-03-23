@@ -45,14 +45,17 @@ public class EntityConfigService {
         ArrayList<EntityConfig> configurations = new ArrayList<>();
 
         // passive mobs
+        configurations.add(new EntityConfig("Allay", 0.5, Material.COOKIE, 8, true));
         configurations.add(new EntityConfig("Axolotl", 0.5, Material.KELP, 16, true));
         configurations.add(new EntityConfig("Bat", 0.5, Material.PUMPKIN_PIE, 1, true));
+        configurations.add(new EntityConfig("Camel", 0.5, Material.CACTUS, 8, true));
         configurations.add(new EntityConfig("Cat", 0.5, Material.SALMON, 8, true));
         configurations.add(new EntityConfig("Chicken", 0.5, Material.WHEAT_SEEDS, 8, true));
         configurations.add(new EntityConfig("Cod", 0.5, Material.KELP, 16, true));
         configurations.add(new EntityConfig("Cow", 0.5, Material.WHEAT, 32, true));
         configurations.add(new EntityConfig("Donkey", 0.5, Material.CARROT, 8, true));
         configurations.add(new EntityConfig("Fox", 0.5, Material.SWEET_BERRIES, 8, true));
+        configurations.add(new EntityConfig("Frog", 0.5, Material.SLIME_BALL, 8, true));
         configurations.add(new EntityConfig("Glow_Squid", 0.5, Material.KELP, 24, true));
         configurations.add(new EntityConfig("Horse", 0.5, Material.APPLE, 8, true));
         configurations.add(new EntityConfig("Mooshroom", 0.5, Material.RED_MUSHROOM, 8, true));
@@ -67,6 +70,7 @@ public class EntityConfigService {
         configurations.add(new EntityConfig("Salmon", 0.5, Material.KELP, 24, true));
         configurations.add(new EntityConfig("Sheep", 0.5, Material.WHEAT, 8, true));
         configurations.add(new EntityConfig("Skeleton_Horse", 0.5, Material.BONE, 8, true));
+        configurations.add(new EntityConfig("Sniffer", 0.5, Material.GRASS, 32, true));
         configurations.add(new EntityConfig("Snow_Golem", 0.5, Material.SNOWBALL, 32, true));
         configurations.add(new EntityConfig("Squid", 0.5, Material.KELP, 24, true));
         configurations.add(new EntityConfig("Strider", 0.5, Material.NETHER_WART, 32, true));
@@ -118,6 +122,7 @@ public class EntityConfigService {
         configurations.add(new EntityConfig("Stray", 0.5, Material.ARROW, 16, true));
         configurations.add(new EntityConfig("Vex", 0.5, Material.IRON_SWORD, 16, true));
         configurations.add(new EntityConfig("Vindicator", 0.5, Material.EMERALD, 16, true));
+        configurations.add(new EntityConfig("Warden", 0.5, Material.TOTEM_OF_UNDYING, 1, true));
         configurations.add(new EntityConfig("Witch", 0.5, Material.BROWN_MUSHROOM, 16, true));
         configurations.add(new EntityConfig("Wither_Skeleton", 0.5, Material.BONE, 16, true));
         configurations.add(new EntityConfig("Zoglin", 0.5, Material.ROTTEN_FLESH, 16, true));
