@@ -8,7 +8,7 @@ if [ -z "$(ls -A /testmcserver)" ]; then
     mkdir /testmcserver/plugins
 
     # Install Wild Pets
-    cp /wp-build/target/WildPets-1.7.0-SNAPSHOT.jar /testmcserver/plugins
+    cp /wp-build/target/WildPets-1.7.0.jar /testmcserver/plugins
 
     # Copy config files
     cp /resources/ops.json /testmcserver
