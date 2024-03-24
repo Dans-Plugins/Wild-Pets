@@ -3,6 +3,7 @@ version: '${project.version}'
 main: dansplugins.wildpets.WildPets
 api-version: 1.13
 author: DanTheTechMan
+description: Wild Pets is an open source minecraft plugin that allows players to tame any entity in the game so long as their configuration is enabled.
 
 commands:
   wildpets:

@@ -57,7 +57,13 @@ public class PetList {
     }
 
     public boolean removePet(Pet petToRemove) {
-        petToRemove.deconstruct();
+        Entity entity = Bukkit.getEntity(petToRemove.getUniqueID());
+
+        if (entity != null) {
+            entity.setCustomName("");
+            entity.setPersistent(false);
+            entity.setInvulnerable(false);
+        }
         return getPets().remove(petToRemove);
     }
 

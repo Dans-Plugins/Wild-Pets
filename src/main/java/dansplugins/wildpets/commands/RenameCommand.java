@@ -1,10 +1,14 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.exceptions.PetRecordNotFoundException;
 import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.config.ConfigService;
+import dansplugins.wildpets.pet.record.PetRecord;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
@@ -73,7 +77,25 @@ public class RenameCommand extends AbstractPluginCommand {
         }
 
         pet.setName(newName);
-        petRecordRepository.getPetRecord(pet.getUniqueID()).setName(newName);
+        Entity entity = Bukkit.getEntity(pet.getUniqueID());
+
+        if (entity != null) {
+            entity.setCustomName(ChatColor.GREEN + pet.getName());
+        }
+        PetRecord petRecord;
+        try {
+            petRecord = petRecordRepository.getPetRecord(pet.getUniqueID());
+        } catch (PetRecordNotFoundException e) {
+            petRecordRepository.addPetRecord(pet);
+            try {
+                petRecord = petRecordRepository.getPetRecord(pet.getUniqueID());
+            } catch (PetRecordNotFoundException ex) {
+                ex.printStackTrace();
+                player.sendMessage(ChatColor.RED + "Pet record wasn't found & the plugin wasn't able to recover. Please report this problem to the community.");
+                return false;
+            }
+        }
+        petRecord.setName(newName);
         player.sendMessage(ChatColor.GREEN + "Renamed.");
         return true;
     }

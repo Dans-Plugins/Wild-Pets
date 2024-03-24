@@ -8,21 +8,22 @@ RUN apt-get install -y git \
     wget \
     maven
 
-# Create server directory
-WORKDIR /testmcserver
-
 # Build server
+WORKDIR /testmcserver-build
 RUN wget -O BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
 RUN git config --global --unset core.autocrlf || :
 RUN java -jar BuildTools.jar --rev 1.20.4
-RUN echo "eula=true" > eula.txt
-RUN mkdir plugins
 
 # Build plugin
+WORKDIR /wp-build
 COPY . .
-RUN mvn clean package
-RUN cp target/WildPets-*.jar plugins
+RUN mvn package
+
+# Copy resources and make post-create.sh executable
+COPY ./.devcontainer/resources /resources
+RUN chmod +x /resources/post-create.sh
 
 # Run server
+WORKDIR /testmcserver
 EXPOSE 25565
-ENTRYPOINT java -jar spigot-1.20.4.jar
+ENTRYPOINT /resources/post-create.sh

@@ -6,7 +6,7 @@
 
     <groupId>dansplugins</groupId>
     <artifactId>WildPets</artifactId>
-    <version>1.6.0</version>
+    <version>1.7.0</version>
     <packaging>jar</packaging>
 
     <name>Wild Pets</name>
@@ -79,6 +79,12 @@
             <artifactId>ponder</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

@@ -2,6 +2,7 @@ package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.config.ConfigService;
 import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.info.InfoSender;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
@@ -41,7 +42,8 @@ public class InfoCommand extends AbstractPluginCommand {
             return false;
         }
 
-        pet.sendInfoToPlayer(player, configService, petRecordRepository);
+        InfoSender infoSender = new InfoSender(configService, petRecordRepository);
+        infoSender.sendInfoToPlayer(player, pet);
         return true;
     }
 

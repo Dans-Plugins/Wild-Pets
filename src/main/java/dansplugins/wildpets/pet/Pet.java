@@ -3,22 +3,9 @@ package dansplugins.wildpets.pet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
-import dansplugins.wildpets.WildPets;
-import dansplugins.wildpets.pet.record.PetRecord;
-import dansplugins.wildpets.pet.list.PetListRepository;
-import dansplugins.wildpets.config.ConfigService;
-import dansplugins.wildpets.pet.record.PetRecordRepository;
-import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
+import dansplugins.wildpets.location.WpLocation;
 import preponderous.ponder.misc.abs.Lockable;
 import preponderous.ponder.misc.abs.Savable;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -33,41 +20,21 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
     private int assignedID;
     private String name;
     private String movementState;
-    private int lastKnownX = -1;
-    private int lastKnownY = -1;
-    private int lastKnownZ = -1;
+    private WpLocation lastKnownLocation;
     private boolean locked = false;
     private HashSet<UUID> accessList = new HashSet<>();
 
-    public Pet(Entity entity, UUID playerOwner) {
-        UUIDChecker uuidChecker = new UUIDChecker();
-        uniqueID = entity.getUniqueId();
-        ownerUUID = playerOwner;
-        name = uuidChecker.findPlayerNameBasedOnUUID(ownerUUID) + "'s_Pet_" + assignedID;
+    public Pet(UUID entityUniqueId, UUID playerOwnerUniqueId, String playerOwnerName) {
+        uniqueID = entityUniqueId;
+        ownerUUID = playerOwnerUniqueId;
+        name = playerOwnerName + "'s_Pet";
         movementState = "Wandering";
-        setLastKnownLocation(entity.getLocation());
-
-        entity.setCustomName(ChatColor.GREEN + name);
-        entity.setPersistent(true);
-        // entity.setInvulnerable(true); // this has been replaced by the DamageEffectsAndDeathHandler class
-
-        entity.playEffect(EntityEffect.LOVE_HEARTS);
-
-        accessList.add(playerOwner);
+        accessList.add(playerOwnerUniqueId);
+        setLastKnownLocation(new WpLocation(0, 0, 0));
     }
 
     public Pet(Map<String, String> petData) {
         this.load(petData);
-    }
-
-    public void deconstruct() {
-        Entity entity = Bukkit.getEntity(uniqueID);
-
-        if (entity != null) {
-            entity.setCustomName("");
-            entity.setPersistent(false);
-            entity.setInvulnerable(false);
-        }
     }
 
     public UUID getUniqueID() {
@@ -88,12 +55,6 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
 
     public void setName(String name) {
         this.name = name;
-
-        Entity entity = Bukkit.getEntity(uniqueID);
-
-        if (entity != null) {
-            entity.setCustomName(ChatColor.GREEN + name);
-        }
     }
 
     public int getAssignedID() {
@@ -102,44 +63,6 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
 
     public void setAssignedID(int assignedID) {
         this.assignedID = assignedID;
-    }
-
-    public void sendInfoToPlayer(Player player, ConfigService configService, PetRecordRepository petRecordRepository) {
-        UUIDChecker uuidChecker = new UUIDChecker();
-        player.sendMessage(ChatColor.AQUA + "=== Pet Info ===");
-        player.sendMessage(ChatColor.AQUA + "Name: " + name);
-        player.sendMessage(ChatColor.AQUA + "Owner: " + uuidChecker.findPlayerNameBasedOnUUID(ownerUUID));
-        player.sendMessage(ChatColor.AQUA + "State: " + movementState);
-        player.sendMessage(ChatColor.AQUA + "Locked: " + locked);
-        if (configService.getBoolean("showLineageInfo")) {
-            if (parentIDs.size() > 0) {
-                player.sendMessage(ChatColor.AQUA + "Parents: " + getParentNamesSeparatedByCommas(petRecordRepository));
-            }
-            if (childIDs.size() > 0) {
-                player.sendMessage(ChatColor.AQUA + "Children: " + getChildrenNamesSeparatedByCommas(petRecordRepository));
-            }
-        }
-        if (configService.getBoolean("debugMode")) {
-            player.sendMessage(ChatColor.AQUA + "[DEBUG] uniqueID: " + uniqueID.toString());
-            player.sendMessage(ChatColor.AQUA + "[DEBUG] ownerUUID: " + ownerUUID.toString());
-            player.sendMessage(ChatColor.AQUA + "[DEBUG] assignedID: " + assignedID);
-            if (parentIDs.size() > 0) {
-                player.sendMessage(ChatColor.AQUA + "[DEBUG] Parents: " + getParentsUUIDsSeparatedByCommas());
-            }
-            if (childIDs.size() > 0) {
-                player.sendMessage(ChatColor.AQUA + "[DEBUG] Children: " + getChildrenUUIDsSeparatedByCommas());
-            }
-        }
-    }
-
-    public void sendLocationToPlayer(Player player) {
-        Entity entity = Bukkit.getEntity(uniqueID);
-
-        if (entity != null) {
-            setLastKnownLocation(entity.getLocation());
-        }
-
-        player.sendMessage(ChatColor.AQUA + getName() + String.format("'s last known location is (%s, %s, %s).", lastKnownX, lastKnownY, lastKnownZ));
     }
 
     public void setWandering() {
@@ -154,10 +77,12 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         return movementState;
     }
 
-    private void setLastKnownLocation(Location location) {
-        lastKnownX = (int) location.getX();
-        lastKnownY = (int) location.getY();
-        lastKnownZ = (int) location.getZ();
+    public void setLastKnownLocation(WpLocation location) {
+        lastKnownLocation = location;
+    }
+
+    public WpLocation getLastKnownLocation() {
+        return lastKnownLocation;
     }
 
     @Override
@@ -198,7 +123,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         locked = b;
     }
 
-    private String getParentsUUIDsSeparatedByCommas() {
+    public String getParentsUUIDsSeparatedByCommas() {
         String toReturn = "";
         int count = 0;
         for (UUID uuid : parentIDs) {
@@ -211,45 +136,11 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         return toReturn;
     }
 
-    private String getChildrenUUIDsSeparatedByCommas() {
+    public String getChildrenUUIDsSeparatedByCommas() {
         String toReturn = "";
         int count = 0;
         for (UUID uuid : childIDs) {
             toReturn = toReturn + uuid.toString();
-            count++;
-            if (count != childIDs.size()) {
-                toReturn = toReturn + ", ";
-            }
-        }
-        return toReturn;
-    }
-
-    private String getParentNamesSeparatedByCommas(PetRecordRepository petRecordRepository) {
-        String toReturn = "";
-        int count = 0;
-        for (UUID uuid : parentIDs) {
-            PetRecord petRecord = petRecordRepository.getPetRecord(uuid);
-            if (petRecord == null) {
-                continue;
-            }
-            toReturn = toReturn + petRecord.getName();
-            count++;
-            if (count != parentIDs.size()) {
-                toReturn = toReturn + ", ";
-            }
-        }
-        return toReturn;
-    }
-
-    private String getChildrenNamesSeparatedByCommas(PetRecordRepository petRecordRepository) {
-        String toReturn = "";
-        int count = 0;
-        for (UUID uuid : childIDs) {
-            PetRecord petRecord = petRecordRepository.getPetRecord(uuid);
-            if (petRecord == null) {
-                continue;
-            }
-            toReturn = toReturn + petRecord.getName();
             count++;
             if (count != childIDs.size()) {
                 toReturn = toReturn + ", ";
@@ -268,9 +159,9 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         saveMap.put("assignedID", gson.toJson(assignedID));
         saveMap.put("name", gson.toJson(name));
         saveMap.put("movementState", gson.toJson(movementState));
-        saveMap.put("lastKnownX", gson.toJson(lastKnownX));
-        saveMap.put("lastKnownY", gson.toJson(lastKnownY));
-        saveMap.put("lastKnownZ", gson.toJson(lastKnownZ));
+        saveMap.put("lastKnownX", gson.toJson(lastKnownLocation.getX()));
+        saveMap.put("lastKnownY", gson.toJson(lastKnownLocation.getY()));
+        saveMap.put("lastKnownZ", gson.toJson(lastKnownLocation.getZ()));
         saveMap.put("locked", gson.toJson(locked));
         saveMap.put("accessList", gson.toJson(accessList));
         saveMap.put("parentIDs", gson.toJson(this.parentIDs));
@@ -289,9 +180,10 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         ownerUUID = UUID.fromString(gson.fromJson(data.get("owner"), String.class));
         assignedID = Integer.parseInt(gson.fromJson(data.get("assignedID"), String.class));
         name = gson.fromJson(data.get("name"), String.class);
-        lastKnownX = Integer.parseInt(gson.fromJson(data.getOrDefault("lastKnownX", "-1"), String.class));
-        lastKnownY = Integer.parseInt(gson.fromJson(data.getOrDefault("lastKnownY", "-1"), String.class));
-        lastKnownZ = Integer.parseInt(gson.fromJson(data.getOrDefault("lastKnownZ", "-1"), String.class));
+        int lastKnownX = Integer.parseInt(gson.fromJson(data.getOrDefault("lastKnownX", "-1"), String.class));
+        int lastKnownY = Integer.parseInt(gson.fromJson(data.getOrDefault("lastKnownY", "-1"), String.class));
+        int lastKnownZ = Integer.parseInt(gson.fromJson(data.getOrDefault("lastKnownZ", "-1"), String.class));
+        lastKnownLocation = new WpLocation(lastKnownX, lastKnownY, lastKnownZ);
 
         String state = gson.fromJson(data.get("movementState"), String.class);
 

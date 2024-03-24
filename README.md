@@ -27,14 +27,17 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/Wild-Pet
 - [Planned Improvements](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
 
 ## Contributing
-- [Notes for Developers (coming soon)](https://github.com/dmccoystephenson/Wild-Pets/wiki/Developer-Notes)
+- [Contributing.md](https://github.com/dmccoystephenson/Medieval-Factions/blob/master/CONTRIBUTING.md)
+
+## Testing
+The unit tests can be executed by reopening the project in the provided dev container & running `mvn test`.
 
 ## Authors and acknowledgement
 Name | Main Contributions
 ------------ | -------------
 Daniel Stephenson | Creator
 
-I created this plugin because one of my players, [TheeFallen100](https://www.planetminecraft.com/member/theefallen), said they wished they could tame a fox. When I mentioned I could make a plugin that could accomplish that, they suggested I name it Wild Pets.
+This plugin was developed in response to a player request from TheeFallen100, who expressed a desire to tame foxes in the game. Upon proposing the idea of creating such a plugin, they suggested the name Wild Pets.
 
 ## License
 GPL3

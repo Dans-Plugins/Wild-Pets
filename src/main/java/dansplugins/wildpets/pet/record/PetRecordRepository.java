@@ -1,5 +1,6 @@
 package dansplugins.wildpets.pet.record;
 
+import dansplugins.wildpets.exceptions.PetRecordNotFoundException;
 import dansplugins.wildpets.pet.Pet;
 
 import java.util.HashSet;
@@ -30,12 +31,12 @@ public class PetRecordRepository {
         return petRecords.remove(recordToRemove);
     }
 
-    public PetRecord getPetRecord(UUID entityUUID) {
+    public PetRecord getPetRecord(UUID entityUUID) throws PetRecordNotFoundException {
         for (PetRecord record : petRecords) {
             if (record.getUniqueID().equals(entityUUID)) {
                 return record;
             }
         }
-        return null;
+        throw new PetRecordNotFoundException("Pet record for entity with UUID " + entityUUID + " not found.");
     }
 }
