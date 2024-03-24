@@ -20,7 +20,7 @@ COPY . .
 RUN mvn package
 
 # Copy resources and make post-create.sh executable
-COPY ./.devcontainer/resources /resources
+COPY ./.testcontainer /resources
 RUN chmod +x /resources/post-create.sh
 
 # Run server
