@@ -5,3 +5,11 @@ services:
     container_name: wp-test-mc-server
     ports:
       - "25565:25565"
+    volumes:
+      - ./testmcserver:/testmcserver
+    environment:
+      - MINECRAFT_VERSION=${MINECRAFT_VERSION}
+      - OPERATOR_UUID=${OPERATOR_UUID}
+      - OPERATOR_NAME=${OPERATOR_NAME}
+      - OPERATOR_LEVEL=${OPERATOR_LEVEL}
+      - OVERWRITE_EXISTING_SERVER=${OVERWRITE_EXISTING_SERVER}
