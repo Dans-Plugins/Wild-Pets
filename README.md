@@ -27,7 +27,7 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/Wild-Pet
 - [Planned Improvements](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
 
 ## Contributing
-- [Contributing.md](https://github.com/dmccoystephenson/Medieval-Factions/blob/master/CONTRIBUTING.md)
+- [Contributing.md](./CONTRIBUTING.md)
 
 ## Testing
 1. Ensure docker is installed.
