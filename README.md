@@ -27,7 +27,7 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/Wild-Pet
 - [Planned Improvements](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
 
 ## Contributing
-- [Contributing.md](https://github.com/dmccoystephenson/Medieval-Factions/blob/master/CONTRIBUTING.md)
+- [Contributing.md](https://github.com/dmccoystephenson/Wild-Pets/blob/master/CONTRIBUTING.md)
 
 ## Testing
 The unit tests can be executed by reopening the project in the provided dev container & running `mvn test`.
