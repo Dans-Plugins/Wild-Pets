@@ -1,21 +1,19 @@
-MIT License
+# License – Dan’s Plugins Community Non-Commercial License (DPC-NC)
 
-Copyright (c) 2022 Daniel McCoy Stephenson
+This project is licensed under the **Dan’s Plugins Community Non-Commercial License (DPC-NC)**, based on the GNU General Public License, Version 3 (GPLv3), with additional terms restricting commercial use.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Copyright © 2025 Daniel McCoy Stephenson. All rights reserved.  
+Dan’s Plugins Community is a collaborative open-source development group and is **not** a legal entity.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+You may use, copy, modify, and distribute this software **for non-commercial purposes only**, subject to the conditions of the GPLv3 **except where the GPLv3 would otherwise permit commercial use**.  
+Commercial use by any party other than the copyright holder is prohibited without explicit written permission.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+## Full License Text
+The complete terms of this license are published at:  
+https://github.com/Dans-Plugins-Community/dpc-nc-license
+
+## SPDX Identifier
+DPC-NC
+
+## No Warranty
+This software is provided “as is”, without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement. In no event shall the copyright holder be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or its use.
