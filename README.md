@@ -47,7 +47,7 @@ based on the GNU General Public License, Version 3 (GPLv3), with additional term
 You may use, modify, and share this software for **non-commercial purposes only**.  
 Commercial use is prohibited without explicit written permission from the copyright holder.  
 
-Full license text: [DPC-NC License](https://github.com/Dans-Plugins-Community/dpc-nc-license)  
+Full license text: [DPC-NC License](https://github.com/Dans-Plugins/dpc-nc-license)  
 SPDX Identifier: `DPC-NC`
 
 ## Project Status
@@ -55,4 +55,5 @@ This project is in active development.
 
 ### bStats
 You can view the bStats page for the plugin [here](https://bstats.org/plugin/bukkit/Wild%20Pets/12332).
+
 
