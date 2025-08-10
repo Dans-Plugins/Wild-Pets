@@ -39,23 +39,20 @@ Daniel Stephenson | Creator
 
 This plugin was developed in response to a player request from TheeFallen100, who expressed a desire to tame foxes in the game. Upon proposing the idea of creating such a plugin, they suggested the name Wild Pets.
 
-## License
+## 📄 License
 
-This project is licensed under the [GNU General Public License v3.0](LICENSE) (GPL-3.0).
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
-You are free to use, modify, and distribute this software, provided that:
-- Source code is made available under the same license when distributed.
-- Changes are documented and attributed.
-- No additional restrictions are applied.
-
-See the [LICENSE](LICENSE) file for the full text of the GPL-3.0 license.
-
+### Why MIT?
+We chose the MIT License because it’s **simple, permissive, and widely used**. It allows anyone to use, modify, and distribute the code — even in proprietary projects — as long as the original copyright and license notice are included.  
+This helps maximize **adoption**, **collaboration**, and **contribution** by keeping barriers low while still ensuring attribution.
 
 ## Project Status
 This project is in active development.
 
 ### bStats
 You can view the bStats page for the plugin [here](https://bstats.org/plugin/bukkit/Wild%20Pets/12332).
+
 
 
 
