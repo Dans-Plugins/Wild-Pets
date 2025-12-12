@@ -73,6 +73,10 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         movementState = "Following";
     }
 
+    public void setStaying() {
+        movementState = "Staying";
+    }
+
     public String getMovementState() {
         return movementState;
     }
@@ -192,6 +196,9 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         }
         else if (state.equalsIgnoreCase("Following")) {
             setFollowing();
+        }
+        else if (state.equalsIgnoreCase("Staying")) {
+            setStaying();
         }
         else {
             setWandering();

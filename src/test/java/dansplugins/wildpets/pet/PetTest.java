@@ -81,4 +81,43 @@ public class PetTest {
         assert pet.getParentUUIDs().isEmpty();
         assert pet.getChildUUIDs().isEmpty();
     }
+
+    @Test
+    public void testSetStaying() {
+        // prepare
+        UUID entityUniqueId = UUID.randomUUID();
+        UUID playerOwnerUniqueId = UUID.randomUUID();
+        String playerOwnerName = "Daniel";
+        Pet pet = new Pet(entityUniqueId, playerOwnerUniqueId, playerOwnerName);
+
+        // execute
+        pet.setStaying();
+
+        // verify
+        assert pet.getMovementState().equals("Staying");
+    }
+
+    @Test
+    public void testLoadStayingState() {
+        // prepare
+        Map<String, String> petData = new HashMap<>();
+        petData.put("uniqueID", UUID.randomUUID().toString());
+        petData.put("owner", UUID.randomUUID().toString());
+        petData.put("assignedID", "0");
+        petData.put("name", "Daniel's_Pet");
+        petData.put("lastKnownX", "0");
+        petData.put("lastKnownY", "0");
+        petData.put("lastKnownZ", "0");
+        petData.put("movementState", "Staying");
+        petData.put("locked", "false");
+        petData.put("accessList", "[\"" + petData.get("owner") + "\"]");
+        petData.put("parentIDs", "[]");
+        petData.put("childIDs", "[]");
+
+        // execute
+        Pet pet = new Pet(petData);
+
+        // verify
+        assert pet.getMovementState().equals("Staying");
+    }
 }
