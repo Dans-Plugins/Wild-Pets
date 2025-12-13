@@ -89,6 +89,10 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
      */
     public void applyAIState() {
         Entity entity = Bukkit.getServer().getEntity(uniqueID);
+        if (entity == null) {
+            // Entity not found (e.g., in unloaded chunk) - will be applied when entity loads
+            return;
+        }
         if (entity instanceof Mob) {
             Mob mob = (Mob) entity;
             // Disable AI for stay mode, enable for follow and wander modes
