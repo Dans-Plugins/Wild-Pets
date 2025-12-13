@@ -4,11 +4,8 @@ import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.pet.Pet;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,13 +37,6 @@ public class StayCommand extends AbstractPluginCommand {
         }
 
         pet.setStaying();
-        
-        // Disable AI to prevent movement
-        Entity entity = Bukkit.getServer().getEntity(pet.getUniqueID());
-        if (entity instanceof Mob) {
-            ((Mob) entity).setAware(false);
-        }
-        
         player.sendMessage(ChatColor.GREEN + pet.getName() + " is now staying.");
         return true;
     }

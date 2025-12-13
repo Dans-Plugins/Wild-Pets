@@ -117,23 +117,11 @@ public class StorageService {
     
     private void applyAIStateToPets() {
         // Schedule this to run after server is fully loaded to ensure entities are available
-        wildPets.getServer().getScheduler().runTaskLater(wildPets, new Runnable() {
-            @Override
-            public void run() {
-                for (Pet pet : petListRepository.getAllPets()) {
-                    org.bukkit.entity.Entity entity = org.bukkit.Bukkit.getServer().getEntity(pet.getUniqueID());
-                    if (entity instanceof org.bukkit.entity.Mob) {
-                        org.bukkit.entity.Mob mob = (org.bukkit.entity.Mob) entity;
-                        // Disable AI for pets in stay mode
-                        if (pet.getMovementState().equals("Staying")) {
-                            mob.setAware(false);
-                        } else {
-                            mob.setAware(true);
-                        }
-                    }
-                }
+        wildPets.getServer().getScheduler().runTaskLater(wildPets, () -> {
+            for (Pet pet : petListRepository.getAllPets()) {
+                pet.applyAIState();
             }
-        }, 100L); // Wait 5 seconds (100 ticks) for entities to be loaded
+        }, 100L); // Wait 100 ticks (5 seconds at 20 TPS) for entities to be loaded
     }
 
     private void loadPetRecords() {

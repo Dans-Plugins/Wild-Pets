@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import dansplugins.wildpets.location.WpLocation;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Mob;
 import preponderous.ponder.misc.abs.Lockable;
 import preponderous.ponder.misc.abs.Savable;
 
@@ -67,14 +70,30 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
 
     public void setWandering() {
         movementState = "Wandering";
+        applyAIState();
     }
 
     public void setFollowing() {
         movementState = "Following";
+        applyAIState();
     }
 
     public void setStaying() {
         movementState = "Staying";
+        applyAIState();
+    }
+    
+    /**
+     * Applies the appropriate AI state based on the pet's movement state.
+     * Disables AI for pets in stay mode, enables it for follow and wander modes.
+     */
+    public void applyAIState() {
+        Entity entity = Bukkit.getServer().getEntity(uniqueID);
+        if (entity instanceof Mob) {
+            Mob mob = (Mob) entity;
+            // Disable AI for stay mode, enable for follow and wander modes
+            mob.setAware(!movementState.equals("Staying"));
+        }
     }
 
     public String getMovementState() {
