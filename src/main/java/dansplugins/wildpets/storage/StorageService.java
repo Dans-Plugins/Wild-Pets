@@ -116,12 +116,26 @@ public class StorageService {
     }
     
     private void applyAIStateToPets() {
+        // Determine delay before applying AI state; default to 100 ticks but allow configuration
+        long delayTicks = 100L;
+        String configuredDelay = System.getProperty("wildpets.aiStateDelayTicks");
+        if (configuredDelay != null) {
+            try {
+                long parsed = Long.parseLong(configuredDelay);
+                if (parsed >= 0L) {
+                    delayTicks = parsed;
+                }
+            } catch (NumberFormatException ignored) {
+                // Ignore invalid values and keep the default delay
+            }
+        }
+
         // Schedule this to run after server is fully loaded to ensure entities are available
         wildPets.getServer().getScheduler().runTaskLater(wildPets, () -> {
             for (Pet pet : petListRepository.getAllPets()) {
                 pet.applyAIState();
             }
-        }, 100L); // Wait 100 ticks (5 seconds at 20 TPS) for entities to be loaded
+        }, delayTicks); // Default: wait 100 ticks (5 seconds at 20 TPS) for entities to be loaded
     }
 
     private void loadPetRecords() {

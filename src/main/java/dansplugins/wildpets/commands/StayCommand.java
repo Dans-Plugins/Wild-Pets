@@ -21,6 +21,7 @@ public class StayCommand extends AbstractPluginCommand {
         this.ephemeralData = ephemeralData;
     }
 
+    @Override
     public boolean execute(CommandSender sender) {
 
         if (!(sender instanceof Player)) {

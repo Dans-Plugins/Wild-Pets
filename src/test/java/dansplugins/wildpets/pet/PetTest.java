@@ -40,6 +40,7 @@ public class PetTest {
 
         // Common test data
         entityUniqueId = UUID.randomUUID();
+        when(mockServer.getEntity(entityUniqueId)).thenReturn(null);
         playerOwnerUniqueId = UUID.randomUUID();
         playerOwnerName = "Daniel";
     }

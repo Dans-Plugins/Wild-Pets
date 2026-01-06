@@ -98,9 +98,19 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
     /**
      * Applies the appropriate AI state based on the pet's movement state.
      * Disables AI for pets in stay mode, enables it for follow and wander modes.
+     * Returns silently if the entity is not currently loaded or is not a {@link Mob} instance.
      */
     public void applyAIState() {
-        Entity entity = serverProvider.get().getEntity(uniqueID);
+        if (serverProvider == null) {
+            // Server provider not available; cannot apply AI state safely
+            return;
+        }
+        var server = serverProvider.get();
+        if (server == null) {
+            // Server not available; cannot apply AI state safely
+            return;
+        }
+        Entity entity = server.getEntity(uniqueID);
         if (entity == null) {
             // Entity not found (e.g., in unloaded chunk) - will be applied when entity loads
             return;
@@ -244,10 +254,5 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
 
         parentIDs = gson.fromJson(data.getOrDefault("parentIDs", "[]"), hashsetTypeUUID);
         childIDs =  gson.fromJson(data.getOrDefault("childIDs", "[]"), hashsetTypeUUID);
-    }
-
-    // For testing purposes
-    protected void setBukkitServer(ServerProvider serverProvider) {
-        this.serverProvider = serverProvider;
     }
 }
