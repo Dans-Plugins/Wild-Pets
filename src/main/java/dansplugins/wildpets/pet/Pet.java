@@ -1,10 +1,11 @@
+
 package dansplugins.wildpets.pet;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.location.WpLocation;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import preponderous.ponder.misc.abs.Lockable;
@@ -26,17 +27,28 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
     private WpLocation lastKnownLocation;
     private boolean locked = false;
     private HashSet<UUID> accessList = new HashSet<>();
+    private ServerProvider serverProvider;
 
     public Pet(UUID entityUniqueId, UUID playerOwnerUniqueId, String playerOwnerName) {
+        this(entityUniqueId, playerOwnerUniqueId, playerOwnerName, new ServerProvider());
+    }
+
+    public Pet(UUID entityUniqueId, UUID playerOwnerUniqueId, String playerOwnerName, ServerProvider serverProvider) {
         uniqueID = entityUniqueId;
         ownerUUID = playerOwnerUniqueId;
         name = playerOwnerName + "'s_Pet";
         movementState = "Wandering";
         accessList.add(playerOwnerUniqueId);
         setLastKnownLocation(new WpLocation(0, 0, 0));
+        this.serverProvider = serverProvider;
     }
 
     public Pet(Map<String, String> petData) {
+        this(petData, new ServerProvider());
+    }
+
+    public Pet(Map<String, String> petData, ServerProvider serverProvider) {
+        this.serverProvider = serverProvider;
         this.load(petData);
     }
 
@@ -82,13 +94,13 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         movementState = "Staying";
         applyAIState();
     }
-    
+
     /**
      * Applies the appropriate AI state based on the pet's movement state.
      * Disables AI for pets in stay mode, enables it for follow and wander modes.
      */
     public void applyAIState() {
-        Entity entity = Bukkit.getServer().getEntity(uniqueID);
+        Entity entity = serverProvider.get().getEntity(uniqueID);
         if (entity == null) {
             // Entity not found (e.g., in unloaded chunk) - will be applied when entity loads
             return;
@@ -232,5 +244,10 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
 
         parentIDs = gson.fromJson(data.getOrDefault("parentIDs", "[]"), hashsetTypeUUID);
         childIDs =  gson.fromJson(data.getOrDefault("childIDs", "[]"), hashsetTypeUUID);
+    }
+
+    // For testing purposes
+    protected void setBukkitServer(ServerProvider serverProvider) {
+        this.serverProvider = serverProvider;
     }
 }
