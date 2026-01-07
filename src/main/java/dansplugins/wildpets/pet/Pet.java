@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.location.WpLocation;
+import org.bukkit.Server;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import preponderous.ponder.misc.abs.Lockable;
@@ -105,7 +106,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
             // Server provider not available; cannot apply AI state safely
             return;
         }
-        var server = serverProvider.get();
+        Server server = serverProvider.get();
         if (server == null) {
             // Server not available; cannot apply AI state safely
             return;
