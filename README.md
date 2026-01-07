@@ -27,10 +27,16 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/Wild-Pet
 - [Planned Improvements](https://github.com/dmccoystephenson/Wild-Pets/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
 
 ## Contributing
-- [Contributing.md](https://github.com/dmccoystephenson/Wild-Pets/blob/master/CONTRIBUTING.md)
+- [Contributing.md](./CONTRIBUTING.md)
 
 ## Testing
-The unit tests can be executed by reopening the project in the provided dev container & running `mvn test`.
+1. Ensure docker is installed.
+2. Reopen the project in the provided dev container with the following commands:
+```
+sudo cd ./.devcontainer
+sudo ./start_dev_container
+```
+3. Run `mvn test`.
 
 ## Authors and acknowledgement
 Name | Main Contributions

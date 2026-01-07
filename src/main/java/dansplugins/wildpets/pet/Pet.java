@@ -1,9 +1,14 @@
+
 package dansplugins.wildpets.pet;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.location.WpLocation;
+import org.bukkit.Server;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Mob;
 import preponderous.ponder.misc.abs.Lockable;
 import preponderous.ponder.misc.abs.Savable;
 
@@ -23,17 +28,28 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
     private WpLocation lastKnownLocation;
     private boolean locked = false;
     private HashSet<UUID> accessList = new HashSet<>();
+    private ServerProvider serverProvider;
 
     public Pet(UUID entityUniqueId, UUID playerOwnerUniqueId, String playerOwnerName) {
+        this(entityUniqueId, playerOwnerUniqueId, playerOwnerName, new ServerProvider());
+    }
+
+    public Pet(UUID entityUniqueId, UUID playerOwnerUniqueId, String playerOwnerName, ServerProvider serverProvider) {
         uniqueID = entityUniqueId;
         ownerUUID = playerOwnerUniqueId;
         name = playerOwnerName + "'s_Pet";
         movementState = "Wandering";
         accessList.add(playerOwnerUniqueId);
         setLastKnownLocation(new WpLocation(0, 0, 0));
+        this.serverProvider = serverProvider;
     }
 
     public Pet(Map<String, String> petData) {
+        this(petData, new ServerProvider());
+    }
+
+    public Pet(Map<String, String> petData, ServerProvider serverProvider) {
+        this.serverProvider = serverProvider;
         this.load(petData);
     }
 
@@ -67,10 +83,44 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
 
     public void setWandering() {
         movementState = "Wandering";
+        applyAIState();
     }
 
     public void setFollowing() {
         movementState = "Following";
+        applyAIState();
+    }
+
+    public void setStaying() {
+        movementState = "Staying";
+        applyAIState();
+    }
+
+    /**
+     * Applies the appropriate AI state based on the pet's movement state.
+     * Disables AI for pets in stay mode, enables it for follow and wander modes.
+     * Returns silently if the entity is not currently loaded or is not a {@link Mob} instance.
+     */
+    public void applyAIState() {
+        if (serverProvider == null) {
+            // Server provider not available; cannot apply AI state safely
+            return;
+        }
+        Server server = serverProvider.get();
+        if (server == null) {
+            // Server not available; cannot apply AI state safely
+            return;
+        }
+        Entity entity = server.getEntity(uniqueID);
+        if (entity == null) {
+            // Entity not found (e.g., in unloaded chunk) - will be applied when entity loads
+            return;
+        }
+        if (entity instanceof Mob) {
+            Mob mob = (Mob) entity;
+            // Disable AI for stay mode, enable for follow and wander modes
+            mob.setAware(!movementState.equals("Staying"));
+        }
     }
 
     public String getMovementState() {
@@ -192,6 +242,9 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         }
         else if (state.equalsIgnoreCase("Following")) {
             setFollowing();
+        }
+        else if (state.equalsIgnoreCase("Staying")) {
+            setStaying();
         }
         else {
             setWandering();
