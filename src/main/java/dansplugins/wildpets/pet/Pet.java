@@ -9,8 +9,8 @@ import dansplugins.wildpets.location.WpLocation;
 import org.bukkit.Server;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
-import preponderous.ponder.misc.abs.Lockable;
-import preponderous.ponder.misc.abs.Savable;
+import dansplugins.wildpets.ponder.abs.Lockable;
+import dansplugins.wildpets.ponder.abs.Savable;
 
 import java.lang.reflect.Type;
 import java.util.*;

@@ -9,7 +9,7 @@ import dansplugins.wildpets.pet.record.PetRecord;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
-import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import dansplugins.wildpets.ponder.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
