@@ -50,6 +50,24 @@ public class PetListRepository {
         return getPetList(petToRemove.getOwnerUUID()).removePet(petToRemove);
     }
 
+    public boolean transferPet(Pet pet, UUID newOwnerUUID) {
+        PetList oldList = getPetList(pet.getOwnerUUID());
+        if (oldList == null || !oldList.getPets().remove(pet)) {
+            return false;
+        }
+
+        PetList newList = getPetList(newOwnerUUID);
+        if (newList == null) {
+            createPetListForPlayer(newOwnerUUID);
+            newList = getPetList(newOwnerUUID);
+        }
+
+        pet.setOwnerUUID(newOwnerUUID);
+        pet.addToAccessList(newOwnerUUID);
+        newList.addPet(pet);
+        return true;
+    }
+
     public Pet getPet(Entity entity) {
         for (PetList petList : getPetLists()) {
             Pet pet = petList.getPet(entity.getUniqueId());

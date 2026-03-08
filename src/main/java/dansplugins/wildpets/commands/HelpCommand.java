@@ -46,6 +46,7 @@ public class HelpCommand extends AbstractPluginCommand {
         player.sendMessage(ChatColor.AQUA + "/wp lock - Lock your pet.");
         player.sendMessage(ChatColor.AQUA + "/wp unlock - Unlock your pet.");
         player.sendMessage(ChatColor.AQUA + "/wp setfree - Set your pet free.");
+        player.sendMessage(ChatColor.AQUA + "/wp trade (playerName) - Trade selected pet to another player.");
         player.sendMessage(ChatColor.AQUA + "/wp gather - Gather your pets in one place.");
         player.sendMessage(ChatColor.AQUA + "/wp config - View or set config options.");
         return true;

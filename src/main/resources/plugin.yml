@@ -44,5 +44,7 @@ permissions:
     default: true
   wp.gather:
     default: true
+  wp.trade:
+    default: true
   wp.config:
     default: op
