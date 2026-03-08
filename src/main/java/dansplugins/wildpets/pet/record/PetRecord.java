@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import dansplugins.wildpets.pet.Pet;
-import dansplugins.wildpets.ponder.abs.Savable;
+import dansplugins.wildpets.data.Savable;
 
 import java.util.HashMap;
 import java.util.Map;

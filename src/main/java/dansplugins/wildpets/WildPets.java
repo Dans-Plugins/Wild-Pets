@@ -11,9 +11,6 @@ import dansplugins.wildpets.pet.record.PetRecordRepository;
 import dansplugins.wildpets.storage.StorageService;
 import dansplugins.wildpets.scheduler.Scheduler;
 import org.bukkit.ChatColor;
-import dansplugins.wildpets.ponder.abs.AbstractPluginCommand;
-import dansplugins.wildpets.ponder.services.CommandService;
-import dansplugins.wildpets.ponder.tools.EventHandlerRegistry;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

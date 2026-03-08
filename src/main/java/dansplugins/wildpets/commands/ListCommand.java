@@ -2,7 +2,6 @@ package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.list.PetList;
-import dansplugins.wildpets.ponder.abs.AbstractPluginCommand;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

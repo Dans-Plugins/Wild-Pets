@@ -9,7 +9,7 @@ import dansplugins.wildpets.config.ConfigService;
 import dansplugins.wildpets.config.EntityConfigService;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
 import dansplugins.wildpets.scheduler.Scheduler;
-import dansplugins.wildpets.ponder.tools.UUIDChecker;
+import dansplugins.wildpets.helpers.UUIDChecker;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

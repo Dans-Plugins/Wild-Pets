@@ -1,11 +1,8 @@
-package dansplugins.wildpets.ponder.services;
+package dansplugins.wildpets.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import dansplugins.wildpets.ponder.abs.AbstractPluginCommand;
-import dansplugins.wildpets.ponder.tools.PermissionChecker;
-import dansplugins.wildpets.ponder.misc.ArgumentParser;
 
 import java.util.ArrayList;
 import java.util.Set;

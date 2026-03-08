@@ -1,4 +1,4 @@
-package dansplugins.wildpets.ponder.misc;
+package dansplugins.wildpets.commands;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

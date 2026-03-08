@@ -1,4 +1,4 @@
-package dansplugins.wildpets.ponder.tools;
+package dansplugins.wildpets.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

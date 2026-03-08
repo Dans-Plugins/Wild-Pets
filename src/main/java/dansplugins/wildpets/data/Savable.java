@@ -1,4 +1,4 @@
-package dansplugins.wildpets.ponder.abs;
+package dansplugins.wildpets.data;
 
 import java.util.Map;
 

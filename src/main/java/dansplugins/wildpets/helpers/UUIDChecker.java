@@ -1,4 +1,4 @@
-package dansplugins.wildpets.ponder.tools;
+package dansplugins.wildpets.helpers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
