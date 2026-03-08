@@ -35,6 +35,6 @@ public class PermissionChecker {
     }
 
     private void informSenderTheyDoNotHaveOneOfTheRequiredPermissions(CommandSender sender, ArrayList<String> permissions) {
-        sender.sendMessage(ChatColor.RED + "In order to use this command, you need one of the following permission: '" + permissions + "'");
+        sender.sendMessage(ChatColor.RED + "In order to use this command, you need one of the following permissions: '" + permissions + "'");
     }
 }
