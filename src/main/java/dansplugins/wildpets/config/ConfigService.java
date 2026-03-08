@@ -165,19 +165,19 @@ public class ConfigService {
     public void sendConfigList(CommandSender sender) {
         sender.sendMessage("");
         sender.sendMessage(MessageFormat.header("Wild Pets", "Config"));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "version:                      " + ChatColor.WHITE + getConfig().getString("version")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "debugMode:                    " + ChatColor.WHITE + getString("debugMode")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "petLimit:                     " + ChatColor.WHITE + getString("petLimit")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "cancelTamingAfterFailedAttempt:" + ChatColor.WHITE + " " + getString("cancelTamingAfterFailedAttempt")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "rightClickViewCooldown:       " + ChatColor.WHITE + getInt("rightClickViewCooldown")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "rightClickToSelect:           " + ChatColor.WHITE + getBoolean("rightClickToSelect")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "maxScheduleAttempts:           " + ChatColor.WHITE + getInt("maxScheduleAttempts")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "petNameCharacterLimit:         " + ChatColor.WHITE + getInt("petNameCharacterLimit")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "preventMountingLockedPets:     " + ChatColor.WHITE + getBoolean("preventMountingLockedPets")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "damageToPetsEnabled:           " + ChatColor.WHITE + getBoolean("damageToPetsEnabled")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "showLineageInfo:               " + ChatColor.WHITE + getBoolean("showLineageInfo")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "bornPetsEnabled:               " + ChatColor.WHITE + getBoolean("bornPetsEnabled")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "damageFromPetsEnabled:         " + ChatColor.WHITE + getBoolean("damageFromPetsEnabled")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "version:                       " + ChatColor.WHITE + getConfig().getString("version")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "debugMode:                     " + ChatColor.WHITE + getString("debugMode")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "petLimit:                      " + ChatColor.WHITE + getString("petLimit")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "cancelTamingAfterFailedAttempt: " + ChatColor.WHITE + getString("cancelTamingAfterFailedAttempt")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "rightClickViewCooldown:        " + ChatColor.WHITE + getInt("rightClickViewCooldown")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "rightClickToSelect:            " + ChatColor.WHITE + getBoolean("rightClickToSelect")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "maxScheduleAttempts:            " + ChatColor.WHITE + getInt("maxScheduleAttempts")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "petNameCharacterLimit:          " + ChatColor.WHITE + getInt("petNameCharacterLimit")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "preventMountingLockedPets:      " + ChatColor.WHITE + getBoolean("preventMountingLockedPets")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "damageToPetsEnabled:            " + ChatColor.WHITE + getBoolean("damageToPetsEnabled")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "showLineageInfo:                " + ChatColor.WHITE + getBoolean("showLineageInfo")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "bornPetsEnabled:                " + ChatColor.WHITE + getBoolean("bornPetsEnabled")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "damageFromPetsEnabled:          " + ChatColor.WHITE + getBoolean("damageFromPetsEnabled")));
         sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "Note: Entity configurations are not shown."));
         sender.sendMessage(MessageFormat.footer());
     }

@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
  */
 public class MessageFormat {
 
-    private static final String FOOTER = ChatColor.GOLD + "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500";
+    private static final String FOOTER = ChatColor.GOLD + "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500";
 
     /**
      * Builds a box-drawing header line.
