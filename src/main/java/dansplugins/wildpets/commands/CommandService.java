@@ -40,15 +40,17 @@ public class CommandService {
         String[] arguments = parser.dropFirstArgument(args);
 
         for (AbstractPluginCommand command : commands) {
-            if (command.getNames().contains(subCommand)) {
-                if (!permissionChecker.checkPermission(sender, command.getPermissions())) {
-                    return false;
-                }
-                if (arguments.length == 0) {
-                    return command.execute(sender);
-                }
-                else {
-                    return command.execute(sender, arguments);
+            for (String name : command.getNames()) {
+                if (name.equalsIgnoreCase(subCommand)) {
+                    if (!permissionChecker.checkPermission(sender, command.getPermissions())) {
+                        return false;
+                    }
+                    if (arguments.length == 0) {
+                        return command.execute(sender);
+                    }
+                    else {
+                        return command.execute(sender, arguments);
+                    }
                 }
             }
         }

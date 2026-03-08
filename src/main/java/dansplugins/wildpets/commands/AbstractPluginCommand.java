@@ -41,7 +41,7 @@ public abstract class AbstractPluginCommand {
      */
     public boolean sendMessageIfNoArguments(String message, String[] args, CommandSender sender, ChatColor color) {
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + message);
+            sender.sendMessage(color + message);
             return true;
         }
         return false;

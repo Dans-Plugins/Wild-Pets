@@ -15,7 +15,7 @@ public class UUIDChecker {
      * Method to obtain the name of a player based on their UUID.
      *
      * @param playerUUID used to find the name.
-     * @return Name of the player as a {@link String}
+     * @return Name of the player as a {@link String}, or {@code null} if the name cannot be resolved.
      * @throws IllegalArgumentException if the UUID provided is null.
      */
     public String findPlayerNameBasedOnUUID(UUID playerUUID) {
@@ -28,7 +28,7 @@ public class UUIDChecker {
         }
         final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
         final String name = offlinePlayer.getName();
-        return name == null || !offlinePlayer.hasPlayedBefore() ? "" : name;
+        return name == null || !offlinePlayer.hasPlayedBefore() ? null : name;
     }
 
     /**

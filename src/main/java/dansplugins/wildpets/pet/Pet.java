@@ -161,7 +161,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
     }
 
     @Override
-    public ArrayList<UUID> getAccessList() {
+    public List<UUID> getAccessList() {
         return new ArrayList<>(accessList);
     }
 

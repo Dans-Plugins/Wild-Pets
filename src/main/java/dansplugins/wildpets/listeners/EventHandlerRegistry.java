@@ -5,7 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility class for registering event handlers.
@@ -24,7 +24,7 @@ public class EventHandlerRegistry {
      * @param plugin to register it for.
      * @throws IllegalArgumentException if the arguments are invalid.
      */
-    public void registerEventHandlers(ArrayList<Listener> listeners, Plugin plugin) {
+    public void registerEventHandlers(List<Listener> listeners, Plugin plugin) {
         if (listeners == null || listeners.isEmpty()) {
             throw new IllegalArgumentException("Listeners cannot be null or empty!");
         }
