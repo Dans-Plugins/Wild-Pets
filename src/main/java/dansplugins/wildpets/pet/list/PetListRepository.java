@@ -63,6 +63,7 @@ public class PetListRepository {
         }
 
         pet.setOwnerUUID(newOwnerUUID);
+        pet.removeFromAccessList(oldList.getOwnerUUID());
         pet.addToAccessList(newOwnerUUID);
         newList.addPet(pet);
         return true;

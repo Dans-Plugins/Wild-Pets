@@ -33,7 +33,7 @@ public class TradeCommand extends AbstractPluginCommand {
 
     @Override
     public boolean execute(CommandSender sender) {
-        sender.sendMessage(ChatColor.RED + "Usage: /wp trade <playerName>");
+        sender.sendMessage(ChatColor.RED + "Usage: /wp trade (playerName)");
         return false;
     }
 
