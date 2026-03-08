@@ -26,8 +26,7 @@ public class StatsCommand extends AbstractPluginCommand {
         sender.sendMessage("");
         sender.sendMessage(MessageFormat.header("Wild Pets", "Statistics"));
         sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "Number of Pets: " +
-                ChatColor.GREEN + numPets + " " +
-                ChatColor.DARK_GRAY + MessageFormat.createBar(numPets, Math.max(numPets, 1))));
+                ChatColor.GREEN + numPets));
         sender.sendMessage(MessageFormat.footer());
         return true;
     }

@@ -46,7 +46,10 @@ public class MessageFormat {
      */
     public static String createBar(double value, double max) {
         int barLength = 10;
-        int filled = (int) Math.min(barLength, (value / max) * barLength);
+        int filled = 0;
+        if (max > 0) {
+            filled = (int) Math.min(barLength, (value / max) * barLength);
+        }
         StringBuilder bar = new StringBuilder("[");
         for (int i = 0; i < barLength; i++) {
             bar.append(i < filled ? "\u2588" : "\u2591");
@@ -63,8 +66,11 @@ public class MessageFormat {
      */
     public static String createRankBar(int rank, int total) {
         int barLength = 10;
-        int filled = (int) Math.round(((double) (total - rank + 1) / total) * barLength);
-        filled = Math.max(0, Math.min(barLength, filled));
+        int filled = 0;
+        if (total > 0) {
+            filled = (int) Math.round(((double) (total - rank + 1) / total) * barLength);
+            filled = Math.max(0, Math.min(barLength, filled));
+        }
         StringBuilder bar = new StringBuilder("[");
         for (int i = 0; i < barLength; i++) {
             bar.append(i < filled ? "\u2588" : "\u2591");
