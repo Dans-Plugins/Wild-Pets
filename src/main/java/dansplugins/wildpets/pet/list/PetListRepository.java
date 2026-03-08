@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -38,6 +39,9 @@ public class PetListRepository {
         newPet.setLastKnownLocation(wpLocation);
         entity.setCustomName(ChatColor.GREEN + newPet.getName());
         entity.setPersistent(true);
+        if (entity instanceof LivingEntity) {
+            ((LivingEntity) entity).setRemoveWhenFarAway(false);
+        }
         entity.playEffect(EntityEffect.LOVE_HEARTS);
 
         // add pet to pet list

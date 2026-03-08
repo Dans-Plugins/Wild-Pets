@@ -146,6 +146,7 @@ public final class WildPets extends JavaPlugin {
         listeners.add(new JoinAndQuitHandler(petListRepository, ephemeralData));
         listeners.add(new MoveHandler(petListRepository));
         listeners.add(new BreedEventHandler(petListRepository, petRecordRepository, configService, ephemeralData));
+        listeners.add(new ChunkLoadHandler(petListRepository));
         EventHandlerRegistry eventHandlerRegistry = new EventHandlerRegistry();
         eventHandlerRegistry.registerEventHandlers(listeners, this);
     }

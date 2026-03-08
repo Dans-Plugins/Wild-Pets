@@ -8,6 +8,7 @@ import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.location.WpLocation;
 import org.bukkit.Server;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import dansplugins.wildpets.data.Lockable;
 import dansplugins.wildpets.data.Savable;
@@ -120,6 +121,29 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
             Mob mob = (Mob) entity;
             // Disable AI for stay mode, enable for follow and wander modes
             mob.setAware(!movementState.equals("Staying"));
+        }
+    }
+
+    /**
+     * Ensures that the pet entity is marked as persistent and will not be removed when far away.
+     * This prevents the entity from despawning due to distance from players or chunk unloading.
+     * Returns silently if the entity is not currently loaded.
+     */
+    public void ensurePersistence() {
+        if (serverProvider == null) {
+            return;
+        }
+        Server server = serverProvider.get();
+        if (server == null) {
+            return;
+        }
+        Entity entity = server.getEntity(uniqueID);
+        if (entity == null) {
+            return;
+        }
+        entity.setPersistent(true);
+        if (entity instanceof LivingEntity) {
+            ((LivingEntity) entity).setRemoveWhenFarAway(false);
         }
     }
 

@@ -134,6 +134,7 @@ public class StorageService {
         wildPets.getServer().getScheduler().runTaskLater(wildPets, () -> {
             for (Pet pet : petListRepository.getAllPets()) {
                 pet.applyAIState();
+                pet.ensurePersistence();
             }
         }, delayTicks); // Default: wait 100 ticks (5 seconds at 20 TPS) for entities to be loaded
     }
