@@ -7,7 +7,7 @@ import dansplugins.wildpets.pet.record.PetRecord;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
+import dansplugins.wildpets.helpers.UUIDChecker;
 
 import java.util.UUID;
 

@@ -9,8 +9,8 @@ import dansplugins.wildpets.location.WpLocation;
 import org.bukkit.Server;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
-import preponderous.ponder.misc.abs.Lockable;
-import preponderous.ponder.misc.abs.Savable;
+import dansplugins.wildpets.data.Lockable;
+import dansplugins.wildpets.data.Savable;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -161,7 +161,7 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
     }
 
     @Override
-    public ArrayList<UUID> getAccessList() {
+    public List<UUID> getAccessList() {
         return new ArrayList<>(accessList);
     }
 

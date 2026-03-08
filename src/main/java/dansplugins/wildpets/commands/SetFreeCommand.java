@@ -3,7 +3,6 @@ package dansplugins.wildpets.commands;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.Pet;
-import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
