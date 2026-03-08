@@ -3,6 +3,7 @@ package dansplugins.wildpets.commands;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.location.WpLocation;
 import dansplugins.wildpets.pet.Pet;
+import dansplugins.wildpets.utils.MessageFormat;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -48,7 +49,11 @@ public class LocateCommand extends AbstractPluginCommand {
 
         WpLocation lastKnownLocation = pet.getLastKnownLocation();
 
-        player.sendMessage(ChatColor.AQUA + pet.getName() + String.format("'s last known location is (%s, %s, %s).", lastKnownLocation.getX(), lastKnownLocation.getY(), lastKnownLocation.getZ()));
+        player.sendMessage("");
+        player.sendMessage(MessageFormat.header("Wild Pets", "Locate"));
+        player.sendMessage(MessageFormat.line(ChatColor.GRAY + "Pet:      " + ChatColor.WHITE + pet.getName()));
+        player.sendMessage(MessageFormat.line(ChatColor.GRAY + "Location: " + ChatColor.WHITE + String.format("(%s, %s, %s)", lastKnownLocation.getX(), lastKnownLocation.getY(), lastKnownLocation.getZ())));
+        player.sendMessage(MessageFormat.footer());
         return true;
     }
 

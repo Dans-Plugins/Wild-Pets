@@ -1,6 +1,7 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.utils.MessageFormat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -28,7 +29,10 @@ public class CheckAccessCommand extends AbstractPluginCommand {
         Player player = (Player) sender;
 
         ephemeralData.setPlayerAsCheckingAccess(player.getUniqueId());
-        player.sendMessage(ChatColor.GREEN + "Right click a pet check who has access to it");
+        player.sendMessage("");
+        player.sendMessage(MessageFormat.header("Wild Pets", "Check Access"));
+        player.sendMessage(MessageFormat.line(ChatColor.GREEN + "Right click a pet to check who has access to it."));
+        player.sendMessage(MessageFormat.footer());
         return true;
     }
 

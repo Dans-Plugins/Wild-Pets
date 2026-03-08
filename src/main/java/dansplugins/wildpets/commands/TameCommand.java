@@ -1,6 +1,7 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.utils.MessageFormat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -28,7 +29,10 @@ public class TameCommand extends AbstractPluginCommand {
         Player player = (Player) commandSender;
 
         ephemeralData.setPlayerAsTaming(player.getUniqueId());
-        player.sendMessage(ChatColor.GREEN + "Right click on an entity to tame it. Type '/wp tame cancel' to cancel taming.");
+        player.sendMessage("");
+        player.sendMessage(MessageFormat.header("Wild Pets", "Tame"));
+        player.sendMessage(MessageFormat.line(ChatColor.GREEN + "Right click on an entity to tame it. Type '/wp tame cancel' to cancel taming."));
+        player.sendMessage(MessageFormat.footer());
         return true;
     }
 
@@ -41,7 +45,10 @@ public class TameCommand extends AbstractPluginCommand {
 
         if (args[0].equalsIgnoreCase("cancel")) {
             ephemeralData.setPlayerAsNotTaming(player.getUniqueId());
-            player.sendMessage(ChatColor.GREEN + "Taming cancelled.");
+            player.sendMessage("");
+            player.sendMessage(MessageFormat.header("Wild Pets", "Tame"));
+            player.sendMessage(MessageFormat.line(ChatColor.GREEN + "Taming cancelled."));
+            player.sendMessage(MessageFormat.footer());
             return true;
         }
 

@@ -7,6 +7,7 @@ import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.config.ConfigService;
 import dansplugins.wildpets.pet.record.PetRecord;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
+import dansplugins.wildpets.utils.MessageFormat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 
@@ -95,7 +96,10 @@ public class RenameCommand extends AbstractPluginCommand {
             }
         }
         petRecord.setName(newName);
-        player.sendMessage(ChatColor.GREEN + "Renamed.");
+        player.sendMessage("");
+        player.sendMessage(MessageFormat.header("Wild Pets", "Rename"));
+        player.sendMessage(MessageFormat.line(ChatColor.GREEN + "Renamed."));
+        player.sendMessage(MessageFormat.footer());
         return true;
     }
 }

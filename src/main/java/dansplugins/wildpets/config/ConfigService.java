@@ -1,6 +1,7 @@
 package dansplugins.wildpets.config;
 
 import dansplugins.wildpets.WildPets;
+import dansplugins.wildpets.utils.MessageFormat;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -123,7 +124,10 @@ public class ConfigService {
                     || option.equalsIgnoreCase("petNameCharacterLimit")
                     || option.equalsIgnoreCase("petLimit")) {
                 getConfig().set(configOptionsPrefix + option, Integer.parseInt(value));
-                sender.sendMessage(ChatColor.GREEN + "Integer set.");
+                sender.sendMessage("");
+                sender.sendMessage(MessageFormat.header("Wild Pets", "Config"));
+                sender.sendMessage(MessageFormat.line(ChatColor.GREEN + "Integer set."));
+                sender.sendMessage(MessageFormat.footer());
             } else if (option.equalsIgnoreCase("debugMode")
                     || option.equalsIgnoreCase("rightClickToSelect")
                     || option.equalsIgnoreCase("preventMountingLockedPets")
@@ -132,13 +136,22 @@ public class ConfigService {
                     || option.equalsIgnoreCase("bornPetsEnabled")
                     || option.equalsIgnoreCase("damageFromPetsEnabled")) {
                 getConfig().set(configOptionsPrefix + option, Boolean.parseBoolean(value));
-                sender.sendMessage(ChatColor.GREEN + "Boolean set.");
+                sender.sendMessage("");
+                sender.sendMessage(MessageFormat.header("Wild Pets", "Config"));
+                sender.sendMessage(MessageFormat.line(ChatColor.GREEN + "Boolean set."));
+                sender.sendMessage(MessageFormat.footer());
             } else if (option.equalsIgnoreCase("C")) { // no doubles yet
                 getConfig().set(configOptionsPrefix + option, Double.parseDouble(value));
-                sender.sendMessage(ChatColor.GREEN + "Double set.");
+                sender.sendMessage("");
+                sender.sendMessage(MessageFormat.header("Wild Pets", "Config"));
+                sender.sendMessage(MessageFormat.line(ChatColor.GREEN + "Double set."));
+                sender.sendMessage(MessageFormat.footer());
             } else {
                 getConfig().set(configOptionsPrefix + option, value);
-                sender.sendMessage(ChatColor.GREEN + "String set.");
+                sender.sendMessage("");
+                sender.sendMessage(MessageFormat.header("Wild Pets", "Config"));
+                sender.sendMessage(MessageFormat.line(ChatColor.GREEN + "String set."));
+                sender.sendMessage(MessageFormat.footer());
             }
 
             // save
@@ -150,24 +163,23 @@ public class ConfigService {
     }
 
     public void sendConfigList(CommandSender sender) {
-        sender.sendMessage(ChatColor.AQUA + "=== Config List ===");
-        sender.sendMessage(ChatColor.AQUA + "version: " + getConfig().getString("version")
-                + ", debugMode: " + getString("debugMode")
-                + ", petLimit: " + getString("petLimit")
-                + ", cancelTamingAfterFailedAttempt: " + getString("cancelTamingAfterFailedAttempt")
-                + ", rightClickViewCooldown: " + getInt("rightClickViewCooldown")
-                + ", rightClickToSelect: " + getBoolean("rightClickToSelect")
-                + ", secondsBetweenSchedulingAttempts: " + getInt("secondsBetweenSchedulingAttempts")
-                + ", maxScheduleAttempts: " + getInt("maxScheduleAttempts")
-                + ", petNameCharacterLimit: " + getInt("petNameCharacterLimit")
-                + ", preventMountingLockedPets: " + getInt("preventMountingLockedPets")
-                + ", damageToPetsEnabled: " + getBoolean("damageToPetsEnabled")
-                + ", showLineageInfo: " + getBoolean("bornPetsEnabled")
-                + ", bornPetsEnabled: " + getBoolean("bornPetsEnabled")
-                + ", damageFromPetsEnabled: " + getBoolean("damageFromPetsEnabled"));
-        sender.sendMessage(ChatColor.AQUA + "====================");
-        sender.sendMessage(ChatColor.AQUA + "Note: Entity configurations are not shown.");
-        sender.sendMessage(ChatColor.AQUA + "====================");
+        sender.sendMessage("");
+        sender.sendMessage(MessageFormat.header("Wild Pets", "Config"));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "version:                      " + ChatColor.WHITE + getConfig().getString("version")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "debugMode:                    " + ChatColor.WHITE + getString("debugMode")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "petLimit:                     " + ChatColor.WHITE + getString("petLimit")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "cancelTamingAfterFailedAttempt:" + ChatColor.WHITE + " " + getString("cancelTamingAfterFailedAttempt")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "rightClickViewCooldown:       " + ChatColor.WHITE + getInt("rightClickViewCooldown")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "rightClickToSelect:           " + ChatColor.WHITE + getBoolean("rightClickToSelect")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "maxScheduleAttempts:           " + ChatColor.WHITE + getInt("maxScheduleAttempts")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "petNameCharacterLimit:         " + ChatColor.WHITE + getInt("petNameCharacterLimit")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "preventMountingLockedPets:     " + ChatColor.WHITE + getBoolean("preventMountingLockedPets")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "damageToPetsEnabled:           " + ChatColor.WHITE + getBoolean("damageToPetsEnabled")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "showLineageInfo:               " + ChatColor.WHITE + getBoolean("showLineageInfo")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "bornPetsEnabled:               " + ChatColor.WHITE + getBoolean("bornPetsEnabled")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "damageFromPetsEnabled:         " + ChatColor.WHITE + getBoolean("damageFromPetsEnabled")));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "Note: Entity configurations are not shown."));
+        sender.sendMessage(MessageFormat.footer());
     }
 
     public boolean hasBeenAltered() {

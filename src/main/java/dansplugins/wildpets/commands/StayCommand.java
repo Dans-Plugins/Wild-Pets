@@ -2,6 +2,7 @@ package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.pet.Pet;
+import dansplugins.wildpets.utils.MessageFormat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -37,7 +38,10 @@ public class StayCommand extends AbstractPluginCommand {
         }
 
         pet.setStaying();
-        player.sendMessage(ChatColor.GREEN + pet.getName() + " is now staying.");
+        player.sendMessage("");
+        player.sendMessage(MessageFormat.header("Wild Pets", "Stay"));
+        player.sendMessage(MessageFormat.line(ChatColor.GREEN + pet.getName() + " is now staying."));
+        player.sendMessage(MessageFormat.footer());
         return true;
     }
 

@@ -3,6 +3,7 @@ package dansplugins.wildpets.commands;
 import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.pet.list.PetList;
+import dansplugins.wildpets.utils.MessageFormat;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -45,7 +46,10 @@ public class GatherCommand extends AbstractPluginCommand {
 
             }
         }
-        player.sendMessage(ChatColor.GREEN + "Your pets gather nearby.");
+        player.sendMessage("");
+        player.sendMessage(MessageFormat.header("Wild Pets", "Gather"));
+        player.sendMessage(MessageFormat.line(ChatColor.GREEN + "Your pets gather nearby."));
+        player.sendMessage(MessageFormat.footer());
         return true;
     }
 

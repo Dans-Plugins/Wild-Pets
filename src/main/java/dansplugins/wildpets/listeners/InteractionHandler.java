@@ -10,6 +10,7 @@ import dansplugins.wildpets.config.EntityConfigService;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
 import dansplugins.wildpets.scheduler.Scheduler;
 import dansplugins.wildpets.helpers.UUIDChecker;
+import dansplugins.wildpets.utils.MessageFormat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -121,7 +122,10 @@ public class InteractionHandler implements Listener {
             }
 
             petListRepository.addNewPet(player, clickedEntity);
-            player.sendMessage(ChatColor.GREEN + "Tamed.");
+            player.sendMessage("");
+            player.sendMessage(MessageFormat.header("Wild Pets", "Tame"));
+            player.sendMessage(MessageFormat.line(ChatColor.GREEN + "Tamed."));
+            player.sendMessage(MessageFormat.footer());
             ephemeralData.setPlayerAsNotTaming(player.getUniqueId());
 
             if (itemStack.getAmount() > requiredAmount) {
@@ -149,7 +153,10 @@ public class InteractionHandler implements Listener {
             }
 
             ephemeralData.selectPetForPlayer(pet, player.getUniqueId());
-            player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
+            player.sendMessage("");
+            player.sendMessage(MessageFormat.header("Wild Pets", "Select"));
+            player.sendMessage(MessageFormat.line(ChatColor.GREEN + pet.getName() + " selected."));
+            player.sendMessage(MessageFormat.footer());
             ephemeralData.setPlayerAsNotSelecting(player.getUniqueId());
         }
         else if (ephemeralData.isPlayerLocking(player.getUniqueId())) {
@@ -173,7 +180,10 @@ public class InteractionHandler implements Listener {
                 return;
             }
             pet.setLocked(true);
-            player.sendMessage(ChatColor.GREEN + "This pet has been locked.");
+            player.sendMessage("");
+            player.sendMessage(MessageFormat.header("Wild Pets", "Lock"));
+            player.sendMessage(MessageFormat.line(ChatColor.GREEN + "This pet has been locked."));
+            player.sendMessage(MessageFormat.footer());
             ephemeralData.setPlayerAsNotLocking(player.getUniqueId());
             event.setCancelled(true);
         }
@@ -198,7 +208,10 @@ public class InteractionHandler implements Listener {
                 return;
             }
             pet.setLocked(false);
-            player.sendMessage(ChatColor.GREEN + "This pet has been unlocked.");
+            player.sendMessage("");
+            player.sendMessage(MessageFormat.header("Wild Pets", "Unlock"));
+            player.sendMessage(MessageFormat.line(ChatColor.GREEN + "This pet has been unlocked."));
+            player.sendMessage(MessageFormat.footer());
             ephemeralData.setPlayerAsNotUnlocking(player.getUniqueId());
             event.setCancelled(true);
         }
@@ -230,16 +243,18 @@ public class InteractionHandler implements Listener {
                 return;
             }
 
-            player.sendMessage(ChatColor.AQUA + "The following players have access to this pet:");
+            player.sendMessage("");
+            player.sendMessage(MessageFormat.header("Wild Pets", "Access List"));
 
             UUIDChecker uuidChecker = new UUIDChecker();
 
             for (UUID uuid : pet.getAccessList()) {
                 String playerName = uuidChecker.findPlayerNameBasedOnUUID(uuid);
                 if (playerName != null) {
-                    player.sendMessage(ChatColor.AQUA + playerName);
+                    player.sendMessage(MessageFormat.line(ChatColor.WHITE + playerName));
                 }
             }
+            player.sendMessage(MessageFormat.footer());
             ephemeralData.setPlayerAsNotCheckingAccess(player.getUniqueId());
             event.setCancelled(true);
         }
@@ -270,7 +285,10 @@ public class InteractionHandler implements Listener {
                     Pet petSelection = ephemeralData.getPetSelectionForPlayer(player.getUniqueId());
                     if (petSelection == null || !petSelection.getUniqueID().equals(pet.getUniqueID())) {
                         ephemeralData.selectPetForPlayer(pet, player.getUniqueId());
-                        player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
+                        player.sendMessage("");
+                        player.sendMessage(MessageFormat.header("Wild Pets", "Select"));
+                        player.sendMessage(MessageFormat.line(ChatColor.GREEN + pet.getName() + " selected."));
+                        player.sendMessage(MessageFormat.footer());
                     }
 
                 }
@@ -313,7 +331,10 @@ public class InteractionHandler implements Listener {
             return;
         }
 
-        player.sendMessage(ChatColor.GREEN + "You mount " + pet.getName());
+        player.sendMessage("");
+        player.sendMessage(MessageFormat.header("Wild Pets", "Mount"));
+        player.sendMessage(MessageFormat.line(ChatColor.GREEN + "You mount " + pet.getName()));
+        player.sendMessage(MessageFormat.footer());
     }
 
     private void setRightClickCooldown(Player player, int seconds) {

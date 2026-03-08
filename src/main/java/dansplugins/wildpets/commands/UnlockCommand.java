@@ -1,6 +1,7 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.utils.MessageFormat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -28,7 +29,10 @@ public class UnlockCommand extends AbstractPluginCommand {
         Player player = (Player) sender;
 
         ephemeralData.setPlayerAsUnlocking(player.getUniqueId());
-        player.sendMessage(ChatColor.GREEN + "Right click one of your pets to unlock it.");
+        player.sendMessage("");
+        player.sendMessage(MessageFormat.header("Wild Pets", "Unlock"));
+        player.sendMessage(MessageFormat.line(ChatColor.GREEN + "Right click one of your pets to unlock it."));
+        player.sendMessage(MessageFormat.footer());
         return true;
     }
 

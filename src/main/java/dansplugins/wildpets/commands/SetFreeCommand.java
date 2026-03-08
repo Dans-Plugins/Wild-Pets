@@ -3,6 +3,7 @@ package dansplugins.wildpets.commands;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.Pet;
+import dansplugins.wildpets.utils.MessageFormat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -40,7 +41,10 @@ public class SetFreeCommand extends AbstractPluginCommand {
         String petName = pet.getName();
 
         petListRepository.removePet(pet);
-        player.sendMessage(ChatColor.GREEN + petName + " has been set free.");
+        player.sendMessage("");
+        player.sendMessage(MessageFormat.header("Wild Pets", "Set Free"));
+        player.sendMessage(MessageFormat.line(ChatColor.GREEN + petName + " has been set free."));
+        player.sendMessage(MessageFormat.footer());
         ephemeralData.clearPetSelectionForPlayer(player.getUniqueId());
         return true;
     }

@@ -2,6 +2,7 @@ package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.pet.Pet;
+import dansplugins.wildpets.utils.MessageFormat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -36,7 +37,10 @@ public class FollowCommand extends AbstractPluginCommand {
         }
 
         pet.setFollowing();
-        player.sendMessage(ChatColor.GREEN + pet.getName() + " is now following you.");
+        player.sendMessage("");
+        player.sendMessage(MessageFormat.header("Wild Pets", "Follow"));
+        player.sendMessage(MessageFormat.line(ChatColor.GREEN + pet.getName() + " is now following you."));
+        player.sendMessage(MessageFormat.footer());
         return true;
     }
 
