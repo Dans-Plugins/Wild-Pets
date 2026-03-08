@@ -1,6 +1,5 @@
 package dansplugins.wildpets.commands;
 
-import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

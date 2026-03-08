@@ -5,7 +5,6 @@ import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.info.InfoSender;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
-import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

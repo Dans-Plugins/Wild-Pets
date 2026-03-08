@@ -11,14 +11,11 @@ import dansplugins.wildpets.pet.record.PetRecordRepository;
 import dansplugins.wildpets.storage.StorageService;
 import dansplugins.wildpets.scheduler.Scheduler;
 import org.bukkit.ChatColor;
-import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
-import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
-import preponderous.ponder.minecraft.bukkit.services.CommandService;
-import preponderous.ponder.minecraft.bukkit.tools.EventHandlerRegistry;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,10 +24,10 @@ import java.util.Arrays;
 /**
  * @author Daniel McCoy Stephenson
  */
-public final class WildPets extends PonderBukkitPlugin {
+public final class WildPets extends JavaPlugin {
     private final String pluginVersion = "v" + getDescription().getVersion();
 
-    private final CommandService commandService = new CommandService(getPonder());
+    private final CommandService commandService = new CommandService(this);
     private final EphemeralData ephemeralData = new EphemeralData();
     private final EntityConfigService entityConfigService = new EntityConfigService(this);
     private final ConfigService configService = new ConfigService(this, entityConfigService);
@@ -140,7 +137,7 @@ public final class WildPets extends PonderBukkitPlugin {
     }
 
     /**
-     * Registers the event handlers of the plugin using Ponder.
+     * Registers the event handlers of the plugin.
      */
     private void registerEventHandlers() {
         ArrayList<Listener> listeners = new ArrayList<>();
@@ -154,7 +151,7 @@ public final class WildPets extends PonderBukkitPlugin {
     }
 
     /**
-     * Initializes Ponder's command service with the plugin's commands.
+     * Initializes the command service with the plugin's commands.
      */
     private void initializeCommandService() {
         ArrayList<AbstractPluginCommand> commands = new ArrayList<>(Arrays.asList(
