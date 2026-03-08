@@ -3,7 +3,6 @@ package dansplugins.wildpets.listeners;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.pet.list.PetListRepository;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
@@ -26,10 +25,7 @@ public class ChunkLoadHandler implements Listener {
         for (Entity entity : event.getChunk().getEntities()) {
             Pet pet = petListRepository.getPet(entity);
             if (pet != null) {
-                entity.setPersistent(true);
-                if (entity instanceof LivingEntity) {
-                    ((LivingEntity) entity).setRemoveWhenFarAway(false);
-                }
+                pet.ensurePersistence();
             }
         }
     }
