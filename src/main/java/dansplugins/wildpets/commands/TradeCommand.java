@@ -45,18 +45,18 @@ public class TradeCommand extends AbstractPluginCommand {
 
         Player player = (Player) sender;
 
+        if (args.length < 1) {
+            return execute(sender);
+        }
+
         Pet pet = ephemeralData.getPetSelectionForPlayer(player.getUniqueId());
         if (pet == null) {
             player.sendMessage(ChatColor.RED + "No pet selected. Use /wp select first.");
             return false;
         }
 
-        if (args.length < 1) {
-            return execute(sender);
-        }
-
         String targetName = args[0];
-        Player targetPlayer = Bukkit.getPlayer(targetName);
+        Player targetPlayer = Bukkit.getPlayerExact(targetName);
 
         if (targetPlayer == null) {
             player.sendMessage(ChatColor.RED + "That player is not online.");

@@ -62,6 +62,13 @@ public class PetListRepository {
             newList = getPetList(newOwnerUUID);
         }
 
+        int petLimit = configService.getInt("petLimit");
+        if (newList.getNumPets() >= petLimit) {
+            // Recipient is at pet limit; undo removal from old list
+            oldList.addPet(pet);
+            return false;
+        }
+
         pet.setOwnerUUID(newOwnerUUID);
         pet.removeFromAccessList(oldList.getOwnerUUID());
         pet.addToAccessList(newOwnerUUID);
