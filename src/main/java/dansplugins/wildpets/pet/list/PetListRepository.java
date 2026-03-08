@@ -8,10 +8,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -21,6 +21,7 @@ public class PetListRepository {
     private final ConfigService configService;
 
     private final ArrayList<PetList> petLists = new ArrayList<>();
+    private final HashMap<UUID, Pet> petsByEntityUUID = new HashMap<>();
 
     public PetListRepository(ConfigService configService) {
         this.configService = configService;
@@ -38,30 +39,23 @@ public class PetListRepository {
         WpLocation wpLocation = new WpLocation(bukkitLocation.getX(), bukkitLocation.getY(), bukkitLocation.getZ());
         newPet.setLastKnownLocation(wpLocation);
         entity.setCustomName(ChatColor.GREEN + newPet.getName());
-        entity.setPersistent(true);
-        if (entity instanceof LivingEntity) {
-            ((LivingEntity) entity).setRemoveWhenFarAway(false);
-        }
+        newPet.ensurePersistence();
         entity.playEffect(EntityEffect.LOVE_HEARTS);
 
         // add pet to pet list
         PetList petList = getPetList(player.getUniqueId());
         petList.addPet(newPet);
+        petsByEntityUUID.put(newPet.getUniqueID(), newPet);
         return true;
     }
 
     public boolean removePet(Pet petToRemove) {
+        petsByEntityUUID.remove(petToRemove.getUniqueID());
         return getPetList(petToRemove.getOwnerUUID()).removePet(petToRemove);
     }
 
     public Pet getPet(Entity entity) {
-        for (PetList petList : getPetLists()) {
-            Pet pet = petList.getPet(entity.getUniqueId());
-            if (pet != null) {
-                return pet;
-            }
-        }
-        return null;
+        return petsByEntityUUID.get(entity.getUniqueId());
     }
 
     public PetList getPetList(UUID playerUUID) {
@@ -76,6 +70,26 @@ public class PetListRepository {
     public void createPetListForPlayer(UUID playerUUID) {
         PetList newPetList = new PetList(configService, playerUUID);
         getPetLists().add(newPetList);
+    }
+
+    /**
+     * Adds an already-constructed Pet to the appropriate PetList and the UUID index.
+     * Used when loading pets from storage.
+     */
+    public void addExistingPet(Pet pet) {
+        if (getPetList(pet.getOwnerUUID()) == null) {
+            createPetListForPlayer(pet.getOwnerUUID());
+        }
+        getPetList(pet.getOwnerUUID()).addPet(pet);
+        petsByEntityUUID.put(pet.getUniqueID(), pet);
+    }
+
+    /**
+     * Clears all pet lists and the UUID index.
+     */
+    public void clearAll() {
+        petLists.clear();
+        petsByEntityUUID.clear();
     }
 
     public Pet getPlayersPet(Player player, Entity entity) {

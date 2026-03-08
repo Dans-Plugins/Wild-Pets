@@ -91,7 +91,7 @@ public class StorageService {
 
     private void loadPets() {
         // load each pet individually and reconstruct pet list objects
-        petListRepository.getPetLists().clear();
+        petListRepository.clearAll();
 
         ArrayList<HashMap<String, String>> data = loadDataFromFilename(FILE_PATH + PETS_FILE_NAME);
 
@@ -103,11 +103,7 @@ public class StorageService {
         }
 
         for (Pet pet : allPets) {
-            if (petListRepository.getPetList(pet.getOwnerUUID()) == null) {
-                petListRepository.createPetListForPlayer(pet.getOwnerUUID());
-
-            }
-            petListRepository.getPetList(pet.getOwnerUUID()).addPet(pet);
+            petListRepository.addExistingPet(pet);
             petRecordRepository.addPetRecord(pet); // will not result in duplicates because petRecords is a hashset
         }
         

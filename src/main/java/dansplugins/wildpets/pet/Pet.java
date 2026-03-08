@@ -125,8 +125,11 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
     }
 
     /**
-     * Ensures that the pet entity is marked as persistent and will not be removed when far away.
-     * This prevents the entity from despawning due to distance from players or chunk unloading.
+     * Ensures that, for a currently loaded pet entity, persistence and "do not remove when far away"
+     * flags are applied.
+     * This helps prevent the entity from being removed by distance-based despawn mechanics while it
+     * is loaded. It does not prevent chunk unloading itself; these flags may need to be re-applied
+     * after the entity is reloaded.
      * Returns silently if the entity is not currently loaded.
      */
     public void ensurePersistence() {
