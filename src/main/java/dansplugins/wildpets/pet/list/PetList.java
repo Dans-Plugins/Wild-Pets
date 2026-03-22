@@ -4,7 +4,7 @@ import dansplugins.wildpets.pet.Pet;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 
 import dansplugins.wildpets.config.ConfigService;
@@ -63,8 +63,8 @@ public class PetList {
         if (entity != null) {
             entity.setCustomName("");
             entity.setPersistent(false);
-            if (entity instanceof LivingEntity) {
-                ((LivingEntity) entity).setRemoveWhenFarAway(true);
+            if (entity instanceof Mob) {
+                ((Mob) entity).setRemoveWhenFarAway(true);
             }
             entity.setInvulnerable(false);
         }

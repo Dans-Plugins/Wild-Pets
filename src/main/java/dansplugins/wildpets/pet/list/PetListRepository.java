@@ -50,8 +50,15 @@ public class PetListRepository {
     }
 
     public boolean removePet(Pet petToRemove) {
-        petsByEntityUUID.remove(petToRemove.getUniqueID());
-        return getPetList(petToRemove.getOwnerUUID()).removePet(petToRemove);
+        PetList ownerPetList = getPetList(petToRemove.getOwnerUUID());
+        if (ownerPetList == null) {
+            return false;
+        }
+        boolean removed = ownerPetList.removePet(petToRemove);
+        if (removed) {
+            petsByEntityUUID.remove(petToRemove.getUniqueID());
+        }
+        return removed;
     }
 
     public Pet getPet(Entity entity) {

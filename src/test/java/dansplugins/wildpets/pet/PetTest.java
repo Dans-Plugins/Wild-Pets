@@ -305,7 +305,7 @@ public class PetTest {
 
     @Test
     public void testEnsurePersistenceWithMob() {
-        // prepare - Mob extends LivingEntity
+        // prepare - Mob supports setRemoveWhenFarAway
         when(mockServer.getEntity(entityUniqueId)).thenReturn(mockMob);
 
         // Create pet
@@ -320,8 +320,8 @@ public class PetTest {
     }
 
     @Test
-    public void testEnsurePersistenceWithNonLivingEntity() {
-        // prepare - mockEntity is just Entity, not LivingEntity
+    public void testEnsurePersistenceWithNonMobEntity() {
+        // prepare - mockEntity is just Entity, not Mob
         when(mockServer.getEntity(entityUniqueId)).thenReturn(mockEntity);
 
         // Create pet
@@ -330,7 +330,7 @@ public class PetTest {
         // execute
         pet.ensurePersistence();
 
-        // verify setPersistent is called, but setRemoveWhenFarAway is not (not a LivingEntity)
+        // verify setPersistent is called, but setRemoveWhenFarAway is not (not a Mob)
         verify(mockEntity).setPersistent(true);
     }
 

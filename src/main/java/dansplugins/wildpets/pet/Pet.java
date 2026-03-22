@@ -8,7 +8,6 @@ import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.location.WpLocation;
 import org.bukkit.Server;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import dansplugins.wildpets.data.Lockable;
 import dansplugins.wildpets.data.Savable;
@@ -145,8 +144,8 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
             return;
         }
         entity.setPersistent(true);
-        if (entity instanceof LivingEntity) {
-            ((LivingEntity) entity).setRemoveWhenFarAway(false);
+        if (entity instanceof Mob) {
+            ((Mob) entity).setRemoveWhenFarAway(false);
         }
     }
 
