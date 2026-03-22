@@ -11,8 +11,16 @@ Wild Pets is an open source minecraft plugin that allows players to tame any ent
 3) Restart your server.
 
 ## Usage
-- [User Guide](https://github.com/dmccoystephenson/Wild-Pets/wiki/Guide)
-- [List of Commands](https://github.com/dmccoystephenson/Wild-Pets/wiki/Commands)
+
+### Documentation
+
+- [User Guide](USER_GUIDE.md) - Getting started and common scenarios
+- [Commands Reference](COMMANDS.md) - Complete list of all commands
+- [Configuration Guide](CONFIG.md) - Detailed config options
+
+### Wiki & Additional Resources
+
+- [Wiki Guide](https://github.com/dmccoystephenson/Wild-Pets/wiki/Guide)
 - [FAQ](https://github.com/dmccoystephenson/Wild-Pets/wiki/FAQ)
 
 ## Support
