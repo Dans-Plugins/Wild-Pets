@@ -13,7 +13,7 @@ This document provides detailed information about all configuration options avai
 
 ## General Settings
 
-### `configOptions.version`
+### `version`
 **Type:** String  
 **Default:** (auto-generated from plugin version)  
 **Description:** Plugin version number. This is automatically set during startup and should not be modified manually.
@@ -56,12 +56,12 @@ This document provides detailed information about all configuration options avai
 ### `configOptions.preventMountingLockedPets`
 **Type:** Boolean  
 **Default:** `true`  
-**Description:** When `true`, players other than the owner are prevented from mounting a locked pet.
+**Description:** This option is currently ignored. Players other than the owner are always prevented from mounting a locked pet, regardless of this setting. The field is retained for backward compatibility and may be enforced in a future version.
 
 ### `configOptions.maxScheduleAttempts`
 **Type:** Integer  
 **Default:** `1440`  
-**Description:** The maximum number of scheduling attempts for pet behavior tasks. Increase this value if pets stop following commands on long-running servers.  
+**Description:** Reserved for future use. This option is currently stored in the config but does not affect pet behavior or command handling in the current version.  
 **Range:** Any positive integer
 
 ## Interaction Settings
@@ -90,7 +90,7 @@ This document provides detailed information about all configuration options avai
 
 ## Entity Configurations
 
-Each entity type has its own configuration section under `entityConfigurations.<EntityType>`. These settings control how a specific entity can be tamed.
+Each entity type has its own configuration section under `entityConfigurations.<ConfigKey>`. The `<ConfigKey>` must match one of the plugin's defined entity configuration identifiers (for example: `Glow_Squid`, `Piglin_Baby`, `Polar_Bear_Baby`). These keys are based on Bukkit entity type names but may include additional suffixes to distinguish variants (e.g., `Piglin_Baby` vs `Piglin_Adult`). Human-readable names like "Glow Squid" or "Piglin (Baby)" are labels only and cannot be used as YAML keys.
 
 ### Entity Configuration Options
 
@@ -123,103 +123,103 @@ The following table lists all entities supported by Wild Pets and their default 
 
 #### Passive Mobs
 
-| Entity | Required Item | Amount | Chance |
-|--------|--------------|--------|--------|
-| Allay | Cookie | 8 | 50% |
-| Axolotl | Kelp | 16 | 50% |
-| Bat | Pumpkin Pie | 1 | 50% |
-| Camel | Cactus | 8 | 50% |
-| Cat | Salmon | 8 | 50% |
-| Chicken | Wheat Seeds | 8 | 50% |
-| Cod | Kelp | 16 | 50% |
-| Cow | Wheat | 32 | 50% |
-| Donkey | Carrot | 8 | 50% |
-| Fox | Sweet Berries | 8 | 50% |
-| Frog | Slime Ball | 8 | 50% |
-| Glow Squid | Kelp | 24 | 50% |
-| Horse | Apple | 8 | 50% |
-| Mooshroom | Red Mushroom | 8 | 50% |
-| Mule | Apple | 8 | 50% |
-| Ocelot | Cod | 8 | 50% |
-| Parrot | Pumpkin Seeds | 8 | 50% |
-| Pig | Carrot | 16 | 50% |
-| Piglin (Baby) | Nether Wart | 8 | 50% |
-| Polar Bear (Baby) | Salmon | 17 | 50% |
-| Pufferfish | Kelp | 24 | 50% |
-| Rabbit | Dandelion | 8 | 50% |
-| Salmon | Kelp | 24 | 50% |
-| Sheep | Wheat | 8 | 50% |
-| Skeleton Horse | Bone | 8 | 50% |
-| Sniffer | Grass | 32 | 50% |
-| Snow Golem | Snowball | 32 | 50% |
-| Squid | Kelp | 24 | 50% |
-| Strider | Nether Wart | 32 | 50% |
-| Tropical Fish | Kelp | 24 | 50% |
-| Turtle | Seagrass | 16 | 50% |
-| Villager | Potato | 8 | 50% |
-| Wandering Trader | Gold Ingot | 8 | 50% |
+| Entity | Config Key | Required Item (`MATERIAL` name) | Amount | Chance |
+|--------|-----------|--------------------------------|--------|--------|
+| Allay | `Allay` | `COOKIE` | 8 | 50% |
+| Axolotl | `Axolotl` | `KELP` | 16 | 50% |
+| Bat | `Bat` | `PUMPKIN_PIE` | 1 | 50% |
+| Camel | `Camel` | `CACTUS` | 8 | 50% |
+| Cat | `Cat` | `SALMON` | 8 | 50% |
+| Chicken | `Chicken` | `WHEAT_SEEDS` | 8 | 50% |
+| Cod | `Cod` | `KELP` | 16 | 50% |
+| Cow | `Cow` | `WHEAT` | 32 | 50% |
+| Donkey | `Donkey` | `CARROT` | 8 | 50% |
+| Fox | `Fox` | `SWEET_BERRIES` | 8 | 50% |
+| Frog | `Frog` | `SLIME_BALL` | 8 | 50% |
+| Glow Squid | `Glow_Squid` | `KELP` | 24 | 50% |
+| Horse | `Horse` | `APPLE` | 8 | 50% |
+| Mooshroom | `Mooshroom` | `RED_MUSHROOM` | 8 | 50% |
+| Mule | `Mule` | `APPLE` | 8 | 50% |
+| Ocelot | `Ocelot` | `COD` | 8 | 50% |
+| Parrot | `Parrot` | `PUMPKIN_SEEDS` | 8 | 50% |
+| Pig | `Pig` | `CARROT` | 16 | 50% |
+| Piglin (Baby) | `Piglin_Baby` | `NETHER_WART` | 8 | 50% |
+| Polar Bear (Baby) | `Polar_Bear_Baby` | `SALMON` | 17 | 50% |
+| Pufferfish | `Pufferfish` | `KELP` | 24 | 50% |
+| Rabbit | `Rabbit` | `DANDELION` | 8 | 50% |
+| Salmon | `Salmon` | `KELP` | 24 | 50% |
+| Sheep | `Sheep` | `WHEAT` | 8 | 50% |
+| Skeleton Horse | `Skeleton_Horse` | `BONE` | 8 | 50% |
+| Sniffer | `Sniffer` | `GRASS` | 32 | 50% |
+| Snow Golem | `Snow_Golem` | `SNOWBALL` | 32 | 50% |
+| Squid | `Squid` | `KELP` | 24 | 50% |
+| Strider | `Strider` | `NETHER_WART` | 32 | 50% |
+| Tropical Fish | `Tropical_Fish` | `KELP` | 24 | 50% |
+| Turtle | `Turtle` | `SEAGRASS` | 16 | 50% |
+| Villager | `Villager` | `POTATO` | 8 | 50% |
+| Wandering Trader | `Wandering Trader` | `GOLD_INGOT` | 8 | 50% |
 
 #### Neutral Mobs
 
-| Entity | Required Item | Amount | Chance |
-|--------|--------------|--------|--------|
-| Bee | Honeycomb | 8 | 50% |
-| Cave Spider | Rotten Flesh | 16 | 50% |
-| Dolphin | Kelp | 24 | 50% |
-| Enderman | Ender Pearl | 8 | 50% |
-| Goat | Paper | 8 | 50% |
-| Iron Golem | Iron Ingot | 24 | 50% |
-| Llama | Beetroot Seeds | 8 | 50% |
-| Panda | Bamboo | 16 | 50% |
-| Piglin (Adult) | Nether Wart | 16 | 50% |
-| Polar Bear | Cod | 16 | 50% |
-| Spider | Rotten Flesh | 16 | 50% |
-| Wolf | Cooked Beef | 8 | 50% |
-| Zombified Piglin | Nether Wart | 32 | 50% |
+| Entity | Config Key | Required Item (`MATERIAL` name) | Amount | Chance |
+|--------|-----------|--------------------------------|--------|--------|
+| Bee | `Bee` | `HONEYCOMB` | 8 | 50% |
+| Cave Spider | `Cave_Spider` | `ROTTEN_FLESH` | 16 | 50% |
+| Dolphin | `Dolphin` | `KELP` | 24 | 50% |
+| Enderman | `Enderman` | `ENDER_PEARL` | 8 | 50% |
+| Goat | `Goat` | `PAPER` | 8 | 50% |
+| Iron Golem | `Iron_Golem` | `IRON_INGOT` | 24 | 50% |
+| Llama | `Llama` | `BEETROOT_SEEDS` | 8 | 50% |
+| Panda | `Panda` | `BAMBOO` | 16 | 50% |
+| Piglin (Adult) | `Piglin_Adult` | `NETHER_WART` | 16 | 50% |
+| Polar Bear | `Polar_Bear` | `COD` | 16 | 50% |
+| Spider | `Spider` | `ROTTEN_FLESH` | 16 | 50% |
+| Wolf | `Wolf` | `COOKED_BEEF` | 8 | 50% |
+| Zombified Piglin | `Zombified_Piglin` | `NETHER_WART` | 32 | 50% |
 
 #### Hostile Mobs
 
-| Entity | Required Item | Amount | Chance |
-|--------|--------------|--------|--------|
-| Blaze | Blaze Rod | 16 | 50% |
-| Chicken Jockey | Bone | 16 | 50% |
-| Creeper | Gunpowder | 16 | 50% |
-| Drowned | Kelp | 16 | 50% |
-| Elder Guardian | Glowstone | 32 | 50% |
-| Endermite | Ender Pearl | 16 | 50% |
-| Evoker | Gold Ingot | 16 | 50% |
-| Ghast | Ghast Tear | 16 | 50% |
-| Guardian | Glowstone | 16 | 50% |
-| Hoglin | Crimson Roots | 16 | 50% |
-| Husk | Sand | 16 | 50% |
-| Magma Cube | Magma Cream | 16 | 50% |
-| Phantom | Soul Sand | 16 | 50% |
-| Piglin | Gold Ingot | 16 | 50% |
-| Pillager | Gold Ingot | 16 | 50% |
-| Ravager | Gold Ingot | 16 | 50% |
-| Ravager Jockey | Gold Ingot | 16 | 50% |
-| Shulker | Chest | 16 | 50% |
-| Silverfish | Stone | 16 | 50% |
-| Skeleton | Arrow | 16 | 50% |
-| Skeleton Horseman | Arrow | 32 | 50% |
-| Slime | Slime Ball | 16 | 50% |
-| Spider Jockey | Arrow | 16 | 50% |
-| Stray | Arrow | 16 | 50% |
-| Vex | Iron Sword | 16 | 50% |
-| Vindicator | Emerald | 16 | 50% |
-| Warden | Totem of Undying | 1 | 50% |
-| Witch | Brown Mushroom | 16 | 50% |
-| Wither Skeleton | Bone | 16 | 50% |
-| Zoglin | Rotten Flesh | 16 | 50% |
-| Zombie | Rotten Flesh | 16 | 50% |
-| Zombie Villager | Rotten Flesh | 16 | 50% |
+| Entity | Config Key | Required Item (`MATERIAL` name) | Amount | Chance |
+|--------|-----------|--------------------------------|--------|--------|
+| Blaze | `Blaze` | `BLAZE_ROD` | 16 | 50% |
+| Chicken Jockey | `Chicken_Jockey` | `BONE` | 16 | 50% |
+| Creeper | `Creeper` | `GUNPOWDER` | 16 | 50% |
+| Drowned | `Drowned` | `KELP` | 16 | 50% |
+| Elder Guardian | `Elder_Guardian` | `GLOWSTONE` | 32 | 50% |
+| Endermite | `Endermite` | `ENDER_PEARL` | 16 | 50% |
+| Evoker | `Evoker` | `GOLD_INGOT` | 16 | 50% |
+| Ghast | `Ghast` | `GHAST_TEAR` | 16 | 50% |
+| Guardian | `Guardian` | `GLOWSTONE` | 16 | 50% |
+| Hoglin | `Hoglin` | `CRIMSON_ROOTS` | 16 | 50% |
+| Husk | `Husk` | `SAND` | 16 | 50% |
+| Magma Cube | `Magma_Cube` | `MAGMA_CREAM` | 16 | 50% |
+| Phantom | `Phantom` | `SOUL_SAND` | 16 | 50% |
+| Piglin | `Piglin` | `GOLD_INGOT` | 16 | 50% |
+| Pillager | `Pillager` | `GOLD_INGOT` | 16 | 50% |
+| Ravager | `Ravager` | `GOLD_INGOT` | 16 | 50% |
+| Ravager Jockey | `Ravager_Jockey` | `GOLD_INGOT` | 16 | 50% |
+| Shulker | `Shulker` | `CHEST` | 16 | 50% |
+| Silverfish | `Silverfish` | `STONE` | 16 | 50% |
+| Skeleton | `Skeleton` | `ARROW` | 16 | 50% |
+| Skeleton Horseman | `Skeleton_Horseman` | `ARROW` | 32 | 50% |
+| Slime | `Slime` | `SLIME_BALL` | 16 | 50% |
+| Spider Jockey | `Spider_Jockey` | `ARROW` | 16 | 50% |
+| Stray | `Stray` | `ARROW` | 16 | 50% |
+| Vex | `Vex` | `IRON_SWORD` | 16 | 50% |
+| Vindicator | `Vindicator` | `EMERALD` | 16 | 50% |
+| Warden | `Warden` | `TOTEM_OF_UNDYING` | 1 | 50% |
+| Witch | `Witch` | `BROWN_MUSHROOM` | 16 | 50% |
+| Wither Skeleton | `Wither_Skeleton` | `BONE` | 16 | 50% |
+| Zoglin | `Zoglin` | `ROTTEN_FLESH` | 16 | 50% |
+| Zombie | `Zombie` | `ROTTEN_FLESH` | 16 | 50% |
+| Zombie Villager | `Zombie_Villager` | `ROTTEN_FLESH` | 16 | 50% |
 
 #### Boss Mobs
 
-| Entity | Required Item | Amount | Chance |
-|--------|--------------|--------|--------|
-| Ender Dragon | Ender Eye | 64 | 50% |
-| Wither | Wither Skeleton Skull | 16 | 50% |
+| Entity | Config Key | Required Item (`MATERIAL` name) | Amount | Chance |
+|--------|-----------|--------------------------------|--------|--------|
+| Ender Dragon | `Ender_Dragon` | `ENDER_EYE` | 64 | 50% |
+| Wither | `Wither` | `WITHER_SKELETON_SKULL` | 16 | 50% |
 
 ### Example: Customizing an Entity Configuration
 

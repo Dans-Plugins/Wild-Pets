@@ -77,7 +77,9 @@ Wild Pets allows you to:
 /wp select PetName
 ```
 
-**Method 2: By Right-Click**
+**Method 2: By Right-Click (only when `rightClickToSelect` is `false`)**
+
+> Note: This method is only available when `configOptions.rightClickToSelect` is set to `false` in the plugin config. With the default setting (`true`), right-clicking a tamed pet selects it automatically without needing to enter selection mode first.
 
 1. Run `/wp select` to enter selection mode.
 2. Right-click the pet you want to select.
@@ -174,25 +176,21 @@ Wild Pets allows you to:
 
 **Steps:**
 
-1. **Select the pet** you want to lock.
-
-2. **Enter lock mode:**
+1. **Enter lock mode:**
    ```
    /wp lock
    ```
 
-3. **Right-click the pet** to lock it.
+2. **Right-click one of your owned pets** to lock it.
 
 **To unlock a pet:**
 
-1. **Select the pet** you want to unlock.
-
-2. **Enter unlock mode:**
+1. **Enter unlock mode:**
    ```
    /wp unlock
    ```
 
-3. **Right-click the pet** to unlock it.
+2. **Right-click one of your owned pets** to unlock it.
 
 ---
 

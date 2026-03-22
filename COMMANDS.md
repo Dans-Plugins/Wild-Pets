@@ -1,6 +1,6 @@
 # Wild Pets - Commands Reference
 
-This document provides a comprehensive list of all commands available in the Wild Pets plugin.
+This document describes the primary commands available in the Wild Pets plugin.
 
 ## Table of Contents
 - [Command Aliases](#command-aliases)
@@ -11,6 +11,7 @@ This document provides a comprehensive list of all commands available in the Wil
 - [Pet Behavior](#pet-behavior)
 - [Pet Management](#pet-management)
 - [Locking](#locking)
+- [Access Control](#access-control)
 - [Administration](#administration)
 
 ## Command Aliases
@@ -47,14 +48,14 @@ The main command can be accessed using either of the following aliases:
 
 ### `/wp select [petName]`
 **Permission:** `wp.select` (default: true)  
-**Description:** Selects a pet by name, or enters selection mode to select a pet by right-clicking it. Only one pet can be selected at a time.  
+**Description:** Selects a pet by name. When `configOptions.rightClickToSelect` is set to `false`, this command can also enter a temporary selection mode to select a pet by right-clicking it. Only one pet can be selected at a time.  
 **Usage:**
 - `/wp select PetName` - Select a pet by name
-- `/wp select` - Enter selection mode, then right-click a pet to select it
+- `/wp select` - (Only when `rightClickToSelect` is `false`) Enter selection mode, then right-click a pet to select it. When `rightClickToSelect` is `true` (the default), running `/wp select` without a pet name will result in a usage error.
 
 ### `/wp select cancel`
 **Permission:** `wp.select` (default: true)  
-**Description:** Cancels an active pet selection attempt.  
+**Description:** Cancels an active pet selection attempt. Only available when `configOptions.rightClickToSelect` is `false`.  
 **Usage:** `/wp select cancel`
 
 ## Pet Information
@@ -84,7 +85,7 @@ The main command can be accessed using either of the following aliases:
 **Usage:** `/wp follow`
 
 ### `/wp stay`
-**Permission:** `wp.stay` (default: true — inherited from `wp`)  
+**Permission:** `wp.stay` (must be explicitly granted; not defined in `plugin.yml` by default)  
 **Description:** Commands your selected pet to stay in its current location.  
 **Usage:** `/wp stay`
 
@@ -119,13 +120,20 @@ The main command can be accessed using either of the following aliases:
 
 ### `/wp lock`
 **Permission:** `wp.lock` (default: true)  
-**Description:** Enters lock mode. Right-click your selected pet to lock it, preventing other players from mounting it.  
+**Description:** Enters lock mode. Right-click one of your owned pets to lock it, preventing other players from mounting it.  
 **Usage:** `/wp lock`
 
 ### `/wp unlock`
 **Permission:** `wp.unlock` (default: true)  
-**Description:** Enters unlock mode. Right-click your selected pet to unlock it.  
+**Description:** Enters unlock mode. Right-click one of your owned pets to unlock it.  
 **Usage:** `/wp unlock`
+
+## Access Control
+
+### `/wp checkaccess`
+**Permission:** `wp.checkaccess`  
+**Description:** Enters access-check mode. Right-click a pet to view who has access to it.  
+**Usage:** `/wp checkaccess`
 
 ## Administration
 
