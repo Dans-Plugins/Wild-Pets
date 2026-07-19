@@ -39,7 +39,7 @@ public class PetListRepository {
         WpLocation wpLocation = new WpLocation(bukkitLocation.getX(), bukkitLocation.getY(), bukkitLocation.getZ());
         newPet.setLastKnownLocation(wpLocation);
         entity.setCustomName(ChatColor.GREEN + newPet.getName());
-        newPet.ensurePersistence();
+        newPet.ensurePersistence(entity);
         entity.playEffect(EntityEffect.LOVE_HEARTS);
 
         // add pet to pet list
@@ -84,10 +84,12 @@ public class PetListRepository {
      * Used when loading pets from storage.
      */
     public void addExistingPet(Pet pet) {
-        if (getPetList(pet.getOwnerUUID()) == null) {
+        PetList petList = getPetList(pet.getOwnerUUID());
+        if (petList == null) {
             createPetListForPlayer(pet.getOwnerUUID());
+            petList = getPetList(pet.getOwnerUUID());
         }
-        getPetList(pet.getOwnerUUID()).addPet(pet);
+        petList.addPet(pet);
         petsByEntityUUID.put(pet.getUniqueID(), pet);
     }
 
@@ -97,6 +99,15 @@ public class PetListRepository {
     public void clearAll() {
         petLists.clear();
         petsByEntityUUID.clear();
+    }
+
+    /**
+     * Returns true if no pets are currently tracked in the UUID index.
+     * Useful for cheaply short-circuiting work on hot event paths (e.g. chunk loads)
+     * when the plugin has no pets to act on.
+     */
+    public boolean hasNoTrackedPets() {
+        return petsByEntityUUID.isEmpty();
     }
 
     public Pet getPlayersPet(Player player, Entity entity) {

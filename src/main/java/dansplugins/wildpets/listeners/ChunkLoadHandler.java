@@ -22,10 +22,14 @@ public class ChunkLoadHandler implements Listener {
 
     @EventHandler()
     public void handle(ChunkLoadEvent event) {
+        if (petListRepository.hasNoTrackedPets()) {
+            // Avoid scanning the chunk's entities when no pets are tracked at all
+            return;
+        }
         for (Entity entity : event.getChunk().getEntities()) {
             Pet pet = petListRepository.getPet(entity);
             if (pet != null) {
-                pet.ensurePersistence();
+                pet.ensurePersistence(entity);
             }
         }
     }
