@@ -303,6 +303,62 @@ public class PetTest {
         assertEquals("Staying", pet.getMovementState());
     }
 
+    @Test
+    public void testEnsurePersistenceWithMob() {
+        // prepare - Mob supports setRemoveWhenFarAway
+        when(mockServer.getEntity(entityUniqueId)).thenReturn(mockMob);
+
+        // Create pet
+        Pet pet = new Pet(entityUniqueId, playerOwnerUniqueId, playerOwnerName, mockServerProvider);
+
+        // execute
+        pet.ensurePersistence();
+
+        // verify
+        verify(mockMob).setPersistent(true);
+        verify(mockMob).setRemoveWhenFarAway(false);
+    }
+
+    @Test
+    public void testEnsurePersistenceWithNonMobEntity() {
+        // prepare - mockEntity is just Entity, not Mob
+        when(mockServer.getEntity(entityUniqueId)).thenReturn(mockEntity);
+
+        // Create pet
+        Pet pet = new Pet(entityUniqueId, playerOwnerUniqueId, playerOwnerName, mockServerProvider);
+
+        // execute
+        pet.ensurePersistence();
+
+        // verify setPersistent is called, but setRemoveWhenFarAway is not (not a Mob)
+        verify(mockEntity).setPersistent(true);
+    }
+
+    @Test
+    public void testEnsurePersistenceWithNullEntity() {
+        // prepare - entity not found (e.g., in unloaded chunk)
+        when(mockServer.getEntity(entityUniqueId)).thenReturn(null);
+
+        // Create pet
+        Pet pet = new Pet(entityUniqueId, playerOwnerUniqueId, playerOwnerName, mockServerProvider);
+
+        // execute - should not throw an exception
+        pet.ensurePersistence();
+
+        // verify no interactions attempted on null entity
+    }
+
+    @Test
+    public void testEnsurePersistenceWithNullServerProvider() {
+        // Create pet with null server provider
+        Pet pet = new Pet(entityUniqueId, playerOwnerUniqueId, playerOwnerName, null);
+
+        // execute - should not throw an exception
+        pet.ensurePersistence();
+
+        // verify no exception occurred
+    }
+
     // Helper method to create test data
     private Map<String, String> createBasicPetData(String movementState) {
         Map<String, String> petData = new HashMap<>();

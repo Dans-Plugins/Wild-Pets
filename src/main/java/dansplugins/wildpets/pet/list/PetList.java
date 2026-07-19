@@ -61,7 +61,7 @@ public class PetList {
 
         if (entity != null) {
             entity.setCustomName("");
-            entity.setPersistent(false);
+            Pet.applyPersistenceFlags(entity, false);
             entity.setInvulnerable(false);
         }
         return getPets().remove(petToRemove);
