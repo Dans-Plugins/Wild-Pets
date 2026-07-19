@@ -55,6 +55,16 @@ public class TradeCommand extends AbstractPluginCommand {
             return false;
         }
 
+        // Defense in depth: the selection should already be scoped to the player's own
+        // pets, but a trade is an irreversible ownership transfer, so re-verify explicitly
+        // rather than relying solely on that invariant (mirrors the lock/unlock checks in
+        // InteractionHandler).
+        if (!pet.getOwnerUUID().equals(player.getUniqueId())) {
+            player.sendMessage(ChatColor.RED + "You don't own that pet.");
+            ephemeralData.clearPetSelectionForPlayer(player.getUniqueId());
+            return false;
+        }
+
         String targetName = args[0];
         Player targetPlayer = Bukkit.getPlayerExact(targetName);
 
