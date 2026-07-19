@@ -65,6 +65,17 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         this.ownerUUID = ownerUUID;
     }
 
+    /**
+     * Transfers ownership of this pet from its current owner to a new owner,
+     * updating the owner field and access list together so callers can't
+     * accidentally perform one without the other.
+     */
+    public void transferOwnershipTo(UUID previousOwnerUUID, UUID newOwnerUUID) {
+        setOwnerUUID(newOwnerUUID);
+        removeFromAccessList(previousOwnerUUID);
+        addToAccessList(newOwnerUUID);
+    }
+
     public String getName() {
         return name;
     }

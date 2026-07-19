@@ -52,14 +52,13 @@ public class PetListRepository {
 
     public boolean transferPet(Pet pet, UUID newOwnerUUID) {
         PetList oldList = getPetList(pet.getOwnerUUID());
-        if (oldList == null || !oldList.getPets().remove(pet)) {
+        if (oldList == null || !oldList.removePetForTransfer(pet)) {
             return false;
         }
 
         PetList newList = getPetList(newOwnerUUID);
         if (newList == null) {
-            createPetListForPlayer(newOwnerUUID);
-            newList = getPetList(newOwnerUUID);
+            newList = createPetListForPlayer(newOwnerUUID);
         }
 
         int petLimit = configService.getInt("petLimit");
@@ -69,9 +68,7 @@ public class PetListRepository {
             return false;
         }
 
-        pet.setOwnerUUID(newOwnerUUID);
-        pet.removeFromAccessList(oldList.getOwnerUUID());
-        pet.addToAccessList(newOwnerUUID);
+        pet.transferOwnershipTo(oldList.getOwnerUUID(), newOwnerUUID);
         newList.addPet(pet);
         return true;
     }
@@ -95,9 +92,10 @@ public class PetListRepository {
         return null;
     }
 
-    public void createPetListForPlayer(UUID playerUUID) {
+    public PetList createPetListForPlayer(UUID playerUUID) {
         PetList newPetList = new PetList(configService, playerUUID);
         getPetLists().add(newPetList);
+        return newPetList;
     }
 
     public Pet getPlayersPet(Player player, Entity entity) {

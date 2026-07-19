@@ -4,7 +4,6 @@ import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.exceptions.PetRecordNotFoundException;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.pet.list.PetListRepository;
-import dansplugins.wildpets.pet.record.PetRecord;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
 
 import org.bukkit.Bukkit;
@@ -78,8 +77,6 @@ public class TradeCommand extends AbstractPluginCommand {
             return false;
         }
 
-        String petName = pet.getName();
-
         boolean success = petListRepository.transferPet(pet, targetPlayer.getUniqueId());
         if (!success) {
             player.sendMessage(ChatColor.RED + "Failed to transfer pet.");
@@ -88,16 +85,16 @@ public class TradeCommand extends AbstractPluginCommand {
 
         // Update pet record
         try {
-            PetRecord petRecord = petRecordRepository.getPetRecord(pet.getUniqueID());
-            petRecord.setOwnerUUID(targetPlayer.getUniqueId());
+            petRecordRepository.getOrCreatePetRecord(pet).setOwnerUUID(targetPlayer.getUniqueId());
         } catch (PetRecordNotFoundException e) {
-            petRecordRepository.addPetRecord(pet);
+            player.sendMessage(ChatColor.RED + "Pet record wasn't found & the plugin wasn't able to recover. Please report this problem to the community.");
+            return false;
         }
 
         ephemeralData.clearPetSelectionForPlayer(player.getUniqueId());
 
-        player.sendMessage(ChatColor.GREEN + petName + " has been traded to " + targetPlayer.getName() + ".");
-        targetPlayer.sendMessage(ChatColor.GREEN + player.getName() + " has traded " + petName + " to you.");
+        player.sendMessage(ChatColor.GREEN + pet.getName() + " has been traded to " + targetPlayer.getName() + ".");
+        targetPlayer.sendMessage(ChatColor.GREEN + player.getName() + " has traded " + pet.getName() + " to you.");
         return true;
     }
 }
