@@ -67,6 +67,15 @@ public class PetList {
         return getPets().remove(petToRemove);
     }
 
+    /**
+     * Removes a pet from this list without clearing its entity state (custom name,
+     * persistence, invulnerability). Used when the pet is moving to another owner's
+     * list rather than being permanently released.
+     */
+    public boolean removePetForTransfer(Pet petToRemove) {
+        return getPets().remove(petToRemove);
+    }
+
     public void sendListOfPetsToPlayer(Player player) {
         if (getNumPets() == 0) {
             if (player.getUniqueId().equals(ownerUUID)) {

@@ -39,4 +39,17 @@ public class PetRecordRepository {
         }
         throw new PetRecordNotFoundException("Pet record for entity with UUID " + entityUUID + " not found.");
     }
+
+    /**
+     * Returns the existing record for this pet, creating one from its current
+     * state first if none exists yet.
+     */
+    public PetRecord getOrCreatePetRecord(Pet pet) throws PetRecordNotFoundException {
+        try {
+            return getPetRecord(pet.getUniqueID());
+        } catch (PetRecordNotFoundException e) {
+            addPetRecord(pet);
+            return getPetRecord(pet.getUniqueID());
+        }
+    }
 }

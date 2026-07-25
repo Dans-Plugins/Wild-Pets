@@ -61,6 +61,29 @@ public class PetListRepository {
         return removed;
     }
 
+    public boolean transferPet(Pet pet, UUID newOwnerUUID) {
+        PetList oldList = getPetList(pet.getOwnerUUID());
+        if (oldList == null || !oldList.removePetForTransfer(pet)) {
+            return false;
+        }
+
+        PetList newList = getPetList(newOwnerUUID);
+        if (newList == null) {
+            newList = createPetListForPlayer(newOwnerUUID);
+        }
+
+        int petLimit = configService.getInt("petLimit");
+        if (newList.getNumPets() >= petLimit) {
+            // Recipient is at pet limit; undo removal from old list
+            oldList.addPet(pet);
+            return false;
+        }
+
+        pet.transferOwnershipTo(oldList.getOwnerUUID(), newOwnerUUID);
+        newList.addPet(pet);
+        return true;
+    }
+
     public Pet getPet(Entity entity) {
         return petsByEntityUUID.get(entity.getUniqueId());
     }
@@ -74,9 +97,10 @@ public class PetListRepository {
         return null;
     }
 
-    public void createPetListForPlayer(UUID playerUUID) {
+    public PetList createPetListForPlayer(UUID playerUUID) {
         PetList newPetList = new PetList(configService, playerUUID);
         getPetLists().add(newPetList);
+        return newPetList;
     }
 
     /**
