@@ -28,7 +28,7 @@ public class DefaultCommand extends AbstractPluginCommand {
         commandSender.sendMessage(MessageFormat.line(ChatColor.GRAY + "Wiki:      " + ChatColor.WHITE + "https://github.com/dmccoystephenson/Wild-Pets/wiki"));
         commandSender.sendMessage(MessageFormat.line(ChatColor.GRAY + "Website:   " + ChatColor.WHITE + "https://dansplugins.com"));
         commandSender.sendMessage(MessageFormat.footer());
-        return false;
+        return true;
     }
 
     @Override

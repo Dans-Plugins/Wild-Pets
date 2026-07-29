@@ -124,10 +124,7 @@ public class ConfigService {
                     || option.equalsIgnoreCase("petNameCharacterLimit")
                     || option.equalsIgnoreCase("petLimit")) {
                 getConfig().set(configOptionsPrefix + option, Integer.parseInt(value));
-                sender.sendMessage("");
-                sender.sendMessage(MessageFormat.header("Wild Pets", "Config"));
-                sender.sendMessage(MessageFormat.line(ChatColor.GREEN + "Integer set."));
-                sender.sendMessage(MessageFormat.footer());
+                MessageFormat.sendSuccessBox(sender, "Config", ChatColor.GREEN + "Integer set.");
             } else if (option.equalsIgnoreCase("debugMode")
                     || option.equalsIgnoreCase("rightClickToSelect")
                     || option.equalsIgnoreCase("preventMountingLockedPets")
@@ -136,22 +133,13 @@ public class ConfigService {
                     || option.equalsIgnoreCase("bornPetsEnabled")
                     || option.equalsIgnoreCase("damageFromPetsEnabled")) {
                 getConfig().set(configOptionsPrefix + option, Boolean.parseBoolean(value));
-                sender.sendMessage("");
-                sender.sendMessage(MessageFormat.header("Wild Pets", "Config"));
-                sender.sendMessage(MessageFormat.line(ChatColor.GREEN + "Boolean set."));
-                sender.sendMessage(MessageFormat.footer());
+                MessageFormat.sendSuccessBox(sender, "Config", ChatColor.GREEN + "Boolean set.");
             } else if (option.equalsIgnoreCase("C")) { // no doubles yet
                 getConfig().set(configOptionsPrefix + option, Double.parseDouble(value));
-                sender.sendMessage("");
-                sender.sendMessage(MessageFormat.header("Wild Pets", "Config"));
-                sender.sendMessage(MessageFormat.line(ChatColor.GREEN + "Double set."));
-                sender.sendMessage(MessageFormat.footer());
+                MessageFormat.sendSuccessBox(sender, "Config", ChatColor.GREEN + "Double set.");
             } else {
                 getConfig().set(configOptionsPrefix + option, value);
-                sender.sendMessage("");
-                sender.sendMessage(MessageFormat.header("Wild Pets", "Config"));
-                sender.sendMessage(MessageFormat.line(ChatColor.GREEN + "String set."));
-                sender.sendMessage(MessageFormat.footer());
+                MessageFormat.sendSuccessBox(sender, "Config", ChatColor.GREEN + "String set.");
             }
 
             // save
@@ -163,21 +151,39 @@ public class ConfigService {
     }
 
     public void sendConfigList(CommandSender sender) {
+        String[][] configEntries = {
+            {"version", getConfig().getString("version")},
+            {"debugMode", getString("debugMode")},
+            {"petLimit", getString("petLimit")},
+            {"cancelTamingAfterFailedAttempt", getString("cancelTamingAfterFailedAttempt")},
+            {"rightClickViewCooldown", String.valueOf(getInt("rightClickViewCooldown"))},
+            {"rightClickToSelect", String.valueOf(getBoolean("rightClickToSelect"))},
+            {"maxScheduleAttempts", String.valueOf(getInt("maxScheduleAttempts"))},
+            {"petNameCharacterLimit", String.valueOf(getInt("petNameCharacterLimit"))},
+            {"preventMountingLockedPets", String.valueOf(getBoolean("preventMountingLockedPets"))},
+            {"damageToPetsEnabled", String.valueOf(getBoolean("damageToPetsEnabled"))},
+            {"showLineageInfo", String.valueOf(getBoolean("showLineageInfo"))},
+            {"bornPetsEnabled", String.valueOf(getBoolean("bornPetsEnabled"))},
+            {"damageFromPetsEnabled", String.valueOf(getBoolean("damageFromPetsEnabled"))}
+        };
+
+        // Compute max key length for alignment
+        int maxKeyLength = 0;
+        for (String[] entry : configEntries) {
+            if (entry[0].length() > maxKeyLength) {
+                maxKeyLength = entry[0].length();
+            }
+        }
+        // Add space for colon and trailing space
+        int columnWidth = maxKeyLength + 2;
+
         sender.sendMessage("");
         sender.sendMessage(MessageFormat.header("Wild Pets", "Config"));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "version:                         " + ChatColor.WHITE + getConfig().getString("version")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "debugMode:                       " + ChatColor.WHITE + getString("debugMode")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "petLimit:                        " + ChatColor.WHITE + getString("petLimit")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "cancelTamingAfterFailedAttempt:  " + ChatColor.WHITE + getString("cancelTamingAfterFailedAttempt")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "rightClickViewCooldown:          " + ChatColor.WHITE + getInt("rightClickViewCooldown")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "rightClickToSelect:              " + ChatColor.WHITE + getBoolean("rightClickToSelect")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "maxScheduleAttempts:             " + ChatColor.WHITE + getInt("maxScheduleAttempts")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "petNameCharacterLimit:           " + ChatColor.WHITE + getInt("petNameCharacterLimit")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "preventMountingLockedPets:       " + ChatColor.WHITE + getBoolean("preventMountingLockedPets")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "damageToPetsEnabled:             " + ChatColor.WHITE + getBoolean("damageToPetsEnabled")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "showLineageInfo:                 " + ChatColor.WHITE + getBoolean("showLineageInfo")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "bornPetsEnabled:                 " + ChatColor.WHITE + getBoolean("bornPetsEnabled")));
-        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "damageFromPetsEnabled:           " + ChatColor.WHITE + getBoolean("damageFromPetsEnabled")));
+        for (String[] entry : configEntries) {
+            String label = entry[0] + ":";
+            String padding = " ".repeat(columnWidth - label.length());
+            sender.sendMessage(MessageFormat.line(ChatColor.GRAY + label + padding + ChatColor.WHITE + entry[1]));
+        }
         sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "Note: Entity configurations are not shown."));
         sender.sendMessage(MessageFormat.footer());
     }
