@@ -65,6 +65,17 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
         this.ownerUUID = ownerUUID;
     }
 
+    /**
+     * Transfers ownership of this pet from its current owner to a new owner,
+     * updating the owner field and access list together so callers can't
+     * accidentally perform one without the other.
+     */
+    public void transferOwnershipTo(UUID previousOwnerUUID, UUID newOwnerUUID) {
+        setOwnerUUID(newOwnerUUID);
+        removeFromAccessList(previousOwnerUUID);
+        addToAccessList(newOwnerUUID);
+    }
+
     public String getName() {
         return name;
     }
@@ -97,23 +108,31 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
     }
 
     /**
+     * Resolves the live entity for this pet, if it is currently loaded.
+     * Returns null if the server provider/server is unavailable or the entity isn't loaded.
+     */
+    private Entity getLoadedEntity() {
+        if (serverProvider == null) {
+            // Server provider not available; cannot resolve the entity safely
+            return null;
+        }
+        Server server = serverProvider.get();
+        if (server == null) {
+            // Server not available; cannot resolve the entity safely
+            return null;
+        }
+        // Entity not found (e.g., in unloaded chunk) results in null being returned
+        return server.getEntity(uniqueID);
+    }
+
+    /**
      * Applies the appropriate AI state based on the pet's movement state.
      * Disables AI for pets in stay mode, enables it for follow and wander modes.
      * Returns silently if the entity is not currently loaded or is not a {@link Mob} instance.
      */
     public void applyAIState() {
-        if (serverProvider == null) {
-            // Server provider not available; cannot apply AI state safely
-            return;
-        }
-        Server server = serverProvider.get();
-        if (server == null) {
-            // Server not available; cannot apply AI state safely
-            return;
-        }
-        Entity entity = server.getEntity(uniqueID);
+        Entity entity = getLoadedEntity();
         if (entity == null) {
-            // Entity not found (e.g., in unloaded chunk) - will be applied when entity loads
             return;
         }
         if (entity instanceof Mob) {
@@ -121,6 +140,42 @@ public class Pet extends AbstractFamilialEntity implements Lockable<UUID>, Savab
             // Disable AI for stay mode, enable for follow and wander modes
             mob.setAware(!movementState.equals("Staying"));
         }
+    }
+
+    /**
+     * Sets persistence-related flags on the given entity: whether it persists in the world and,
+     * for {@link Mob} entities, whether it is exempt from distance-based despawning.
+     */
+    public static void applyPersistenceFlags(Entity entity, boolean persist) {
+        entity.setPersistent(persist);
+        if (entity instanceof Mob) {
+            ((Mob) entity).setRemoveWhenFarAway(!persist);
+        }
+    }
+
+    /**
+     * Ensures that persistence and "do not remove when far away" flags are applied to the given
+     * entity, which is assumed to already be resolved/loaded (e.g. from a chunk-load event).
+     * This helps prevent the entity from being removed by distance-based despawn mechanics while it
+     * is loaded. It does not prevent chunk unloading itself; these flags may need to be re-applied
+     * after the entity is reloaded.
+     * Returns silently if the entity is null.
+     */
+    public void ensurePersistence(Entity entity) {
+        if (entity == null) {
+            return;
+        }
+        applyPersistenceFlags(entity, true);
+    }
+
+    /**
+     * Ensures that, for a currently loaded pet entity, persistence and "do not remove when far away"
+     * flags are applied. Resolves the entity by UUID; prefer {@link #ensurePersistence(Entity)} when
+     * the entity is already available to avoid a redundant lookup.
+     * Returns silently if the entity is not currently loaded.
+     */
+    public void ensurePersistence() {
+        ensurePersistence(getLoadedEntity());
     }
 
     public String getMovementState() {

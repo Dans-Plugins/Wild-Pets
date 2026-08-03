@@ -62,9 +62,18 @@ public class PetList {
 
         if (entity != null) {
             entity.setCustomName("");
-            entity.setPersistent(false);
+            Pet.applyPersistenceFlags(entity, false);
             entity.setInvulnerable(false);
         }
+        return getPets().remove(petToRemove);
+    }
+
+    /**
+     * Removes a pet from this list without clearing its entity state (custom name,
+     * persistence, invulnerability). Used when the pet is moving to another owner's
+     * list rather than being permanently released.
+     */
+    public boolean removePetForTransfer(Pet petToRemove) {
         return getPets().remove(petToRemove);
     }
 

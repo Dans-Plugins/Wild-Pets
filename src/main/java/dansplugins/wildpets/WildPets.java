@@ -146,6 +146,7 @@ public final class WildPets extends JavaPlugin {
         listeners.add(new JoinAndQuitHandler(petListRepository, ephemeralData));
         listeners.add(new MoveHandler(petListRepository));
         listeners.add(new BreedEventHandler(petListRepository, petRecordRepository, configService, ephemeralData));
+        listeners.add(new ChunkLoadHandler(petListRepository));
         EventHandlerRegistry eventHandlerRegistry = new EventHandlerRegistry();
         eventHandlerRegistry.registerEventHandlers(listeners, this);
     }
@@ -160,7 +161,7 @@ public final class WildPets extends JavaPlugin {
                 new InfoCommand(ephemeralData, configService, petRecordRepository), new ListCommand(petListRepository), new LocateCommand(ephemeralData),
                 new LockCommand(ephemeralData), new RenameCommand(ephemeralData, petListRepository, petRecordRepository, configService),
                 new SelectCommand(configService, ephemeralData, petListRepository), new SetFreeCommand(ephemeralData, petListRepository), new StatsCommand(petListRepository),
-                new TameCommand(ephemeralData), new UnlockCommand(ephemeralData), new WanderCommand(ephemeralData),
+                new TameCommand(ephemeralData), new TradeCommand(ephemeralData, petListRepository, petRecordRepository), new UnlockCommand(ephemeralData), new WanderCommand(ephemeralData),
                 new StayCommand(ephemeralData), new GatherCommand(petListRepository)
         ));
         commandService.initialize(commands, "That command wasn't found.");
