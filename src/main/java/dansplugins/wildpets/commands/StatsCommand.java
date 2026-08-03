@@ -1,6 +1,7 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.pet.list.PetListRepository;
+import dansplugins.wildpets.utils.MessageFormat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -21,8 +22,12 @@ public class StatsCommand extends AbstractPluginCommand {
     }
 
     public boolean execute(CommandSender sender) {
-        sender.sendMessage(ChatColor.AQUA + "=== Wild Pets Statistics ===");
-        sender.sendMessage(ChatColor.AQUA + "Number of Pets: " + petListRepository.getAllPets().size());
+        int numPets = petListRepository.getAllPets().size();
+        sender.sendMessage("");
+        sender.sendMessage(MessageFormat.header("Wild Pets", "Statistics"));
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "Number of Pets: " +
+                ChatColor.GREEN + numPets));
+        sender.sendMessage(MessageFormat.footer());
         return true;
     }
 

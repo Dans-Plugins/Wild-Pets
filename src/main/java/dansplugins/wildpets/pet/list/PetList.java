@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import dansplugins.wildpets.config.ConfigService;
+import dansplugins.wildpets.utils.MessageFormat;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -82,24 +83,26 @@ public class PetList {
                 player.sendMessage(ChatColor.RED + "You don't have any pets yet.");
             }
             else {
-                player.sendMessage(ChatColor.AQUA + "That player doesn't have any pets yet.");
+                player.sendMessage(ChatColor.RED + "That player doesn't have any pets yet.");
             }
 
             return;
         }
 
-        player.sendMessage(ChatColor.AQUA + "=== List of Pets ===");
+        player.sendMessage("");
+        player.sendMessage(MessageFormat.header("Wild Pets", "List of Pets"));
         for (Pet pet : getPets()) {
             Entity entity = Bukkit.getEntity(pet.getUniqueID());
 
             if (entity != null) {
-                player.sendMessage(ChatColor.AQUA + pet.getName());
+                player.sendMessage(MessageFormat.line(ChatColor.WHITE + pet.getName()));
             }
             else {
-                player.sendMessage(ChatColor.AQUA + pet.getName() + ChatColor.RED + " [not found]");
+                player.sendMessage(MessageFormat.line(ChatColor.WHITE + pet.getName() + ChatColor.RED + " [not found]"));
             }
 
         }
+        player.sendMessage(MessageFormat.footer());
     }
 
     public int getNumPets() {

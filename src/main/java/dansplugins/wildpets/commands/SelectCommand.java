@@ -4,6 +4,7 @@ import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.config.ConfigService;
+import dansplugins.wildpets.utils.MessageFormat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -40,7 +41,10 @@ public class SelectCommand extends AbstractPluginCommand {
         }
         else {
             ephemeralData.setPlayerAsSelecting(player.getUniqueId());
-            player.sendMessage(ChatColor.GREEN + "Right click on an entity to select it. Type '/wp select cancel' to cancel selecting.");
+            player.sendMessage("");
+            player.sendMessage(MessageFormat.header("Wild Pets", "Select"));
+            player.sendMessage(MessageFormat.line(ChatColor.GREEN + "Right click on an entity to select it. Type '/wp select cancel' to cancel selecting."));
+            player.sendMessage(MessageFormat.footer());
             return true;
         }
     }
@@ -58,7 +62,10 @@ public class SelectCommand extends AbstractPluginCommand {
                 return false;
             }
             ephemeralData.setPlayerAsNotSelecting(player.getUniqueId());
-            player.sendMessage(ChatColor.GREEN + "Selecting cancelled.");
+            player.sendMessage("");
+            player.sendMessage(MessageFormat.header("Wild Pets", "Select"));
+            player.sendMessage(MessageFormat.line(ChatColor.GREEN + "Selecting cancelled."));
+            player.sendMessage(MessageFormat.footer());
             return true;
         }
 
@@ -73,7 +80,10 @@ public class SelectCommand extends AbstractPluginCommand {
 
         ephemeralData.selectPetForPlayer(pet, player.getUniqueId());
 
-        player.sendMessage(ChatColor.GREEN + pet.getName() + " selected.");
+        player.sendMessage("");
+        player.sendMessage(MessageFormat.header("Wild Pets", "Select"));
+        player.sendMessage(MessageFormat.line(ChatColor.GREEN + pet.getName() + " selected."));
+        player.sendMessage(MessageFormat.footer());
         return true;
     }
 }

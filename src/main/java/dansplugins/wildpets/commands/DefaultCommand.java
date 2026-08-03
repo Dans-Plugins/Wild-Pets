@@ -1,6 +1,7 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.WildPets;
+import dansplugins.wildpets.utils.MessageFormat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -20,11 +21,14 @@ public class DefaultCommand extends AbstractPluginCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        commandSender.sendMessage(ChatColor.AQUA + "Wild Pets " + wildPets.getVersion());
-        commandSender.sendMessage(ChatColor.AQUA + "Developer: DanTheTechMan");
-        commandSender.sendMessage(ChatColor.AQUA + "Wiki: https://github.com/dmccoystephenson/Wild-Pets/wiki");
-        commandSender.sendMessage(ChatColor.AQUA + "Website: https://dansplugins.com");
-        return false;
+        commandSender.sendMessage("");
+        commandSender.sendMessage(MessageFormat.header("Wild Pets", "Info"));
+        commandSender.sendMessage(MessageFormat.line(ChatColor.GRAY + "Version:   " + ChatColor.WHITE + wildPets.getVersion()));
+        commandSender.sendMessage(MessageFormat.line(ChatColor.GRAY + "Developer: " + ChatColor.WHITE + "DanTheTechMan"));
+        commandSender.sendMessage(MessageFormat.line(ChatColor.GRAY + "Wiki:      " + ChatColor.WHITE + "https://github.com/dmccoystephenson/Wild-Pets/wiki"));
+        commandSender.sendMessage(MessageFormat.line(ChatColor.GRAY + "Website:   " + ChatColor.WHITE + "https://dansplugins.com"));
+        commandSender.sendMessage(MessageFormat.footer());
+        return true;
     }
 
     @Override

@@ -2,6 +2,7 @@ package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.pet.Pet;
+import dansplugins.wildpets.utils.MessageFormat;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -41,7 +42,10 @@ public class CallCommand extends AbstractPluginCommand {
 
         if (entity != null) {
             entity.teleport(player.getLocation());
-            player.sendMessage(ChatColor.GREEN + pet.getName() + " has answered your call.");
+            player.sendMessage("");
+            player.sendMessage(MessageFormat.header("Wild Pets", "Call"));
+            player.sendMessage(MessageFormat.line(ChatColor.GREEN + pet.getName() + " has answered your call."));
+            player.sendMessage(MessageFormat.footer());
             return true;
         }
         else {

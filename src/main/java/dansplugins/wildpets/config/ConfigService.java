@@ -1,6 +1,7 @@
 package dansplugins.wildpets.config;
 
 import dansplugins.wildpets.WildPets;
+import dansplugins.wildpets.utils.MessageFormat;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -123,7 +124,7 @@ public class ConfigService {
                     || option.equalsIgnoreCase("petNameCharacterLimit")
                     || option.equalsIgnoreCase("petLimit")) {
                 getConfig().set(configOptionsPrefix + option, Integer.parseInt(value));
-                sender.sendMessage(ChatColor.GREEN + "Integer set.");
+                MessageFormat.sendSuccessBox(sender, "Config", ChatColor.GREEN + "Integer set.");
             } else if (option.equalsIgnoreCase("debugMode")
                     || option.equalsIgnoreCase("rightClickToSelect")
                     || option.equalsIgnoreCase("preventMountingLockedPets")
@@ -132,13 +133,13 @@ public class ConfigService {
                     || option.equalsIgnoreCase("bornPetsEnabled")
                     || option.equalsIgnoreCase("damageFromPetsEnabled")) {
                 getConfig().set(configOptionsPrefix + option, Boolean.parseBoolean(value));
-                sender.sendMessage(ChatColor.GREEN + "Boolean set.");
+                MessageFormat.sendSuccessBox(sender, "Config", ChatColor.GREEN + "Boolean set.");
             } else if (option.equalsIgnoreCase("C")) { // no doubles yet
                 getConfig().set(configOptionsPrefix + option, Double.parseDouble(value));
-                sender.sendMessage(ChatColor.GREEN + "Double set.");
+                MessageFormat.sendSuccessBox(sender, "Config", ChatColor.GREEN + "Double set.");
             } else {
                 getConfig().set(configOptionsPrefix + option, value);
-                sender.sendMessage(ChatColor.GREEN + "String set.");
+                MessageFormat.sendSuccessBox(sender, "Config", ChatColor.GREEN + "String set.");
             }
 
             // save
@@ -150,24 +151,41 @@ public class ConfigService {
     }
 
     public void sendConfigList(CommandSender sender) {
-        sender.sendMessage(ChatColor.AQUA + "=== Config List ===");
-        sender.sendMessage(ChatColor.AQUA + "version: " + getConfig().getString("version")
-                + ", debugMode: " + getString("debugMode")
-                + ", petLimit: " + getString("petLimit")
-                + ", cancelTamingAfterFailedAttempt: " + getString("cancelTamingAfterFailedAttempt")
-                + ", rightClickViewCooldown: " + getInt("rightClickViewCooldown")
-                + ", rightClickToSelect: " + getBoolean("rightClickToSelect")
-                + ", secondsBetweenSchedulingAttempts: " + getInt("secondsBetweenSchedulingAttempts")
-                + ", maxScheduleAttempts: " + getInt("maxScheduleAttempts")
-                + ", petNameCharacterLimit: " + getInt("petNameCharacterLimit")
-                + ", preventMountingLockedPets: " + getInt("preventMountingLockedPets")
-                + ", damageToPetsEnabled: " + getBoolean("damageToPetsEnabled")
-                + ", showLineageInfo: " + getBoolean("bornPetsEnabled")
-                + ", bornPetsEnabled: " + getBoolean("bornPetsEnabled")
-                + ", damageFromPetsEnabled: " + getBoolean("damageFromPetsEnabled"));
-        sender.sendMessage(ChatColor.AQUA + "====================");
-        sender.sendMessage(ChatColor.AQUA + "Note: Entity configurations are not shown.");
-        sender.sendMessage(ChatColor.AQUA + "====================");
+        String[][] configEntries = {
+            {"version", getConfig().getString("version")},
+            {"debugMode", getString("debugMode")},
+            {"petLimit", getString("petLimit")},
+            {"cancelTamingAfterFailedAttempt", getString("cancelTamingAfterFailedAttempt")},
+            {"rightClickViewCooldown", String.valueOf(getInt("rightClickViewCooldown"))},
+            {"rightClickToSelect", String.valueOf(getBoolean("rightClickToSelect"))},
+            {"maxScheduleAttempts", String.valueOf(getInt("maxScheduleAttempts"))},
+            {"petNameCharacterLimit", String.valueOf(getInt("petNameCharacterLimit"))},
+            {"preventMountingLockedPets", String.valueOf(getBoolean("preventMountingLockedPets"))},
+            {"damageToPetsEnabled", String.valueOf(getBoolean("damageToPetsEnabled"))},
+            {"showLineageInfo", String.valueOf(getBoolean("showLineageInfo"))},
+            {"bornPetsEnabled", String.valueOf(getBoolean("bornPetsEnabled"))},
+            {"damageFromPetsEnabled", String.valueOf(getBoolean("damageFromPetsEnabled"))}
+        };
+
+        // Compute max key length for alignment
+        int maxKeyLength = 0;
+        for (String[] entry : configEntries) {
+            if (entry[0].length() > maxKeyLength) {
+                maxKeyLength = entry[0].length();
+            }
+        }
+        // Add space for colon and trailing space
+        int columnWidth = maxKeyLength + 2;
+
+        sender.sendMessage("");
+        sender.sendMessage(MessageFormat.header("Wild Pets", "Config"));
+        for (String[] entry : configEntries) {
+            String label = entry[0] + ":";
+            String padding = String.format("%-" + (columnWidth - label.length()) + "s", "");
+            sender.sendMessage(MessageFormat.line(ChatColor.GRAY + label + padding + ChatColor.WHITE + entry[1]));
+        }
+        sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "Note: Entity configurations are not shown."));
+        sender.sendMessage(MessageFormat.footer());
     }
 
     public boolean hasBeenAltered() {
