@@ -181,7 +181,7 @@ public class ConfigService {
         sender.sendMessage(MessageFormat.header("Wild Pets", "Config"));
         for (String[] entry : configEntries) {
             String label = entry[0] + ":";
-            String padding = " ".repeat(columnWidth - label.length());
+            String padding = String.format("%-" + (columnWidth - label.length()) + "s", "");
             sender.sendMessage(MessageFormat.line(ChatColor.GRAY + label + padding + ChatColor.WHITE + entry[1]));
         }
         sender.sendMessage(MessageFormat.line(ChatColor.GRAY + "Note: Entity configurations are not shown."));
