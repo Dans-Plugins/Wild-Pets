@@ -12,6 +12,7 @@ This guide provides step-by-step instructions for common scenarios and getting s
   - [Managing Multiple Pets](#managing-multiple-pets)
   - [Locating a Pet](#locating-a-pet)
   - [Locking a Pet](#locking-a-pet)
+  - [Trading a Pet](#trading-a-pet)
   - [Releasing a Pet](#releasing-a-pet)
 - [Tips and Best Practices](#tips-and-best-practices)
 - [Troubleshooting](#troubleshooting)
@@ -191,6 +192,25 @@ Wild Pets allows you to:
    ```
 
 2. **Right-click one of your owned pets** to unlock it.
+
+---
+
+### Trading a Pet
+
+**Goal:** Give one of your pets to another player.
+
+**Steps:**
+
+1. **Select the pet** you want to trade away (see [Selecting a Pet](#selecting-a-pet)).
+
+2. **Trade the pet** to an online player:
+   ```
+   /wp trade PlayerName
+   ```
+
+3. **Both players are notified** once the trade succeeds. The pet leaves your pet list, your selection is cleared, and the pet counts against the other player's pet limit from then on.
+
+> Note: The target player must be online, and you cannot trade a pet to yourself. A trade is also refused when the other player has already reached the `petLimit`. Ownership transfers immediately and cannot be undone by the plugin — the new owner has to trade the pet back.
 
 ---
 
