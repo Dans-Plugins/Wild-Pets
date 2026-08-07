@@ -41,8 +41,8 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/Wild-Pet
 1. Ensure docker is installed.
 2. Reopen the project in the provided dev container with the following commands:
 ```
-sudo cd ./.devcontainer
-sudo ./start_dev_container
+cd ./.devcontainer
+./start_dev_container.sh
 ```
 3. Run `mvn test`.
 

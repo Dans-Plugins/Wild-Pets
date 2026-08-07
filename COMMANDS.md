@@ -10,6 +10,7 @@ This document describes the primary commands available in the Wild Pets plugin.
 - [Pet Information](#pet-information)
 - [Pet Behavior](#pet-behavior)
 - [Pet Management](#pet-management)
+- [Trading](#trading)
 - [Locking](#locking)
 - [Access Control](#access-control)
 - [Administration](#administration)
@@ -85,7 +86,7 @@ The main command can be accessed using either of the following aliases:
 **Usage:** `/wp follow`
 
 ### `/wp stay`
-**Permission:** `wp.stay` (must be explicitly granted; not defined in `plugin.yml` by default)  
+**Permission:** `wp.stay` (not defined in `plugin.yml`; operators have it by default, other players must be granted it explicitly)  
 **Description:** Commands your selected pet to stay in its current location.  
 **Usage:** `/wp stay`
 
@@ -116,6 +117,13 @@ The main command can be accessed using either of the following aliases:
 **Description:** Releases your currently selected pet, removing it from your ownership.  
 **Usage:** `/wp setfree`
 
+## Trading
+
+### `/wp trade <playerName>`
+**Permission:** `wp.trade` (default: true)  
+**Description:** Transfers ownership of your currently selected pet to another online player. The target player must be online, must not be yourself, and must be below the `petLimit`; you must also own the selected pet. Once the trade succeeds, the pet is removed from your pet list, your selection is cleared, and both players are notified.  
+**Usage:** `/wp trade PlayerName`
+
 ## Locking
 
 ### `/wp lock`
@@ -131,7 +139,7 @@ The main command can be accessed using either of the following aliases:
 ## Access Control
 
 ### `/wp checkaccess`
-**Permission:** `wp.checkaccess`  
+**Permission:** `wp.checkaccess` (not defined in `plugin.yml`; operators have it by default, other players must be granted it explicitly)  
 **Description:** Enters access-check mode. Right-click a pet to view who has access to it.  
 **Usage:** `/wp checkaccess`
 
