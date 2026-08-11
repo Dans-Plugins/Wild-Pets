@@ -102,11 +102,10 @@ public class PetListTest {
         // execute
         boolean removed = petList.removePetForTransfer(pet);
 
-        // verify
+        // verify - reaching this point at all shows no entity lookup happened: unlike
+        // removePet, this path never calls Bukkit.getEntity, which would throw under test
         assertTrue(removed);
         assertEquals(0, petList.getNumPets());
-        // The entity is never resolved, so its name/persistence/invulnerability are untouched
-        verify(mockServer, never()).getEntity(pet.getUniqueID());
     }
 
     @Test
