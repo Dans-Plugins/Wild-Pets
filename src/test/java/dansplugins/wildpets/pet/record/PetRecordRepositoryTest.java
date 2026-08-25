@@ -124,17 +124,31 @@ public class PetRecordRepositoryTest {
     }
 
     @Test
-    public void testAddPetRecordTwiceStoresDuplicateRecords() {
-        // Characterization of current behaviour: PetRecord overrides equals() but not
-        // hashCode(), so the backing HashSet cannot detect that two records describe the
-        // same entity and stores both. Tracked separately as a bug, not fixed here.
+    public void testAddPetRecordTwiceDoesNotStoreDuplicateRecords() {
+        // PetRecord keys both equals() and hashCode() on uniqueID, so the backing HashSet
+        // recognises that two records describe the same entity and keeps only one.
 
         // execute
         petRecordRepository.addPetRecord(pet);
         boolean addedAgain = petRecordRepository.addPetRecord(pet);
 
         // verify
-        assertTrue(addedAgain);
-        assertEquals(2, petRecordRepository.getPetRecords().size());
+        assertFalse(addedAgain);
+        assertEquals(1, petRecordRepository.getPetRecords().size());
+    }
+
+    @Test
+    public void testRepeatedAddsAfterRenameKeepASingleRecord() {
+        // prepare - RenameCommand re-adds the record on every successful rename
+        petRecordRepository.addPetRecord(pet);
+
+        // execute
+        for (int rename = 0; rename < 5; rename++) {
+            pet.setName("Renamed_" + rename);
+            petRecordRepository.addPetRecord(pet);
+        }
+
+        // verify - the record set does not grow with each rename
+        assertEquals(1, petRecordRepository.getPetRecords().size());
     }
 }

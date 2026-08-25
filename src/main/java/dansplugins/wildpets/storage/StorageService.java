@@ -104,7 +104,7 @@ public class StorageService {
 
         for (Pet pet : allPets) {
             petListRepository.addExistingPet(pet);
-            petRecordRepository.addPetRecord(pet); // will not result in duplicates because petRecords is a hashset
+            petRecordRepository.addPetRecord(pet); // will not result in duplicates because petRecords is a hashset and PetRecord implements equals()/hashCode() on uniqueID
         }
         
         // Apply AI state to loaded pets

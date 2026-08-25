@@ -8,7 +8,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -124,5 +126,36 @@ public class PetRecordTest {
         // verify
         assertNotEquals(null, petRecord);
         assertNotEquals("not a pet record", petRecord);
+    }
+
+    @Test
+    public void testHashCodeIsBasedOnUniqueIDAlone() {
+        // prepare - equal records must agree on hashCode, whatever else differs
+        PetRecord petRecord = new PetRecord(pet);
+        PetRecord sameEntityRecord = new PetRecord(pet);
+        sameEntityRecord.setName("A_Different_Name");
+        sameEntityRecord.setOwnerUUID(UUID.randomUUID());
+        sameEntityRecord.setAssignedID(99);
+
+        // verify
+        assertEquals(petRecord, sameEntityRecord);
+        assertEquals(petRecord.hashCode(), sameEntityRecord.hashCode());
+    }
+
+    @Test
+    public void testEqualRecordsCollapseInAHashSet() {
+        // prepare
+        PetRecord petRecord = new PetRecord(pet);
+        PetRecord sameEntityRecord = new PetRecord(pet);
+        sameEntityRecord.setName("A_Different_Name");
+
+        // execute
+        Set<PetRecord> records = new HashSet<>();
+        records.add(petRecord);
+        boolean addedAgain = records.add(sameEntityRecord);
+
+        // verify
+        assertFalse(addedAgain);
+        assertEquals(1, records.size());
     }
 }

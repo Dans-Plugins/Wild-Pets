@@ -8,6 +8,7 @@ import dansplugins.wildpets.data.Savable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -90,5 +91,15 @@ public class PetRecord implements Savable {
         if (o == null || getClass() != o.getClass()) return false;
         PetRecord petRecord = (PetRecord) o;
         return uniqueID.equals(petRecord.uniqueID);
+    }
+
+    /**
+     * Keyed on uniqueID to stay consistent with equals(), so that hash-based collections
+     * such as the HashSet backing PetRecordRepository deduplicate records describing the
+     * same entity.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(uniqueID);
     }
 }
