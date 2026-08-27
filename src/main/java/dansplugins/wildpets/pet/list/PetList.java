@@ -1,12 +1,13 @@
 package dansplugins.wildpets.pet.list;
 
 import dansplugins.wildpets.pet.Pet;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Server;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import dansplugins.wildpets.config.ConfigService;
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.utils.MessageFormat;
 
 import java.util.ArrayList;
@@ -18,12 +19,18 @@ import java.util.UUID;
  */
 public class PetList {
     private final ConfigService configService;
+    private final ServerProvider serverProvider;
 
     private final UUID ownerUUID;
     private final ArrayList<Pet> pets = new ArrayList<>();
 
     public PetList(ConfigService configService, UUID playerUUID) {
+        this(configService, playerUUID, new ServerProvider());
+    }
+
+    public PetList(ConfigService configService, UUID playerUUID, ServerProvider serverProvider) {
         this.configService = configService;
+        this.serverProvider = serverProvider;
         ownerUUID = playerUUID;
     }
 
@@ -58,7 +65,7 @@ public class PetList {
     }
 
     public boolean removePet(Pet petToRemove) {
-        Entity entity = Bukkit.getEntity(petToRemove.getUniqueID());
+        Entity entity = getLoadedEntity(petToRemove.getUniqueID());
 
         if (entity != null) {
             entity.setCustomName("");
@@ -92,7 +99,7 @@ public class PetList {
         player.sendMessage("");
         player.sendMessage(MessageFormat.header("Wild Pets", "List of Pets"));
         for (Pet pet : getPets()) {
-            Entity entity = Bukkit.getEntity(pet.getUniqueID());
+            Entity entity = getLoadedEntity(pet.getUniqueID());
 
             if (entity != null) {
                 player.sendMessage(MessageFormat.line(ChatColor.WHITE + pet.getName()));
@@ -136,6 +143,24 @@ public class PetList {
             }
         }
         return toReturn;
+    }
+
+    /**
+     * Resolves the live entity for the given pet UUID, if it is currently loaded.
+     * Returns null if the server provider/server is unavailable or the entity isn't loaded.
+     */
+    private Entity getLoadedEntity(UUID entityUUID) {
+        if (serverProvider == null) {
+            // Server provider not available; cannot resolve the entity safely
+            return null;
+        }
+        Server server = serverProvider.get();
+        if (server == null) {
+            // Server not available; cannot resolve the entity safely
+            return null;
+        }
+        // Entity not found (e.g., in unloaded chunk) results in null being returned
+        return server.getEntity(entityUUID);
     }
 
     private boolean isIDTaken(int ID) {

@@ -53,7 +53,7 @@ public class PetListRepositoryTest {
         when(mockMob.getUniqueId()).thenReturn(entityUUID);
         when(mockMob.getLocation()).thenReturn(new Location(null, 10.9, 64.2, -3.5));
 
-        petListRepository = new PetListRepository(mockConfigService);
+        petListRepository = new PetListRepository(mockConfigService, mockServerProvider);
     }
 
     @Test
@@ -276,6 +276,35 @@ public class PetListRepositoryTest {
     public void testRemovePetReturnsFalseWhenOwnerHasNoPetList() {
         // prepare
         Pet pet = createPet(UUID.randomUUID(), "Ghost");
+
+        // execute & verify
+        assertFalse(petListRepository.removePet(pet));
+    }
+
+    @Test
+    public void testRemovePetClearsEntityStateAndDropsIndexEntry() {
+        // prepare
+        petListRepository.createPetListForPlayer(playerUUID);
+        petListRepository.addNewPet(mockPlayer, mockMob);
+        Pet pet = petListRepository.getPetList(playerUUID).getPet(entityUUID);
+        when(mockServer.getEntity(entityUUID)).thenReturn(mockMob);
+
+        // execute
+        boolean removed = petListRepository.removePet(pet);
+
+        // verify
+        assertTrue(removed);
+        assertEquals(0, petListRepository.getPetList(playerUUID).getNumPets());
+        assertTrue(petListRepository.hasNoTrackedPets());
+        verify(mockMob).setCustomName("");
+        verify(mockMob).setInvulnerable(false);
+    }
+
+    @Test
+    public void testRemovePetReturnsFalseWhenPetIsNotInItsOwnersList() {
+        // prepare - the owner has a list, but the pet was never added to it
+        petListRepository.createPetListForPlayer(playerUUID);
+        Pet pet = createPet(playerUUID, "Daniel");
 
         // execute & verify
         assertFalse(petListRepository.removePet(pet));

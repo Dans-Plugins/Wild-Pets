@@ -2,6 +2,7 @@ package dansplugins.wildpets.pet.list;
 
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.config.ConfigService;
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.location.WpLocation;
 
 import org.bukkit.ChatColor;
@@ -19,12 +20,18 @@ import java.util.UUID;
  */
 public class PetListRepository {
     private final ConfigService configService;
+    private final ServerProvider serverProvider;
 
     private final ArrayList<PetList> petLists = new ArrayList<>();
     private final HashMap<UUID, Pet> petsByEntityUUID = new HashMap<>();
 
     public PetListRepository(ConfigService configService) {
+        this(configService, new ServerProvider());
+    }
+
+    public PetListRepository(ConfigService configService, ServerProvider serverProvider) {
         this.configService = configService;
+        this.serverProvider = serverProvider;
     }
 
     public ArrayList<PetList> getPetLists() {
@@ -98,7 +105,7 @@ public class PetListRepository {
     }
 
     public PetList createPetListForPlayer(UUID playerUUID) {
-        PetList newPetList = new PetList(configService, playerUUID);
+        PetList newPetList = new PetList(configService, playerUUID, serverProvider);
         getPetLists().add(newPetList);
         return newPetList;
     }

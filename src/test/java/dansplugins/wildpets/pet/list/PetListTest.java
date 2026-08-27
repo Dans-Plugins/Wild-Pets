@@ -3,7 +3,11 @@ package dansplugins.wildpets.pet.list;
 import dansplugins.wildpets.config.ConfigService;
 import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.pet.Pet;
+import dansplugins.wildpets.utils.MessageFormat;
+import org.bukkit.ChatColor;
 import org.bukkit.Server;
+import org.bukkit.entity.Mob;
+import org.bukkit.entity.Player;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -24,6 +28,12 @@ public class PetListTest {
     @Mock
     private Server mockServer;
 
+    @Mock
+    private Mob mockMob;
+
+    @Mock
+    private Player mockPlayer;
+
     private UUID ownerUUID;
     private PetList petList;
 
@@ -34,7 +44,7 @@ public class PetListTest {
         when(mockServer.getEntity(any(UUID.class))).thenReturn(null);
 
         ownerUUID = UUID.randomUUID();
-        petList = new PetList(mockConfigService, ownerUUID);
+        petList = new PetList(mockConfigService, ownerUUID, mockServerProvider);
     }
 
     @Test
@@ -102,10 +112,109 @@ public class PetListTest {
         // execute
         boolean removed = petList.removePetForTransfer(pet);
 
-        // verify - reaching this point at all shows no entity lookup happened: unlike
-        // removePet, this path never calls Bukkit.getEntity, which would throw under test
+        // verify - unlike removePet, this path never resolves the entity at all
         assertTrue(removed);
         assertEquals(0, petList.getNumPets());
+        verify(mockServer, never()).getEntity(any(UUID.class));
+    }
+
+    @Test
+    public void testRemovePetClearsEntityState() {
+        // prepare
+        Pet pet = createPet("Daniel");
+        petList.addPet(pet);
+        when(mockServer.getEntity(pet.getUniqueID())).thenReturn(mockMob);
+
+        // execute
+        boolean removed = petList.removePet(pet);
+
+        // verify
+        assertTrue(removed);
+        assertEquals(0, petList.getNumPets());
+        verify(mockMob).setCustomName("");
+        verify(mockMob).setPersistent(false);
+        verify(mockMob).setRemoveWhenFarAway(true);
+        verify(mockMob).setInvulnerable(false);
+    }
+
+    @Test
+    public void testRemovePetStillRemovesWhenEntityIsNotLoaded() {
+        // prepare - the default stubbing resolves every entity to null
+        Pet pet = createPet("Daniel");
+        petList.addPet(pet);
+
+        // execute
+        boolean removed = petList.removePet(pet);
+
+        // verify
+        assertTrue(removed);
+        assertEquals(0, petList.getNumPets());
+    }
+
+    @Test
+    public void testRemovePetReturnsFalseWhenPetAbsent() {
+        // prepare
+        Pet pet = createPet("Daniel");
+        when(mockServer.getEntity(pet.getUniqueID())).thenReturn(mockMob);
+
+        // execute & verify - the entity is still cleaned up, but nothing was removed
+        assertFalse(petList.removePet(pet));
+    }
+
+    @Test
+    public void testRemovePetToleratesAnUnavailableServer() {
+        // prepare
+        when(mockServerProvider.get()).thenReturn(null);
+        Pet pet = createPet("Daniel");
+        petList.addPet(pet);
+
+        // execute & verify
+        assertTrue(petList.removePet(pet));
+        assertEquals(0, petList.getNumPets());
+    }
+
+    @Test
+    public void testSendListOfPetsToPlayerMarksUnloadedPets() {
+        // prepare
+        Pet loadedPet = createPet("Loaded");
+        Pet unloadedPet = createPet("Unloaded");
+        petList.addPet(loadedPet);
+        petList.addPet(unloadedPet);
+        when(mockServer.getEntity(loadedPet.getUniqueID())).thenReturn(mockMob);
+        when(mockPlayer.getUniqueId()).thenReturn(ownerUUID);
+
+        // execute
+        petList.sendListOfPetsToPlayer(mockPlayer);
+
+        // verify
+        verify(mockPlayer).sendMessage(MessageFormat.line(ChatColor.WHITE + loadedPet.getName()));
+        verify(mockPlayer).sendMessage(MessageFormat.line(
+                ChatColor.WHITE + unloadedPet.getName() + ChatColor.RED + " [not found]"));
+        verify(mockPlayer).sendMessage(MessageFormat.footer());
+    }
+
+    @Test
+    public void testSendListOfPetsToPlayerTellsOwnerWhenEmpty() {
+        // prepare
+        when(mockPlayer.getUniqueId()).thenReturn(ownerUUID);
+
+        // execute
+        petList.sendListOfPetsToPlayer(mockPlayer);
+
+        // verify
+        verify(mockPlayer).sendMessage(ChatColor.RED + "You don't have any pets yet.");
+    }
+
+    @Test
+    public void testSendListOfPetsToPlayerTellsOtherPlayersWhenEmpty() {
+        // prepare
+        when(mockPlayer.getUniqueId()).thenReturn(UUID.randomUUID());
+
+        // execute
+        petList.sendListOfPetsToPlayer(mockPlayer);
+
+        // verify
+        verify(mockPlayer).sendMessage(ChatColor.RED + "That player doesn't have any pets yet.");
     }
 
     @Test
