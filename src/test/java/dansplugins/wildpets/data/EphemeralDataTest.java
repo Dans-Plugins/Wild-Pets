@@ -111,7 +111,11 @@ public class EphemeralDataTest {
         ephemeralData.setPlayerAsTaming(playerUUID);
         ephemeralData.setPlayerAsTaming(playerUUID);
 
-        // verify - a single unset call is enough to leave taming mode
+        // verify - a single unset call is enough to leave taming mode.
+        // Note that the `if (!isPlayerTaming(player))` guard inside setPlayerAsTaming has no
+        // observable effect through the public API: the only lists it would re-clear are the
+        // taming and selecting lists, and selecting is already mutually exclusive with taming.
+        // This test therefore pins the idempotency, not the guard.
         ephemeralData.setPlayerAsNotTaming(playerUUID);
         assertFalse(ephemeralData.isPlayerTaming(playerUUID));
     }
@@ -220,8 +224,12 @@ public class EphemeralDataTest {
 
         // verify
         assertFalse(ephemeralData.isPlayerTaming(playerUUID));
+        assertFalse(ephemeralData.isPlayerSelecting(playerUUID));
         assertFalse(ephemeralData.isPlayerLocking(playerUUID));
         assertFalse(ephemeralData.isPlayerUnlocking(playerUUID));
+        assertFalse(ephemeralData.isPlayerCheckingAccess(playerUUID));
+        assertFalse(ephemeralData.isPlayerGrantingAccess(playerUUID));
+        assertFalse(ephemeralData.isPlayerRevokingAccess(playerUUID));
     }
 
     // ----- access granting and revoking
