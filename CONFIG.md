@@ -7,6 +7,7 @@ This document provides detailed information about all configuration options avai
 - [Taming Settings](#taming-settings)
 - [Pet Behavior Settings](#pet-behavior-settings)
 - [Interaction Settings](#interaction-settings)
+- [Usage Reporting](#usage-reporting)
 - [Entity Configurations](#entity-configurations)
   - [Entity Configuration Options](#entity-configuration-options)
   - [Default Entity Configurations](#default-entity-configurations)
@@ -87,6 +88,34 @@ This document provides detailed information about all configuration options avai
 **Type:** Boolean  
 **Default:** `true`  
 **Description:** When `true`, lineage information (e.g., parent pets) is displayed when viewing pet info.
+
+## Usage Reporting
+
+When the plugin is enabled, and each time one of its commands is used, a small event is sent to the
+author's [trace](https://github.com/Stephenson-Software/trace-client-java) server so it is known which
+plugins are actually in use. An event carries the plugin's name, the event name (`startup` or
+`command`), and either the plugin version or the command name -- nothing about players, the world, or
+the server. Sending happens off the main thread, never delays a tick, and is dropped silently if the
+server cannot be reached. Set `usage-reporting.enabled` to `false` to turn it off.
+
+These options live at the top level of `config.yml` (not under `configOptions`) and are not managed
+by `/wp config`. On a server whose `config.yml` predates them, the defaults bundled in the plugin
+jar apply until the next plugin version writes the block to disk.
+
+### `usage-reporting.enabled`
+**Type:** Boolean  
+**Default:** `true`  
+**Description:** Whether the plugin reports usage events. Set to `false` to turn it off.
+
+### `usage-reporting.endpoint`
+**Type:** String  
+**Default:** `https://trace.danielstephenson.dev`  
+**Description:** The trace server events are sent to.
+
+### `usage-reporting.key`
+**Type:** String  
+**Default:** the plugin's key  
+**Description:** Identifies this plugin to the trace server so reports are attributed to it. Not a secret: it ships in the default config and can only report as WildPets. Empty means reporting is off regardless of `usage-reporting.enabled`.
 
 ## Entity Configurations
 

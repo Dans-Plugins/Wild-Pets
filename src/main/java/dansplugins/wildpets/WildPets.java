@@ -10,6 +10,7 @@ import dansplugins.wildpets.config.EntityConfigService;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
 import dansplugins.wildpets.storage.StorageService;
 import dansplugins.wildpets.scheduler.Scheduler;
+import dansplugins.wildpets.trace.TraceClient;
 import org.bukkit.ChatColor;
 
 import org.bukkit.command.Command;
@@ -20,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author Daniel McCoy Stephenson
@@ -36,6 +38,10 @@ public final class WildPets extends JavaPlugin {
     private final StorageService storageService = new StorageService(configService, this, petListRepository, petRecordRepository);
     private final Scheduler scheduler = new Scheduler(this, ephemeralData, storageService);
 
+    // A no-op until the config has been read, so a command arriving before
+    // onEnable() finishes has something safe to report to.
+    private TraceClient trace = TraceClient.disabled();
+
      /**
      * This runs when the server starts.
      */
@@ -47,6 +53,24 @@ public final class WildPets extends JavaPlugin {
         scheduler.scheduleAutosave();
         storageService.load();
         handlebStatsIntegration();
+        startUsageReporting();
+    }
+
+    /**
+     * Usage reporting: one event now, one per command; see config.yml. The
+     * bundled config.yml is not written to disk with saveDefaultConfig(),
+     * because initializeConfig() decides between a first run and an upgrade by
+     * whether the file already exists; the plugin writes its own config on a
+     * first run (bundled defaults included) and the usage-reporting values are
+     * read through the bundled defaults on servers whose config predates them.
+     */
+    private void startUsageReporting() {
+        trace = TraceClient.builder(configService.getUsageReportingEndpoint(), getName())
+                .key(configService.getUsageReportingKey())
+                .enabled(configService.isUsageReportingEnabled())
+                .logger(getLogger())
+                .build();
+        trace.report("startup", null, Collections.singletonMap("version", getDescription().getVersion()));
     }
 
     private void initializeConfig() {
@@ -76,6 +100,7 @@ public final class WildPets extends JavaPlugin {
      */
     @Override
     public void onDisable() {
+        trace.close();
         storageService.save();
     }
 
@@ -89,6 +114,8 @@ public final class WildPets extends JavaPlugin {
      */
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        trace.report("command", null, Collections.singletonMap("name", cmd.getName()));
+
         if (args.length == 0) {
             DefaultCommand defaultCommand = new DefaultCommand(this);
             return defaultCommand.execute(sender);
