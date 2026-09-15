@@ -1,0 +1,37 @@
+name: Release
+
+# Attaches a built JAR to a release published by hand. The build steps mirror dev-release.yml —
+# if one changes, change the other. See dpc-conventions/docs/RELEASE_AUTOMATION.md.
+
+on:
+  release:
+    types: [ published ]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-attach:
+    runs-on: ubuntu-latest
+    # A release published with a .jar already attached was produced by the release automation,
+    # which attaches the exact JAR that passed verification. Rebuilding here would attach a second,
+    # unverified JAR — and Dan's Plugin Manager installs the first .jar asset it finds.
+    if: ${{ !contains(join(github.event.release.assets.*.name, ','), '.jar') }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Build with Maven
+        run: mvn clean package --batch-mode
+
+      - name: Upload JAR to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            target/*.jar
+            !target/original-*.jar
