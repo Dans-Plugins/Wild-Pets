@@ -61,15 +61,28 @@ public final class WildPets extends JavaPlugin {
      * bundled config.yml is not written to disk with saveDefaultConfig(),
      * because initializeConfig() decides between a first run and an upgrade by
      * whether the file already exists; the plugin writes its own config on a
-     * first run (bundled defaults included) and the usage-reporting values are
-     * read through the bundled defaults on servers whose config predates them.
+     * first run (bundled defaults included), and on a server whose config
+     * predates the block the three usage-reporting values are copied from the
+     * bundled defaults into the file here, so the switch is where the console
+     * line says it is. The outcome is logged either way.
      */
     private void startUsageReporting() {
+        configService.saveUsageReportingDefaultsIfNotPresent();
         trace = TraceClient.builder(configService.getUsageReportingEndpoint(), getName())
                 .key(configService.getUsageReportingKey())
                 .enabled(configService.isUsageReportingEnabled())
+                .serverWideConfig(getDataFolder().getParentFile())
                 .logger(getLogger())
                 .build();
+        if (trace.isEnabled()) {
+            getLogger().info("Usage reporting is on: " + getName() + " sends its name, version and command names to "
+                    + "https://trace.danielstephenson.dev - nothing about players or the server. Turn it off with "
+                    + "usage-reporting.enabled: false in this plugin's config.yml, or for every plugin with "
+                    + "enabled: false in plugins/trace/config.yml. "
+                    + "Details: https://github.com/Stephenson-Software/trace#usage-reporting");
+        } else {
+            getLogger().info("Usage reporting is off (" + trace.disabledReason() + ").");
+        }
         trace.report("startup", null, Collections.singletonMap("version", getDescription().getVersion()));
     }
 

@@ -4,6 +4,7 @@ import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.utils.MessageFormat;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
@@ -26,6 +27,7 @@ public class ConfigService {
     private final String configOptionsPrefix = "configOptions.";
     private final String entityConfigurationsPrefix = "entityConfigurations.";
 
+    private static final String USAGE_REPORTING_SECTION = "usage-reporting";
     private static final String USAGE_REPORTING_ENABLED_KEY = "usage-reporting.enabled";
     private static final String USAGE_REPORTING_ENDPOINT_KEY = "usage-reporting.endpoint";
     private static final String USAGE_REPORTING_KEY_KEY = "usage-reporting.key";
@@ -215,6 +217,37 @@ public class ConfigService {
 
     public String getString(String option) {
         return getConfig().getString(configOptionsPrefix + option);
+    }
+
+    /**
+     * Puts the usage-reporting block on disk if the file does not have one.
+     * saveMissingConfigDefaultsIfNotPresent only rewrites config.yml on a first
+     * run or a version mismatch, so a server upgraded in place from before usage
+     * reporting kept reporting through the bundled defaults (see the getters
+     * below) with no visible switch to turn it off. The values are copied from
+     * the jar's config.yml, not written as new literals, so the key and endpoint
+     * stay defined in one place.
+     */
+    public void saveUsageReportingDefaultsIfNotPresent() {
+        if (copyUsageReportingDefaults(getConfig())) {
+            wildPets.saveConfig();
+        }
+    }
+
+    /**
+     * Copies the three usage-reporting values from the configuration's defaults
+     * into the configuration itself when it has no usage-reporting block.
+     * @return whether anything was copied, i.e. whether the file needs saving.
+     */
+    static boolean copyUsageReportingDefaults(FileConfiguration config) {
+        Configuration defaults = config.getDefaults();
+        if (defaults == null || config.isSet(USAGE_REPORTING_SECTION)) {
+            return false;
+        }
+        config.set(USAGE_REPORTING_ENABLED_KEY, defaults.get(USAGE_REPORTING_ENABLED_KEY));
+        config.set(USAGE_REPORTING_ENDPOINT_KEY, defaults.get(USAGE_REPORTING_ENDPOINT_KEY));
+        config.set(USAGE_REPORTING_KEY_KEY, defaults.get(USAGE_REPORTING_KEY_KEY));
+        return true;
     }
 
     // The usage-reporting block lives outside configOptions and is not managed by
