@@ -401,6 +401,7 @@ public class EphemeralDataTest {
         // prepare
         ephemeralData.setPlayerAsTaming(playerUUID);
         ephemeralData.setPlayerAsLocking(playerUUID);
+        ephemeralData.setPlayerAsUnlocking(playerUUID);
         ephemeralData.setPlayerAsCheckingAccess(playerUUID);
         ephemeralData.setPlayerAsGrantingAccess(playerUUID, otherPlayerUUID);
         ephemeralData.setPlayerAsRevokingAccess(playerUUID, otherPlayerUUID);
@@ -412,22 +413,22 @@ public class EphemeralDataTest {
         assertFalse(ephemeralData.isPlayerTaming(playerUUID));
         assertFalse(ephemeralData.isPlayerSelecting(playerUUID));
         assertFalse(ephemeralData.isPlayerLocking(playerUUID));
+        assertFalse(ephemeralData.isPlayerUnlocking(playerUUID));
         assertFalse(ephemeralData.isPlayerCheckingAccess(playerUUID));
         assertFalse(ephemeralData.isPlayerGrantingAccess(playerUUID));
         assertFalse(ephemeralData.isPlayerRevokingAccess(playerUUID));
     }
 
     @Test
-    public void testClearPlayerFromListsLeavesUnlockingModeSet() {
+    public void testClearPlayerFromListsClearsUnlockingMode() {
         // prepare
         ephemeralData.setPlayerAsUnlocking(playerUUID);
 
         // execute
         ephemeralData.clearPlayerFromLists(mockPlayer);
 
-        // verify - clearPlayerFromLists does not call setPlayerAsNotUnlocking, unlike the
-        // other action lists, so unlocking mode survives a quit. Tracked in issue #315.
-        assertTrue(ephemeralData.isPlayerUnlocking(playerUUID));
+        // verify - unlocking is cleared on quit like its sibling locking mode (issue #315)
+        assertFalse(ephemeralData.isPlayerUnlocking(playerUUID));
     }
 
     @Test
