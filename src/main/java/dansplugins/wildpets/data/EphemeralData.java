@@ -182,6 +182,7 @@ public class EphemeralData {
         setPlayerAsNotTaming(player.getUniqueId());
         setPlayerAsNotSelecting(player.getUniqueId());
         setPlayerAsNotLocking(player.getUniqueId());
+        setPlayerAsNotUnlocking(player.getUniqueId());
         setPlayerAsNotCheckingAccess(player.getUniqueId());
         setPlayerAsNotGrantingAccess(player.getUniqueId());
         setPlayerAsNotRevokingAccess(player.getUniqueId());

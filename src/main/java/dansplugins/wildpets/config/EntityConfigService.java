@@ -42,6 +42,14 @@ public class EntityConfigService {
     public ArrayList<EntityConfig> getDefaults() {
         if (wildPets.isDebugEnabled()) { System.out.println("[DEBUG] Initializing with defaults."); }
 
+        return buildDefaults();
+    }
+
+    /**
+     * Builds the bundled entity configurations, one per entity type.
+     * (WildPets is final, so this is the step tests exercise; getDefaults only adds the debug line.)
+     */
+    static ArrayList<EntityConfig> buildDefaults() {
         ArrayList<EntityConfig> configurations = new ArrayList<>();
 
         // passive mobs
@@ -102,7 +110,6 @@ public class EntityConfigService {
         configurations.add(new EntityConfig("Elder_Guardian", 0.5, Material.GLOWSTONE, 32, true));
         configurations.add(new EntityConfig("Endermite", 0.5, Material.ENDER_PEARL, 16, true));
         configurations.add(new EntityConfig("Evoker", 0.5, Material.GOLD_INGOT, 16, true));
-        configurations.add(new EntityConfig("Endermite", 0.5, Material.ENDER_PEARL, 16, true));
         configurations.add(new EntityConfig("Ghast", 0.5, Material.GHAST_TEAR, 16, true));
         configurations.add(new EntityConfig("Guardian", 0.5, Material.GLOWSTONE, 16, true));
         configurations.add(new EntityConfig("Hoglin", 0.5, Material.CRIMSON_ROOTS, 16, true));
