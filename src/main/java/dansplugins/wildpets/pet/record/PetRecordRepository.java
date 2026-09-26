@@ -17,6 +17,14 @@ public class PetRecordRepository {
         return petRecords.add(new PetRecord(pet));
     }
 
+    public boolean addExistingPetRecord(PetRecord petRecord) {
+        return petRecords.add(petRecord);
+    }
+
+    public void clearAll() {
+        petRecords.clear();
+    }
+
     public boolean removePetRecord(UUID entityUUID) {
         PetRecord recordToRemove = null;
         for (PetRecord record : petRecords) {
