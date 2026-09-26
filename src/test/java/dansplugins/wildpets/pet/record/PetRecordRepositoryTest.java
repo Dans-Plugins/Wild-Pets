@@ -151,4 +151,46 @@ public class PetRecordRepositoryTest {
         // verify - the record set does not grow with each rename
         assertEquals(1, petRecordRepository.getPetRecords().size());
     }
+
+    @Test
+    public void testAddExistingPetRecord() throws PetRecordNotFoundException {
+        // prepare - a record whose state differs from any live pet, as one loaded from disk would
+        PetRecord record = new PetRecord(pet);
+        record.setName("Loaded_Name");
+
+        // execute
+        boolean added = petRecordRepository.addExistingPetRecord(record);
+
+        // verify
+        assertTrue(added);
+        assertSame(record, petRecordRepository.getPetRecord(entityUUID));
+    }
+
+    @Test
+    public void testAddPetRecordDoesNotReplaceAnExistingRecord() throws PetRecordNotFoundException {
+        // prepare - a loaded record takes precedence over one rebuilt from the live pet
+        PetRecord record = new PetRecord(pet);
+        record.setName("Loaded_Name");
+        petRecordRepository.addExistingPetRecord(record);
+
+        // execute
+        boolean added = petRecordRepository.addPetRecord(pet);
+
+        // verify
+        assertFalse(added);
+        assertEquals("Loaded_Name", petRecordRepository.getPetRecord(entityUUID).getName());
+    }
+
+    @Test
+    public void testClearAll() {
+        // prepare
+        petRecordRepository.addPetRecord(pet);
+        petRecordRepository.addPetRecord(new Pet(UUID.randomUUID(), UUID.randomUUID(), "Other", mockServerProvider));
+
+        // execute
+        petRecordRepository.clearAll();
+
+        // verify
+        assertTrue(petRecordRepository.getPetRecords().isEmpty());
+    }
 }

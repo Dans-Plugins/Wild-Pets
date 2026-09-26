@@ -28,7 +28,7 @@ public class StorageService {
     private final PetListRepository petListRepository;
     private final PetRecordRepository petRecordRepository;
 
-    private final static String FILE_PATH = "./plugins/WildPets/";
+    private final static String DEFAULT_FILE_PATH = "./plugins/WildPets/";
     private final static String PETS_FILE_NAME = "pets.json";
     private final static String PET_RECORDS_FILE_NAME = "petRecords.json";
 
@@ -36,11 +36,18 @@ public class StorageService {
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();;
 
+    private final String filePath;
+
     public StorageService(ConfigService configService, WildPets wildPets, PetListRepository petListRepository, PetRecordRepository petRecordRepository) {
+        this(configService, wildPets, petListRepository, petRecordRepository, DEFAULT_FILE_PATH);
+    }
+
+    StorageService(ConfigService configService, WildPets wildPets, PetListRepository petListRepository, PetRecordRepository petRecordRepository, String filePath) {
         this.configService = configService;
         this.wildPets = wildPets;
         this.petListRepository = petListRepository;
-        this.petRecordRepository = new PetRecordRepository();
+        this.petRecordRepository = petRecordRepository;
+        this.filePath = filePath;
     }
 
     public void save() {
@@ -77,9 +84,9 @@ public class StorageService {
 
     private void writeOutFiles(List<Map<String, String>> saveData, String fileName) {
         try {
-            File parentFolder = new File(FILE_PATH);
+            File parentFolder = new File(filePath);
             parentFolder.mkdir();
-            File file = new File(FILE_PATH + fileName);
+            File file = new File(filePath + fileName);
             file.createNewFile();
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
             outputStreamWriter.write(gson.toJson(saveData));
@@ -93,7 +100,7 @@ public class StorageService {
         // load each pet individually and reconstruct pet list objects
         petListRepository.clearAll();
 
-        ArrayList<HashMap<String, String>> data = loadDataFromFilename(FILE_PATH + PETS_FILE_NAME);
+        ArrayList<HashMap<String, String>> data = loadDataFromFilename(filePath + PETS_FILE_NAME);
 
         ArrayList<Pet> allPets = new ArrayList<>();
 
@@ -104,7 +111,7 @@ public class StorageService {
 
         for (Pet pet : allPets) {
             petListRepository.addExistingPet(pet);
-            petRecordRepository.addPetRecord(pet); // will not result in duplicates because petRecords is a hashset and PetRecord implements equals()/hashCode() on uniqueID
+            petRecordRepository.addPetRecord(pet); // no-op when a persisted record already exists, because petRecords is a hashset and PetRecord implements equals()/hashCode() on uniqueID
         }
         
         // Apply AI state to loaded pets
@@ -135,14 +142,15 @@ public class StorageService {
         }, delayTicks); // Default: wait 100 ticks (5 seconds at 20 TPS) for entities to be loaded
     }
 
-    private void loadPetRecords() {
-        ArrayList<HashMap<String, String>> data = loadDataFromFilename(FILE_PATH + PET_RECORDS_FILE_NAME);
+    // package-private for testing; load() also schedules AI-state work that needs a running server
+    void loadPetRecords() {
+        // records outlive their pets (e.g. a dead parent's name), so they cannot be rebuilt from the pet list alone
+        petRecordRepository.clearAll();
 
-        ArrayList<PetRecord> petRecords = new ArrayList<>();
+        ArrayList<HashMap<String, String>> data = loadDataFromFilename(filePath + PET_RECORDS_FILE_NAME);
 
         for (Map<String, String> petRecordData : data) {
-            PetRecord petRecord = new PetRecord(petRecordData);
-            petRecords.add(petRecord);
+            petRecordRepository.addExistingPetRecord(new PetRecord(petRecordData));
         }
     }
 
