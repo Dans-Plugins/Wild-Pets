@@ -1,5 +1,6 @@
 package dansplugins.wildpets.config;
 
+import dansplugins.wildpets.utils.RenamedConstants;
 import dansplugins.wildpets.WildPets;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -78,7 +79,7 @@ public class EntityConfigService {
         configurations.add(new EntityConfig("Salmon", 0.5, Material.KELP, 24, true));
         configurations.add(new EntityConfig("Sheep", 0.5, Material.WHEAT, 8, true));
         configurations.add(new EntityConfig("Skeleton_Horse", 0.5, Material.BONE, 8, true));
-        configurations.add(new EntityConfig("Sniffer", 0.5, Material.GRASS, 32, true));
+        configurations.add(new EntityConfig("Sniffer", 0.5, RenamedConstants.shortGrass(), 32, true));
         configurations.add(new EntityConfig("Snow_Golem", 0.5, Material.SNOWBALL, 32, true));
         configurations.add(new EntityConfig("Squid", 0.5, Material.KELP, 24, true));
         configurations.add(new EntityConfig("Strider", 0.5, Material.NETHER_WART, 32, true));
