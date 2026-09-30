@@ -68,7 +68,7 @@ public final class WildPets extends JavaPlugin {
      */
     private void startUsageReporting() {
         configService.saveUsageReportingDefaultsIfNotPresent();
-        trace = TraceClient.builder(configService.getUsageReportingEndpoint(), getName())
+        trace = TraceClient.builder(configService.getUsageReportingEndpoint(), getName(), getDescription().getVersion())
                 .key(configService.getUsageReportingKey())
                 .enabled(configService.isUsageReportingEnabled())
                 .serverWideConfig(getDataFolder().getParentFile())
@@ -83,7 +83,7 @@ public final class WildPets extends JavaPlugin {
         } else {
             getLogger().info("Usage reporting is off (" + trace.disabledReason() + ").");
         }
-        trace.report("startup", null, Collections.singletonMap("version", getDescription().getVersion()));
+        trace.report("startup");
     }
 
     private void initializeConfig() {
