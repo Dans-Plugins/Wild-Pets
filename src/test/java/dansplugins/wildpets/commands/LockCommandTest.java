@@ -59,6 +59,16 @@ public class LockCommandTest {
     }
 
     @Test
+    public void testExecuteClearsPendingTamingMode() {
+        ephemeralData.setPlayerAsTaming(playerUUID);
+
+        assertTrue(lockCommand.execute(mockPlayer));
+
+        assertTrue(ephemeralData.isPlayerLocking(playerUUID));
+        assertFalse(ephemeralData.isPlayerTaming(playerUUID));
+    }
+
+    @Test
     public void testExecuteWithArgumentsIgnoresArguments() {
         assertTrue(lockCommand.execute(mockPlayer, new String[]{"extra"}));
 

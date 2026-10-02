@@ -113,19 +113,55 @@ public class EphemeralDataTest {
 
         // verify - a single unset call is enough to leave taming mode.
         // Note that the `if (!isPlayerTaming(player))` guard inside setPlayerAsTaming has no
-        // observable effect through the public API: the only lists it would re-clear are the
-        // taming and selecting lists, and selecting is already mutually exclusive with taming.
+        // observable effect through the public API: while a player is taming, no other right-click
+        // mode can be pending, because every mode clears the others when it is entered.
         // This test therefore pins the idempotency, not the guard.
         ephemeralData.setPlayerAsNotTaming(playerUUID);
         assertFalse(ephemeralData.isPlayerTaming(playerUUID));
     }
 
     @Test
-    public void testEnteringTamingModeLeavesTheOtherActionFlagsAlone() {
-        // prepare - only taming and selecting are cleared when taming mode is entered
+    public void testEnteringTamingModeClearsLockingMode() {
+        // prepare
         ephemeralData.setPlayerAsLocking(playerUUID);
+
+        // execute
+        ephemeralData.setPlayerAsTaming(playerUUID);
+
+        // verify - a pending lock must not fire on the right-click after taming (issue #330)
+        assertTrue(ephemeralData.isPlayerTaming(playerUUID));
+        assertFalse(ephemeralData.isPlayerLocking(playerUUID));
+    }
+
+    @Test
+    public void testEnteringTamingModeClearsUnlockingMode() {
+        // prepare
         ephemeralData.setPlayerAsUnlocking(playerUUID);
+
+        // execute
+        ephemeralData.setPlayerAsTaming(playerUUID);
+
+        // verify
+        assertTrue(ephemeralData.isPlayerTaming(playerUUID));
+        assertFalse(ephemeralData.isPlayerUnlocking(playerUUID));
+    }
+
+    @Test
+    public void testEnteringTamingModeClearsAccessCheckingMode() {
+        // prepare
         ephemeralData.setPlayerAsCheckingAccess(playerUUID);
+
+        // execute
+        ephemeralData.setPlayerAsTaming(playerUUID);
+
+        // verify
+        assertTrue(ephemeralData.isPlayerTaming(playerUUID));
+        assertFalse(ephemeralData.isPlayerCheckingAccess(playerUUID));
+    }
+
+    @Test
+    public void testEnteringTamingModeLeavesAccessGrantingAndRevokingAlone() {
+        // prepare - granting and revoking are not right-click modes entered by a command
         ephemeralData.setPlayerAsGrantingAccess(playerUUID, otherPlayerUUID);
         ephemeralData.setPlayerAsRevokingAccess(playerUUID, otherPlayerUUID);
 
@@ -134,9 +170,6 @@ public class EphemeralDataTest {
 
         // verify
         assertTrue(ephemeralData.isPlayerTaming(playerUUID));
-        assertTrue(ephemeralData.isPlayerLocking(playerUUID));
-        assertTrue(ephemeralData.isPlayerUnlocking(playerUUID));
-        assertTrue(ephemeralData.isPlayerCheckingAccess(playerUUID));
         assertTrue(ephemeralData.isPlayerGrantingAccess(playerUUID));
         assertTrue(ephemeralData.isPlayerRevokingAccess(playerUUID));
     }
@@ -199,16 +232,82 @@ public class EphemeralDataTest {
     }
 
     @Test
-    public void testLockingUnlockingAndAccessCheckingDoNotClearEachOther() {
-        // execute - none of these three clear any other action list
+    public void testEnteringLockingModeClearsTamingMode() {
+        // prepare
+        ephemeralData.setPlayerAsTaming(playerUUID);
+
+        // execute
+        ephemeralData.setPlayerAsLocking(playerUUID);
+
+        // verify - the next right-click locks rather than tames (issue #330)
+        assertTrue(ephemeralData.isPlayerLocking(playerUUID));
+        assertFalse(ephemeralData.isPlayerTaming(playerUUID));
+    }
+
+    @Test
+    public void testEnteringUnlockingModeClearsLockingMode() {
+        // prepare
+        ephemeralData.setPlayerAsLocking(playerUUID);
+
+        // execute
+        ephemeralData.setPlayerAsUnlocking(playerUUID);
+
+        // verify - the next right-click unlocks rather than locks (issue #330)
+        assertTrue(ephemeralData.isPlayerUnlocking(playerUUID));
+        assertFalse(ephemeralData.isPlayerLocking(playerUUID));
+    }
+
+    @Test
+    public void testEnteringAccessCheckingModeClearsSelectingAndUnlockingModes() {
+        // prepare
+        ephemeralData.setPlayerAsSelecting(playerUUID);
+        ephemeralData.setPlayerAsUnlocking(playerUUID);
+
+        // execute
+        ephemeralData.setPlayerAsCheckingAccess(playerUUID);
+
+        // verify
+        assertTrue(ephemeralData.isPlayerCheckingAccess(playerUUID));
+        assertFalse(ephemeralData.isPlayerSelecting(playerUUID));
+        assertFalse(ephemeralData.isPlayerUnlocking(playerUUID));
+    }
+
+    @Test
+    public void testEnteringSelectingModeClearsLockingMode() {
+        // prepare
+        ephemeralData.setPlayerAsLocking(playerUUID);
+
+        // execute
+        ephemeralData.setPlayerAsSelecting(playerUUID);
+
+        // verify
+        assertTrue(ephemeralData.isPlayerSelecting(playerUUID));
+        assertFalse(ephemeralData.isPlayerLocking(playerUUID));
+    }
+
+    @Test
+    public void testOnlyTheMostRecentRightClickModeIsPending() {
+        // execute
         ephemeralData.setPlayerAsLocking(playerUUID);
         ephemeralData.setPlayerAsUnlocking(playerUUID);
         ephemeralData.setPlayerAsCheckingAccess(playerUUID);
 
         // verify
-        assertTrue(ephemeralData.isPlayerLocking(playerUUID));
-        assertTrue(ephemeralData.isPlayerUnlocking(playerUUID));
+        assertFalse(ephemeralData.isPlayerLocking(playerUUID));
+        assertFalse(ephemeralData.isPlayerUnlocking(playerUUID));
         assertTrue(ephemeralData.isPlayerCheckingAccess(playerUUID));
+    }
+
+    @Test
+    public void testEnteringARightClickModeOnlyAffectsTheGivenPlayer() {
+        // prepare
+        ephemeralData.setPlayerAsLocking(otherPlayerUUID);
+
+        // execute
+        ephemeralData.setPlayerAsTaming(playerUUID);
+
+        // verify
+        assertTrue(ephemeralData.isPlayerLocking(otherPlayerUUID));
     }
 
     @Test
@@ -398,7 +497,7 @@ public class EphemeralDataTest {
 
     @Test
     public void testClearPlayerFromListsClearsTheActionFlagsItCovers() {
-        // prepare
+        // prepare - the right-click modes are mutually exclusive, so only checking access remains
         ephemeralData.setPlayerAsTaming(playerUUID);
         ephemeralData.setPlayerAsLocking(playerUUID);
         ephemeralData.setPlayerAsUnlocking(playerUUID);
@@ -417,6 +516,30 @@ public class EphemeralDataTest {
         assertFalse(ephemeralData.isPlayerCheckingAccess(playerUUID));
         assertFalse(ephemeralData.isPlayerGrantingAccess(playerUUID));
         assertFalse(ephemeralData.isPlayerRevokingAccess(playerUUID));
+    }
+
+    @Test
+    public void testClearPlayerFromListsClearsTamingMode() {
+        // prepare
+        ephemeralData.setPlayerAsTaming(playerUUID);
+
+        // execute
+        ephemeralData.clearPlayerFromLists(mockPlayer);
+
+        // verify
+        assertFalse(ephemeralData.isPlayerTaming(playerUUID));
+    }
+
+    @Test
+    public void testClearPlayerFromListsClearsLockingMode() {
+        // prepare
+        ephemeralData.setPlayerAsLocking(playerUUID);
+
+        // execute
+        ephemeralData.clearPlayerFromLists(mockPlayer);
+
+        // verify
+        assertFalse(ephemeralData.isPlayerLocking(playerUUID));
     }
 
     @Test

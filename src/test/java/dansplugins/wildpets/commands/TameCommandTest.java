@@ -69,6 +69,16 @@ public class TameCommandTest {
     }
 
     @Test
+    public void testExecuteWithoutArgumentsClearsLockingMode() {
+        ephemeralData.setPlayerAsLocking(playerUUID);
+
+        assertTrue(tameCommand.execute(mockPlayer));
+
+        assertTrue(ephemeralData.isPlayerTaming(playerUUID));
+        assertFalse(ephemeralData.isPlayerLocking(playerUUID));
+    }
+
+    @Test
     public void testExecuteWithCancelTakesPlayerOutOfTamingMode() {
         ephemeralData.setPlayerAsTaming(playerUUID);
 
