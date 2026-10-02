@@ -64,7 +64,10 @@ public class EphemeralData {
     // -----
 
     public void setPlayerAsLocking(UUID player) {
-        lockingPlayers.add(player);
+        if (!isPlayerLocking(player)) {
+            clearPlayerFromActionLists(player);
+            lockingPlayers.add(player);
+        }
     }
 
     public void setPlayerAsNotLocking(UUID player) {
@@ -78,7 +81,10 @@ public class EphemeralData {
     // -----
 
     public void setPlayerAsUnlocking(UUID player) {
-        unlockingPlayers.add(player);
+        if (!isPlayerUnlocking(player)) {
+            clearPlayerFromActionLists(player);
+            unlockingPlayers.add(player);
+        }
     }
 
     public void setPlayerAsNotUnlocking(UUID player) {
@@ -92,7 +98,10 @@ public class EphemeralData {
     // -----
 
     public void setPlayerAsCheckingAccess(UUID player) {
-        accessCheckingPlayers.add(player);
+        if (!isPlayerCheckingAccess(player)) {
+            clearPlayerFromActionLists(player);
+            accessCheckingPlayers.add(player);
+        }
     }
 
     public void setPlayerAsNotCheckingAccess(UUID player) {
@@ -193,5 +202,8 @@ public class EphemeralData {
     private void clearPlayerFromActionLists(UUID player) {
         setPlayerAsNotTaming(player);
         setPlayerAsNotSelecting(player);
+        setPlayerAsNotLocking(player);
+        setPlayerAsNotUnlocking(player);
+        setPlayerAsNotCheckingAccess(player);
     }
 }

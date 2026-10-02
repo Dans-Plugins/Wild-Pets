@@ -39,6 +39,10 @@ Wild Pets allows you to:
 - Use `/wp select` to choose which pet to interact with
 - With `rightClickToSelect` enabled (default), right-clicking a tamed pet selects it
 
+**Right-Click Modes:**
+- `/wp tame`, `/wp select` (when `rightClickToSelect` is `false`), `/wp lock`, `/wp unlock` and `/wp checkaccess` each put you into a mode where your next right-click on an entity performs that action
+- Only one of these modes is pending at a time — entering one cancels any other, so the most recent command decides what your next right-click does
+
 **Pet Limit:**
 - Each player can own up to a configurable maximum number of pets (default: 10)
 - Use `/wp list` to see all your current pets
