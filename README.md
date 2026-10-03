@@ -13,6 +13,18 @@ This plugin is supported on the Minecraft versions listed in [`minecraft-version
 
 3) Restart your server.
 
+## Works Well With
+Wild Pets is part of the **survival flavour** set of Dan's Plugins. These are companion plugins that suit the same kind of server and run side by side; Wild Pets does not depend on or call into any of them.
+
+- [Food Spoilage](https://github.com/Dans-Plugins/FoodSpoilage) ([SpigotMC](https://www.spigotmc.org/resources/food-spoilage.81507/), `/dpm get foodspoilage`): food goes bad over time.
+- [SimpleSkills](https://github.com/Dans-Plugins/SimpleSkills) ([SpigotMC](https://www.spigotmc.org/resources/simpleskills.98039/), `/dpm get simpleskills`): skills that level up as players play and unlock benefits.
+- [More Recipes](https://github.com/Dans-Plugins/More-Recipes) ([SpigotMC](https://www.spigotmc.org/resources/more-recipes.81832/), `/dpm get morerecipes`): recipes for items that cannot be crafted in vanilla.
+- [Medieval Cookery](https://github.com/Dans-Plugins/Medieval-Cookery) (no SpigotMC page, no stable release yet): cooking recipes for custom foods, defined by the server owner.
+
+Running a medieval roleplay server? The [Medieval Roleplay Engine](https://github.com/Dans-Plugins/Medieval-Roleplay-Engine#works-well-with) set lists the plugins for that.
+
+Every plugin above is listed on [dansplugins.com](https://dansplugins.com). Wild Pets is listed at [dansplugins.com/resources/wild-pets](https://dansplugins.com/resources/wild-pets) and can be installed in game with [Dan's Plugin Manager](https://github.com/Dans-Plugins/Dans-Plugin-Manager): `/dpm get wildpets`.
+
 ## Usage
 
 ### Documentation
