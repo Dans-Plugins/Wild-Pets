@@ -10,7 +10,7 @@
 # plugins/trace/config.yml (created on the first start); or set the environment
 # variable TRACE_USAGE_REPORTING=off (or DO_NOT_TRACK=1) for the server
 # process. Details:
-# https://github.com/Stephenson-Software/trace#usage-reporting
+# https://danielstephenson.dev/usage-reporting
 usage-reporting:
   enabled: true
   endpoint: https://trace.danielstephenson.dev
