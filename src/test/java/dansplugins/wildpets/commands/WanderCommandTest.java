@@ -102,9 +102,9 @@ public class WanderCommandTest {
     }
 
     @Test
-    public void testExecuteReturnsFalseSilentlyForNonPlayerSender() {
+    public void testExecuteRejectsNonPlayerSender() {
         assertFalse(wanderCommand.execute(mockConsoleSender));
 
-        verify(mockConsoleSender, never()).sendMessage(anyString());
+        verify(mockConsoleSender).sendMessage("Only players can use this command.");
     }
 }

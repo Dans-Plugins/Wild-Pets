@@ -25,6 +25,7 @@ public class StayCommand extends AbstractPluginCommand {
     public boolean execute(CommandSender sender) {
 
         if (!(sender instanceof Player)) {
+            sender.sendMessage("Only players can use this command.");
             return false;
         }
 
