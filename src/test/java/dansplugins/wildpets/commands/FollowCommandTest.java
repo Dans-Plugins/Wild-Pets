@@ -102,9 +102,9 @@ public class FollowCommandTest {
     }
 
     @Test
-    public void testExecuteReturnsFalseSilentlyForNonPlayerSender() {
+    public void testExecuteRejectsNonPlayerSender() {
         assertFalse(followCommand.execute(mockConsoleSender));
 
-        verify(mockConsoleSender, never()).sendMessage(anyString());
+        verify(mockConsoleSender).sendMessage("Only players can use this command.");
     }
 }

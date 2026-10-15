@@ -99,9 +99,9 @@ public class StayCommandTest {
     }
 
     @Test
-    public void testExecuteReturnsFalseSilentlyForNonPlayerSender() {
+    public void testExecuteRejectsNonPlayerSender() {
         assertFalse(stayCommand.execute(mockConsoleSender));
 
-        verify(mockConsoleSender, never()).sendMessage(anyString());
+        verify(mockConsoleSender).sendMessage("Only players can use this command.");
     }
 }
