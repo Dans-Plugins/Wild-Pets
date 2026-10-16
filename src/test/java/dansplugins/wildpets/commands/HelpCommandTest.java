@@ -105,6 +105,6 @@ public class HelpCommandTest {
     public void testExecuteRejectsNonPlayerSender() {
         assertFalse(helpCommand.execute(mockConsoleSender));
 
-        verify(mockConsoleSender, never()).sendMessage(anyString());
+        verify(mockConsoleSender).sendMessage("Only players can use this command.");
     }
 }
