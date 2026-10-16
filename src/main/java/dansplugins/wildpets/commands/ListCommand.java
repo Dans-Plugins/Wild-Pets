@@ -25,6 +25,7 @@ public class ListCommand extends AbstractPluginCommand {
     @Override
     public boolean execute(CommandSender commandSender) {
         if (!(commandSender instanceof Player)) {
+            commandSender.sendMessage("Only players can use this command.");
             return false;
         }
 
@@ -35,6 +36,7 @@ public class ListCommand extends AbstractPluginCommand {
 
     public boolean execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
+            sender.sendMessage("Only players can use this command.");
             return false;
         }
 

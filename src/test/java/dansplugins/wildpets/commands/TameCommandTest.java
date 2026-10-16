@@ -110,6 +110,6 @@ public class TameCommandTest {
         assertFalse(tameCommand.execute(mockConsoleSender));
         assertFalse(tameCommand.execute(mockConsoleSender, new String[]{"cancel"}));
 
-        verifyNoInteractions(mockConsoleSender);
+        verify(mockConsoleSender, times(2)).sendMessage("Only players can use this command.");
     }
 }
