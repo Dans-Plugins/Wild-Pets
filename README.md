@@ -1,5 +1,9 @@
 # Wild Pets
 
+![Taming a fox with /wp tame, renaming it Ember, telling it to follow and viewing /wp info](docs/images/taming-a-pet.png)
+
+*Real in-game output from Wild Pets 1.11.2 on a local throwaway Paper 1.21.11 test server: the commands were typed by a scripted bot client, and the chat it received is drawn as Minecraft-style chat (typed commands appear in the input bars; grey lines say what happened between commands).*
+
 ## Description
 Wild Pets is an open source minecraft plugin that allows players to tame any entity in the game so long as their configuration is enabled.
 
