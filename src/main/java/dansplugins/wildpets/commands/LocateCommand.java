@@ -1,10 +1,10 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.location.WpLocation;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.utils.MessageFormat;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
@@ -19,10 +19,16 @@ import java.util.Arrays;
  */
 public class LocateCommand extends AbstractPluginCommand {
     private final EphemeralData ephemeralData;
+    private final ServerProvider serverProvider;
 
     public LocateCommand(EphemeralData ephemeralData) {
+        this(ephemeralData, new ServerProvider());
+    }
+
+    public LocateCommand(EphemeralData ephemeralData, ServerProvider serverProvider) {
         super(new ArrayList<>(Arrays.asList("locate")), new ArrayList<>(Arrays.asList("wp.locate")));
         this.ephemeralData = ephemeralData;
+        this.serverProvider = serverProvider;
     }
 
     public boolean execute(CommandSender sender) {
@@ -40,7 +46,7 @@ public class LocateCommand extends AbstractPluginCommand {
             return false;
         }
 
-        Entity entity = Bukkit.getEntity(pet.getUniqueID());
+        Entity entity = serverProvider.get().getEntity(pet.getUniqueID());
 
         if (entity != null) {
             Location bukkitLocation = entity.getLocation();

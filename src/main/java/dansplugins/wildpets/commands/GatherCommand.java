@@ -1,11 +1,11 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.pet.list.PetListRepository;
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.pet.list.PetList;
 import dansplugins.wildpets.utils.MessageFormat;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -18,10 +18,16 @@ import java.util.Arrays;
  */
 public class GatherCommand extends AbstractPluginCommand {
     private final PetListRepository petListRepository;
+    private final ServerProvider serverProvider;
 
     public GatherCommand(PetListRepository petListRepository) {
+        this(petListRepository, new ServerProvider());
+    }
+
+    public GatherCommand(PetListRepository petListRepository, ServerProvider serverProvider) {
         super(new ArrayList<>(Arrays.asList("gather")), new ArrayList<>(Arrays.asList("wp.gather")));
         this.petListRepository = petListRepository;
+        this.serverProvider = serverProvider;
     }
 
     @Override
@@ -40,7 +46,7 @@ public class GatherCommand extends AbstractPluginCommand {
         }
 
         for (Pet pet : petList.getPets()) {
-            Entity entity = Bukkit.getEntity(pet.getUniqueID());
+            Entity entity = serverProvider.get().getEntity(pet.getUniqueID());
             if (entity != null) {
                 entity.teleport(player.getLocation());
 

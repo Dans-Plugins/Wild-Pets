@@ -1,6 +1,7 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.exceptions.PetRecordNotFoundException;
 import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.Pet;
@@ -8,7 +9,6 @@ import dansplugins.wildpets.config.ConfigService;
 import dansplugins.wildpets.pet.record.PetRecord;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
 import dansplugins.wildpets.utils.MessageFormat;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 
 import org.bukkit.ChatColor;
@@ -25,13 +25,19 @@ public class RenameCommand extends AbstractPluginCommand {
     private final PetListRepository petListRepository;
     private final PetRecordRepository petRecordRepository;
     private final ConfigService configService;
+    private final ServerProvider serverProvider;
 
     public RenameCommand(EphemeralData ephemeralData, PetListRepository petListRepository, PetRecordRepository petRecordRepository, ConfigService configService) {
+        this(ephemeralData, petListRepository, petRecordRepository, configService, new ServerProvider());
+    }
+
+    public RenameCommand(EphemeralData ephemeralData, PetListRepository petListRepository, PetRecordRepository petRecordRepository, ConfigService configService, ServerProvider serverProvider) {
         super(new ArrayList<>(Arrays.asList("rename")), new ArrayList<>(Arrays.asList("wp.rename")));
         this.ephemeralData = ephemeralData;
         this.petListRepository = petListRepository;
         this.petRecordRepository = petRecordRepository;
         this.configService = configService;
+        this.serverProvider = serverProvider;
     }
 
     @Override
@@ -78,7 +84,7 @@ public class RenameCommand extends AbstractPluginCommand {
         }
 
         pet.setName(newName);
-        Entity entity = Bukkit.getEntity(pet.getUniqueID());
+        Entity entity = serverProvider.get().getEntity(pet.getUniqueID());
 
         if (entity != null) {
             entity.setCustomName(ChatColor.GREEN + pet.getName());

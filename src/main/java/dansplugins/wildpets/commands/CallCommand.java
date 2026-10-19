@@ -1,10 +1,10 @@
 package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.utils.MessageFormat;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -17,10 +17,16 @@ import java.util.Arrays;
  */
 public class CallCommand extends AbstractPluginCommand {
     private final EphemeralData ephemeralData;
+    private final ServerProvider serverProvider;
 
     public CallCommand(EphemeralData ephemeralData) {
+        this(ephemeralData, new ServerProvider());
+    }
+
+    public CallCommand(EphemeralData ephemeralData, ServerProvider serverProvider) {
         super(new ArrayList<>(Arrays.asList("call")), new ArrayList<>(Arrays.asList("wp.call")));
         this.ephemeralData = ephemeralData;
+        this.serverProvider = serverProvider;
     }
 
     public boolean execute(CommandSender sender) {
@@ -39,7 +45,7 @@ public class CallCommand extends AbstractPluginCommand {
             return false;
         }
 
-        Entity entity = Bukkit.getEntity(pet.getUniqueID());
+        Entity entity = serverProvider.get().getEntity(pet.getUniqueID());
 
         if (entity != null) {
             entity.teleport(player.getLocation());

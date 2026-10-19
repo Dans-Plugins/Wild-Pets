@@ -6,7 +6,10 @@ import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
+import dansplugins.wildpets.exceptions.PetRecordNotFoundException;
+import org.bukkit.ChatColor;
 import org.bukkit.Server;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,11 +23,6 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-/**
- * Covers the argument and validation paths of {@link RenameCommand}. The successful rename path
- * calls {@code Bukkit.getEntity} directly rather than going through {@link ServerProvider}, so it
- * cannot be exercised without a live server and is not covered here.
- */
 public class RenameCommandTest {
     @Mock
     private Player mockPlayer;
@@ -37,6 +35,9 @@ public class RenameCommandTest {
 
     @Mock
     private Server mockServer;
+
+    @Mock
+    private Entity mockEntity;
 
     private UUID playerUUID;
     private Pet pet;
@@ -58,7 +59,7 @@ public class RenameCommandTest {
         petListRepository = new PetListRepository(mockConfigService, mockServerProvider);
         petListRepository.addExistingPet(pet);
         petRecordRepository = new PetRecordRepository();
-        renameCommand = new RenameCommand(ephemeralData, petListRepository, petRecordRepository, mockConfigService);
+        renameCommand = new RenameCommand(ephemeralData, petListRepository, petRecordRepository, mockConfigService, mockServerProvider);
     }
 
     private List<String> captureMessagesSentToPlayer() {
@@ -156,5 +157,43 @@ public class RenameCommandTest {
         assertFalse(renameCommand.execute(mockPlayer, new String[]{"cancel"}));
 
         assertTrue(petRecordRepository.getPetRecords().isEmpty());
+    }
+
+    @Test
+    public void testExecuteRenamesPetEntityAndExistingRecord() throws PetRecordNotFoundException {
+        when(mockServer.getEntity(pet.getUniqueID())).thenReturn(mockEntity);
+        petRecordRepository.addPetRecord(pet);
+        ephemeralData.selectPetForPlayer(pet, playerUUID);
+
+        assertTrue(renameCommand.execute(mockPlayer, new String[]{"Max"}));
+
+        assertEquals("Max", pet.getName());
+        verify(mockEntity).setCustomName(ChatColor.GREEN + "Max");
+        assertEquals(1, petRecordRepository.getPetRecords().size());
+        assertEquals("Max", petRecordRepository.getPetRecord(pet.getUniqueID()).getName());
+        assertTrue(captureMessagesSentToPlayer().stream()
+                .anyMatch(message -> message.contains("Renamed.")));
+    }
+
+    @Test
+    public void testExecuteRecreatesMissingPetRecordWithNewName() throws PetRecordNotFoundException {
+        when(mockServer.getEntity(pet.getUniqueID())).thenReturn(mockEntity);
+        ephemeralData.selectPetForPlayer(pet, playerUUID);
+
+        assertTrue(renameCommand.execute(mockPlayer, new String[]{"Max"}));
+
+        assertEquals(1, petRecordRepository.getPetRecords().size());
+        assertEquals("Max", petRecordRepository.getPetRecord(pet.getUniqueID()).getName());
+    }
+
+    @Test
+    public void testExecuteRenamesPetWhenEntityIsNotLoaded() throws PetRecordNotFoundException {
+        when(mockServer.getEntity(pet.getUniqueID())).thenReturn(null);
+        ephemeralData.selectPetForPlayer(pet, playerUUID);
+
+        assertTrue(renameCommand.execute(mockPlayer, new String[]{"Max"}));
+
+        assertEquals("Max", pet.getName());
+        assertEquals("Max", petRecordRepository.getPetRecord(pet.getUniqueID()).getName());
     }
 }
