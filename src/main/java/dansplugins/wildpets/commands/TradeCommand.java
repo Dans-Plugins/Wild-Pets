@@ -2,11 +2,11 @@ package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.exceptions.PetRecordNotFoundException;
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -22,12 +22,18 @@ public class TradeCommand extends AbstractPluginCommand {
     private final EphemeralData ephemeralData;
     private final PetListRepository petListRepository;
     private final PetRecordRepository petRecordRepository;
+    private final ServerProvider serverProvider;
 
     public TradeCommand(EphemeralData ephemeralData, PetListRepository petListRepository, PetRecordRepository petRecordRepository) {
+        this(ephemeralData, petListRepository, petRecordRepository, new ServerProvider());
+    }
+
+    public TradeCommand(EphemeralData ephemeralData, PetListRepository petListRepository, PetRecordRepository petRecordRepository, ServerProvider serverProvider) {
         super(new ArrayList<>(Arrays.asList("trade")), new ArrayList<>(Arrays.asList("wp.trade")));
         this.ephemeralData = ephemeralData;
         this.petListRepository = petListRepository;
         this.petRecordRepository = petRecordRepository;
+        this.serverProvider = serverProvider;
     }
 
     @Override
@@ -66,7 +72,7 @@ public class TradeCommand extends AbstractPluginCommand {
         }
 
         String targetName = args[0];
-        Player targetPlayer = Bukkit.getPlayerExact(targetName);
+        Player targetPlayer = serverProvider.get().getPlayerExact(targetName);
 
         if (targetPlayer == null) {
             player.sendMessage(ChatColor.RED + "That player is not online.");
