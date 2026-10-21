@@ -1,9 +1,9 @@
 package dansplugins.wildpets.listeners;
 
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.pet.list.PetList;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -18,9 +18,15 @@ import java.util.ArrayList;
  */
 public class MoveHandler implements Listener {
     private final PetListRepository petListRepository;
+    private final ServerProvider serverProvider;
 
     public MoveHandler(PetListRepository petListRepository) {
+        this(petListRepository, new ServerProvider());
+    }
+
+    public MoveHandler(PetListRepository petListRepository, ServerProvider serverProvider) {
         this.petListRepository = petListRepository;
+        this.serverProvider = serverProvider;
     }
 
     @EventHandler()
@@ -39,7 +45,7 @@ public class MoveHandler implements Listener {
         ArrayList<Pet> followingPets = petList.getFollowingPets();
         if (followingPets.size() != 0) {
             for (Pet pet : followingPets) {
-                Entity entity = Bukkit.getServer().getEntity(pet.getUniqueID());
+                Entity entity = serverProvider.get().getEntity(pet.getUniqueID());
                 if (entity != null) {
                     entity.teleport(player);
                 }

@@ -1,9 +1,9 @@
 package dansplugins.wildpets.commands;
 
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.list.PetList;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -16,10 +16,16 @@ import java.util.Arrays;
  */
 public class ListCommand extends AbstractPluginCommand {
     private final PetListRepository petListRepository;
+    private final ServerProvider serverProvider;
 
     public ListCommand(PetListRepository petListRepository) {
+        this(petListRepository, new ServerProvider());
+    }
+
+    public ListCommand(PetListRepository petListRepository, ServerProvider serverProvider) {
         super(new ArrayList<>(Arrays.asList("list")), new ArrayList<>(Arrays.asList("wp.list")));
         this.petListRepository = petListRepository;
+        this.serverProvider = serverProvider;
     }
 
     @Override
@@ -46,7 +52,7 @@ public class ListCommand extends AbstractPluginCommand {
             return false;
         }
         String targetPlayerName = args[0];
-        OfflinePlayer targetPlayer = Bukkit.getPlayer(targetPlayerName);
+        OfflinePlayer targetPlayer = serverProvider.get().getPlayer(targetPlayerName);
         if (targetPlayer == null) {
             player.sendMessage(ChatColor.RED + "That player wasn't found.");
             return false;
