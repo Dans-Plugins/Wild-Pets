@@ -2,9 +2,9 @@ package dansplugins.wildpets.listeners;
 
 import dansplugins.wildpets.WildPets;
 import dansplugins.wildpets.config.ConfigService;
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.pet.list.PetListRepository;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -21,11 +21,17 @@ public class DamageEffectsAndDeathHandler implements Listener {
     private final ConfigService configService;
     private final PetListRepository petListRepository;
     private final WildPets wildPets;
+    private final ServerProvider serverProvider;
 
     public DamageEffectsAndDeathHandler(ConfigService configService, PetListRepository petListRepository, WildPets wildPets) {
+        this(configService, petListRepository, wildPets, new ServerProvider());
+    }
+
+    public DamageEffectsAndDeathHandler(ConfigService configService, PetListRepository petListRepository, WildPets wildPets, ServerProvider serverProvider) {
         this.configService = configService;
         this.petListRepository = petListRepository;
         this.wildPets = wildPets;
+        this.serverProvider = serverProvider;
     }
 
     /**
@@ -58,7 +64,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
     public void handle(EntityDeathEvent event) {
         Pet pet = petListRepository.getPet(event.getEntity());
         if (pet != null) {
-            Player owner = Bukkit.getPlayer(pet.getOwnerUUID());
+            Player owner = serverProvider.get().getPlayer(pet.getOwnerUUID());
             String name = pet.getName();
             boolean success = petListRepository.removePet(pet);
             if (success) {
