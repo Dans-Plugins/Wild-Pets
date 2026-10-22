@@ -1,7 +1,7 @@
 package dansplugins.wildpets.helpers;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -10,6 +10,15 @@ import java.util.UUID;
  * Utility class for looking up player names and UUIDs.
  */
 public class UUIDChecker {
+    private final ServerProvider serverProvider;
+
+    public UUIDChecker() {
+        this(new ServerProvider());
+    }
+
+    public UUIDChecker(ServerProvider serverProvider) {
+        this.serverProvider = serverProvider;
+    }
 
     /**
      * Method to obtain the name of a player based on their UUID.
@@ -22,11 +31,12 @@ public class UUIDChecker {
         if (playerUUID == null) {
             throw new IllegalArgumentException("Player UUID cannot be null!");
         }
-        final Player player = Bukkit.getPlayer(playerUUID);
+        final Server server = serverProvider.get();
+        final Player player = server.getPlayer(playerUUID);
         if (player != null) {
             return player.getName();
         }
-        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
+        final OfflinePlayer offlinePlayer = server.getOfflinePlayer(playerUUID);
         final String name = offlinePlayer.getName();
         return name == null || !offlinePlayer.hasPlayedBefore() ? null : name;
     }
@@ -43,11 +53,12 @@ public class UUIDChecker {
         if (playerName == null) {
             throw new IllegalArgumentException("Player Name cannot be null!");
         }
-        final Player player = Bukkit.getPlayer(playerName);
+        final Server server = serverProvider.get();
+        final Player player = server.getPlayer(playerName);
         if (player != null) {
             return player.getUniqueId();
         }
-        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        final OfflinePlayer offlinePlayer = server.getOfflinePlayer(playerName);
         final String name = offlinePlayer.getName();
         return name == null || !offlinePlayer.hasPlayedBefore() ? null : offlinePlayer.getUniqueId();
     }
