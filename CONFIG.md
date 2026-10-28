@@ -22,7 +22,7 @@ This document provides detailed information about all configuration options avai
 ### `configOptions.debugMode`
 **Type:** Boolean  
 **Default:** `false`  
-**Description:** When `true`, enables verbose debug logging to the server console. Useful for diagnosing issues.
+**Description:** When `true`, enables verbose debug logging to the server console and adds `[DEBUG]` lines (the pet's unique ID, owner UUID, assigned ID, and parent/child UUIDs) to `/wp info` output. Useful for diagnosing issues.
 
 ## Taming Settings
 
