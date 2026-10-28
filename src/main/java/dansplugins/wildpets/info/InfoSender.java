@@ -8,6 +8,7 @@ import dansplugins.wildpets.pet.record.PetRecordRepository;
 import dansplugins.wildpets.utils.MessageFormat;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.helpers.UUIDChecker;
 
 import java.util.UUID;
@@ -15,14 +16,20 @@ import java.util.UUID;
 public class InfoSender {
     private final ConfigService configService;
     private final PetRecordRepository petRecordRepository;
+    private final ServerProvider serverProvider;
 
     public InfoSender(ConfigService configService, PetRecordRepository petRecordRepository) {
+        this(configService, petRecordRepository, new ServerProvider());
+    }
+
+    public InfoSender(ConfigService configService, PetRecordRepository petRecordRepository, ServerProvider serverProvider) {
         this.configService = configService;
         this.petRecordRepository = petRecordRepository;
+        this.serverProvider = serverProvider;
     }
 
     public void sendInfoToPlayer(Player player, Pet pet) {
-        UUIDChecker uuidChecker = new UUIDChecker();
+        UUIDChecker uuidChecker = new UUIDChecker(serverProvider);
         player.sendMessage("");
         player.sendMessage(MessageFormat.header("Wild Pets", "Pet Info"));
         player.sendMessage(MessageFormat.line(ChatColor.GRAY + "Name:     " + ChatColor.WHITE + pet.getName()));

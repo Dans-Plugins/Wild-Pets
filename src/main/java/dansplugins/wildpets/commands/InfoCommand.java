@@ -2,6 +2,7 @@ package dansplugins.wildpets.commands;
 
 import dansplugins.wildpets.config.ConfigService;
 import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.info.InfoSender;
 import dansplugins.wildpets.pet.Pet;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
@@ -19,12 +20,18 @@ public class InfoCommand extends AbstractPluginCommand {
     private final EphemeralData ephemeralData;
     private final ConfigService configService;
     private final PetRecordRepository petRecordRepository;
+    private final ServerProvider serverProvider;
 
     public InfoCommand(EphemeralData ephemeralData, ConfigService configService, PetRecordRepository petRecordRepository) {
+        this(ephemeralData, configService, petRecordRepository, new ServerProvider());
+    }
+
+    public InfoCommand(EphemeralData ephemeralData, ConfigService configService, PetRecordRepository petRecordRepository, ServerProvider serverProvider) {
         super(new ArrayList<>(Arrays.asList("info")), new ArrayList<>(Arrays.asList("wp.info")));
         this.ephemeralData = ephemeralData;
         this.configService = configService;
         this.petRecordRepository = petRecordRepository;
+        this.serverProvider = serverProvider;
     }
 
     public boolean execute(CommandSender sender) {
@@ -42,7 +49,7 @@ public class InfoCommand extends AbstractPluginCommand {
             return false;
         }
 
-        InfoSender infoSender = new InfoSender(configService, petRecordRepository);
+        InfoSender infoSender = new InfoSender(configService, petRecordRepository, serverProvider);
         infoSender.sendInfoToPlayer(player, pet);
         return true;
     }
