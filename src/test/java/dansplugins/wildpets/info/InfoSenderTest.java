@@ -108,15 +108,27 @@ public class InfoSenderTest {
     }
 
     @Test
-    public void testSendInfoShowsLiteralNullWhenOwnerNameCannotBeResolved() {
+    public void testSendInfoShowsUnknownWhenOwnerNameCannotBeResolved() {
         when(mockServer.getPlayer(ownerUUID)).thenReturn(null);
         when(mockServer.getOfflinePlayer(ownerUUID)).thenReturn(mockOfflineOwner);
         when(mockOfflineOwner.getName()).thenReturn(null);
 
         infoSender.sendInfoToPlayer(mockPlayer, pet);
 
-        // Characterizes current behaviour: the unresolved name is concatenated as "null".
-        assertTrue(playerWasSent("Owner:    " + ChatColor.WHITE + "null"));
+        assertTrue(playerWasSent("Owner:    " + ChatColor.WHITE + "Unknown"));
+        assertFalse(playerWasSent("null"));
+    }
+
+    @Test
+    public void testSendInfoShowsUnknownWhenOfflineOwnerHasNeverPlayed() {
+        when(mockServer.getPlayer(ownerUUID)).thenReturn(null);
+        when(mockServer.getOfflinePlayer(ownerUUID)).thenReturn(mockOfflineOwner);
+        when(mockOfflineOwner.getName()).thenReturn("Alex");
+        when(mockOfflineOwner.hasPlayedBefore()).thenReturn(false);
+
+        infoSender.sendInfoToPlayer(mockPlayer, pet);
+
+        assertTrue(playerWasSent("Owner:    " + ChatColor.WHITE + "Unknown"));
     }
 
     @Test
