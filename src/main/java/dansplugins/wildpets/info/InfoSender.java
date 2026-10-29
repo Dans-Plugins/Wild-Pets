@@ -33,7 +33,8 @@ public class InfoSender {
         player.sendMessage("");
         player.sendMessage(MessageFormat.header("Wild Pets", "Pet Info"));
         player.sendMessage(MessageFormat.line(ChatColor.GRAY + "Name:     " + ChatColor.WHITE + pet.getName()));
-        player.sendMessage(MessageFormat.line(ChatColor.GRAY + "Owner:    " + ChatColor.WHITE + uuidChecker.findPlayerNameBasedOnUUID(pet.getOwnerUUID())));
+        String ownerName = uuidChecker.findPlayerNameBasedOnUUID(pet.getOwnerUUID());
+        player.sendMessage(MessageFormat.line(ChatColor.GRAY + "Owner:    " + ChatColor.WHITE + (ownerName != null ? ownerName : "Unknown")));
         player.sendMessage(MessageFormat.line(ChatColor.GRAY + "State:    " + ChatColor.WHITE + pet.getMovementState()));
         player.sendMessage(MessageFormat.line(ChatColor.GRAY + "Locked:   " + (pet.isLocked() ? ChatColor.RED + "true" : ChatColor.GREEN + "false")));
         if (configService.getBoolean("showLineageInfo")) {
