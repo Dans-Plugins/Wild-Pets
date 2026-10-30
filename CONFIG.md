@@ -40,7 +40,7 @@ This document provides detailed information about all configuration options avai
 ### `configOptions.bornPetsEnabled`
 **Type:** Boolean  
 **Default:** `true`  
-**Description:** When `true`, baby entities born from two tamed parents are automatically added to the owning player's pet list.
+**Description:** When `true`, a baby entity bred by a player is automatically added to that player's pet list and becomes their selected pet, as long as at least one parent is a pet.
 
 ## Pet Behavior Settings
 
