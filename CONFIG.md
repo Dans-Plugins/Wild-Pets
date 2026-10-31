@@ -40,7 +40,7 @@ This document provides detailed information about all configuration options avai
 ### `configOptions.bornPetsEnabled`
 **Type:** Boolean  
 **Default:** `true`  
-**Description:** When `true`, a baby entity bred by a player is automatically added to that player's pet list and becomes their selected pet, as long as at least one parent is a pet.
+**Description:** When `true`, a baby entity bred by a player is automatically added to that player's pet list and becomes their selected pet, as long as at least one parent is a pet and the player is below `petLimit`. A player at the limit is told so and the baby stays untamed.
 
 ## Pet Behavior Settings
 

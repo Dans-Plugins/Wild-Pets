@@ -4,6 +4,7 @@ import dansplugins.wildpets.config.ConfigService;
 import dansplugins.wildpets.data.EphemeralData;
 import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.pet.Pet;
+import dansplugins.wildpets.pet.list.PetList;
 import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
 import org.bukkit.ChatColor;
@@ -39,6 +40,9 @@ public class BreedEventHandlerTest {
 
     @Mock
     private EphemeralData mockEphemeralData;
+
+    @Mock
+    private PetList mockPetList;
 
     @Mock
     private EntityBreedEvent mockEvent;
@@ -85,6 +89,9 @@ public class BreedEventHandlerTest {
         when(mockPetListRepository.getPet(mockMother)).thenReturn(motherPet);
         when(mockPetListRepository.getPet(mockChild)).thenReturn(childPet);
         when(mockConfigService.getBoolean("bornPetsEnabled")).thenReturn(true);
+        when(mockConfigService.getInt("petLimit")).thenReturn(10);
+        when(mockPetList.getNumPets()).thenReturn(2);
+        when(mockPetListRepository.getPetList(playerUUID)).thenReturn(mockPetList);
 
         handler = new BreedEventHandler(mockPetListRepository, mockPetRecordRepository, mockConfigService, mockEphemeralData);
     }
@@ -159,5 +166,29 @@ public class BreedEventHandlerTest {
         verify(mockEphemeralData).selectPetForPlayer(childPet, playerUUID);
         assertTrue(childPet.getParentUUIDs().contains(fatherUUID));
         assertTrue(childPet.getParentUUIDs().contains(motherUUID));
+    }
+
+    @Test
+    public void testBreederAtPetLimitDoesNotTameOffspringButChildIsStillRecordedOnParents() {
+        when(mockPetList.getNumPets()).thenReturn(10);
+
+        handler.handle(mockEvent);
+
+        assertTrue(fatherPet.getChildUUIDs().contains(childUUID));
+        assertTrue(motherPet.getChildUUIDs().contains(childUUID));
+        verify(mockPetListRepository, never()).addNewPet(any(), any());
+        verifyNoInteractions(mockPetRecordRepository, mockEphemeralData);
+        verify(mockPlayer).sendMessage(ChatColor.RED + "You have reached your pet limit, so the newborn was not added to your pets.");
+        assertTrue(childPet.getParentUUIDs().isEmpty());
+    }
+
+    @Test
+    public void testBreederOneBelowPetLimitStillTamesOffspring() {
+        when(mockPetList.getNumPets()).thenReturn(9);
+
+        handler.handle(mockEvent);
+
+        verify(mockPetListRepository).addNewPet(mockPlayer, mockChild);
+        verify(mockEphemeralData).selectPetForPlayer(childPet, playerUUID);
     }
 }
