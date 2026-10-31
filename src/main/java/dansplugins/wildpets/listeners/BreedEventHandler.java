@@ -1,6 +1,7 @@
 package dansplugins.wildpets.listeners;
 
 import dansplugins.wildpets.data.EphemeralData;
+import dansplugins.wildpets.pet.list.PetList;
 import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.Pet;
 
@@ -56,6 +57,11 @@ public class BreedEventHandler implements Listener {
 
         if (configService.getBoolean("bornPetsEnabled")) {
             if (petParent1 != null || petParent2 != null) {
+                PetList petList = petListRepository.getPetList(player.getUniqueId());
+                if (petList != null && petList.getNumPets() >= configService.getInt("petLimit")) {
+                    player.sendMessage(ChatColor.RED + "You have reached your pet limit, so the newborn was not added to your pets.");
+                    return;
+                }
                 petListRepository.addNewPet(player, child);
                 Pet newPet = petListRepository.getPet(child);
                 petRecordRepository.addPetRecord(newPet);
