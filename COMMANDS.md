@@ -152,7 +152,7 @@ The main command can be accessed using either of the following aliases:
 
 ### `/wp config set <option> <value>`
 **Permission:** `wp.config` (default: op)  
-**Description:** Sets a plugin configuration option to the specified value.  
+**Description:** Sets a plugin configuration option to the specified value. A value of the wrong type is refused and the option keeps its current value: integer options need a whole number, and Boolean options need `true` or `false`.  
 **Usage:** `/wp config set petLimit 15`
 
 See [CONFIG.md](CONFIG.md) for a full list of available configuration options.

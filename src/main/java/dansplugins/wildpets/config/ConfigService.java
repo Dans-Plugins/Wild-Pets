@@ -24,7 +24,7 @@ public class ConfigService {
     
     private boolean altered = false;
 
-    private final String configOptionsPrefix = "configOptions.";
+    private static final String configOptionsPrefix = "configOptions.";
     private final String entityConfigurationsPrefix = "entityConfigurations.";
 
     private static final String USAGE_REPORTING_SECTION = "usage-reporting";
@@ -120,40 +120,62 @@ public class ConfigService {
     }
 
     public void setConfigOption(String option, String value, CommandSender sender) {
+        if (applyConfigOption(getConfig(), option, value, sender)) {
+            wildPets.saveConfig();
+            altered = true;
+        }
+    }
 
-        if (getConfig().isSet(configOptionsPrefix + option)) {
+    /**
+     * Validates and writes one option into the configuration, telling the sender
+     * the outcome. Kept free of WildPets so it can be tested against a real
+     * YamlConfiguration, like copyUsageReportingDefaults.
+     * @return whether the option was written, i.e. whether the file needs saving.
+     */
+    static boolean applyConfigOption(FileConfiguration config, String option, String value, CommandSender sender) {
+        if (config.isSet(configOptionsPrefix + option)) {
 
             if (option.equalsIgnoreCase("version")) {
                 sender.sendMessage(ChatColor.RED + "Cannot set version.");
-                return;
+                return false;
             } else if (option.equalsIgnoreCase("rightClickViewCooldown")
                     || option.equalsIgnoreCase("maxScheduleAttempts")
                     || option.equalsIgnoreCase("petNameCharacterLimit")
                     || option.equalsIgnoreCase("petLimit")) {
-                getConfig().set(configOptionsPrefix + option, Integer.parseInt(value));
+                int parsedValue;
+                try {
+                    parsedValue = Integer.parseInt(value);
+                } catch (NumberFormatException e) {
+                    sender.sendMessage(ChatColor.RED + "That option must be a whole number.");
+                    return false;
+                }
+                config.set(configOptionsPrefix + option, parsedValue);
                 MessageFormat.sendSuccessBox(sender, "Config", ChatColor.GREEN + "Integer set.");
             } else if (option.equalsIgnoreCase("debugMode")
+                    || option.equalsIgnoreCase("cancelTamingAfterFailedAttempt")
                     || option.equalsIgnoreCase("rightClickToSelect")
                     || option.equalsIgnoreCase("preventMountingLockedPets")
                     || option.equalsIgnoreCase("damageToPetsEnabled")
                     || option.equalsIgnoreCase("showLineageInfo")
                     || option.equalsIgnoreCase("bornPetsEnabled")
                     || option.equalsIgnoreCase("damageFromPetsEnabled")) {
-                getConfig().set(configOptionsPrefix + option, Boolean.parseBoolean(value));
+                if (!value.equalsIgnoreCase("true") && !value.equalsIgnoreCase("false")) {
+                    sender.sendMessage(ChatColor.RED + "That option must be true or false.");
+                    return false;
+                }
+                config.set(configOptionsPrefix + option, Boolean.parseBoolean(value));
                 MessageFormat.sendSuccessBox(sender, "Config", ChatColor.GREEN + "Boolean set.");
             } else if (option.equalsIgnoreCase("C")) { // no doubles yet
-                getConfig().set(configOptionsPrefix + option, Double.parseDouble(value));
+                config.set(configOptionsPrefix + option, Double.parseDouble(value));
                 MessageFormat.sendSuccessBox(sender, "Config", ChatColor.GREEN + "Double set.");
             } else {
-                getConfig().set(configOptionsPrefix + option, value);
+                config.set(configOptionsPrefix + option, value);
                 MessageFormat.sendSuccessBox(sender, "Config", ChatColor.GREEN + "String set.");
             }
-
-            // save
-            wildPets.saveConfig();
-            altered = true;
+            return true;
         } else {
             sender.sendMessage(ChatColor.RED + "That config option wasn't found.");
+            return false;
         }
     }
 
@@ -162,7 +184,7 @@ public class ConfigService {
             {"version", getConfig().getString("version")},
             {"debugMode", getString("debugMode")},
             {"petLimit", getString("petLimit")},
-            {"cancelTamingAfterFailedAttempt", getString("cancelTamingAfterFailedAttempt")},
+            {"cancelTamingAfterFailedAttempt", String.valueOf(getBoolean("cancelTamingAfterFailedAttempt"))},
             {"rightClickViewCooldown", String.valueOf(getInt("rightClickViewCooldown"))},
             {"rightClickToSelect", String.valueOf(getBoolean("rightClickToSelect"))},
             {"maxScheduleAttempts", String.valueOf(getInt("maxScheduleAttempts"))},
