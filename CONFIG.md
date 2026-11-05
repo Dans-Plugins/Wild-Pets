@@ -93,7 +93,8 @@ This document provides detailed information about all configuration options avai
 
 When the plugin is enabled, and each time a player uses one of its commands, a small event is sent to the
 author's [trace](https://github.com/Stephenson-Software/trace-client-java) server so it is known which
-plugins are actually in use. Commands from the console, command blocks and other plugins are not counted. An event carries the plugin's name, the event name (`startup` or
+plugins are actually in use. Commands from the console, command blocks and other plugins are not
+counted. An event carries the plugin's name, the event name (`startup` or
 `command`), the plugin version, and for a `command` event the command name, plus a random server ID (the
 `server-id` line in `plugins/trace/config.yml`, which identifies no person, account or IP address; deleting the
 line gets a new one) -- nothing about players or the world. Sending happens off the main thread, never delays a
@@ -183,7 +184,7 @@ An entity with no matching configuration can still be tamed, using a built-in fa
 | Salmon | `Salmon` | `KELP` | 24 | 50% |
 | Sheep | `Sheep` | `WHEAT` | 8 | 50% |
 | Skeleton Horse | `Skeleton_Horse` | `BONE` | 8 | 50% |
-| Sniffer | `Sniffer` | `GRASS` | 32 | 50% |
+| Sniffer | `Sniffer` | `SHORT_GRASS` (`GRASS` before 1.20.3) | 32 | 50% |
 | Snow Golem | `Snow_Golem` | `SNOWBALL` | 32 | 50% |
 | Squid | `Squid` | `KELP` | 24 | 50% |
 | Strider | `Strider` | `NETHER_WART` | 32 | 50% |
