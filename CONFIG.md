@@ -91,9 +91,9 @@ This document provides detailed information about all configuration options avai
 
 ## Usage Reporting
 
-When the plugin is enabled, and each time one of its commands is used, a small event is sent to the
+When the plugin is enabled, and each time a player uses one of its commands, a small event is sent to the
 author's [trace](https://github.com/Stephenson-Software/trace-client-java) server so it is known which
-plugins are actually in use. An event carries the plugin's name, the event name (`startup` or
+plugins are actually in use. Commands from the console, command blocks and other plugins are not counted. An event carries the plugin's name, the event name (`startup` or
 `command`), the plugin version, and for a `command` event the command name, plus a random server ID (the
 `server-id` line in `plugins/trace/config.yml`, which identifies no person, account or IP address; deleting the
 line gets a new one) -- nothing about players or the world. Sending happens off the main thread, never delays a
@@ -101,8 +101,8 @@ tick, and is dropped silently if the
 server cannot be reached. Set `usage-reporting.enabled` to `false` to turn it off.
 
 These options live at the top level of `config.yml` (not under `configOptions`) and are not managed
-by `/wp config`. On a server whose `config.yml` predates them, the defaults bundled in the plugin
-jar apply until the next plugin version writes the block to disk.
+by `/wp config`. On a server whose `config.yml` predates them, the plugin copies the bundled defaults
+into the file at startup, so the block is there to edit after the first start.
 
 ### `usage-reporting.enabled`
 **Type:** Boolean  
@@ -134,13 +134,13 @@ Each entity type has its own configuration section under `entityConfigurations.<
 #### `requiredTamingItem`
 **Type:** String (Bukkit Material name)  
 **Default:** Varies by entity (see below)  
-**Description:** The item the player must be holding to tame this entity.  
+**Description:** The item the player must be holding in their main hand to tame this entity.  
 **Example:** `WHEAT`, `BONE`, `SALMON`
 
 #### `tamingItemAmount`
 **Type:** Integer  
 **Default:** Varies by entity (see below)  
-**Description:** The number of the required item consumed per taming attempt.  
+**Description:** The number of the required item consumed per taming attempt, whether the attempt succeeds or fails. They must all be in the one stack held in the player's main hand.  
 **Range:** Any positive integer
 
 #### `enabled`
@@ -150,7 +150,9 @@ Each entity type has its own configuration section under `entityConfigurations.<
 
 ### Default Entity Configurations
 
-The following table lists all entities supported by Wild Pets and their default taming requirements.
+The following tables list the entity configurations bundled with Wild Pets and their default taming requirements.
+
+An entity with no matching configuration can still be tamed, using a built-in fallback of 10 `WHEAT` at a 25% chance. The fallback is written to `config.yml` as `entityConfigurations.default`, but that section isn't read back, so editing it has no effect.
 
 #### Passive Mobs
 
