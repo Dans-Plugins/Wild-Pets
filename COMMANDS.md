@@ -21,7 +21,14 @@ The main command can be accessed using either of the following aliases:
 - `/wildpets`
 - `/wp`
 
+Every subcommand below also requires the base `wp` permission (default: true), on top of the permission listed for it.
+
 ## General Commands
+
+### `/wp`
+**Permission:** None  
+**Description:** Displays the plugin version, developer, wiki and website.  
+**Usage:** `/wp`
 
 ### `/wp help`
 **Permission:** `wp.help` (default: true)  
@@ -37,7 +44,7 @@ The main command can be accessed using either of the following aliases:
 
 ### `/wp tame`
 **Permission:** `wp.tame` (default: true)  
-**Description:** Enters taming mode. Right-click an entity to attempt to tame it. You must be holding the required taming item.  
+**Description:** Enters taming mode. Right-click an entity to attempt to tame it. You must be holding the required taming item and amount as one stack in your main hand. An attempt consumes the items whether it succeeds or fails. Taming mode ends without consuming anything if the item or amount is wrong, the entity isn't living, the entity is already a pet, or you have reached the `petLimit`.  
 **Usage:** `/wp tame`
 
 ### `/wp tame cancel`
@@ -68,21 +75,21 @@ The main command can be accessed using either of the following aliases:
 
 ### `/wp list [playerName]`
 **Permission:** `wp.list` (default: true), `wp.list.others` (default: true)  
-**Description:** Lists your tamed pets. If a player name is provided and you have the `wp.list.others` permission, lists that player's pets instead.  
+**Description:** Lists your tamed pets. If a player name is provided and you have the `wp.list.others` permission, lists that player's pets instead. The other player must be online.  
 **Usage:**
 - `/wp list` - List your own pets
-- `/wp list PlayerName` - List another player's pets
+- `/wp list PlayerName` - List an online player's pets
 
 ### `/wp locate`
 **Permission:** `wp.locate` (default: true)  
-**Description:** Shows the last known location of your currently selected pet.  
+**Description:** Shows the coordinates of your currently selected pet. If the pet isn't loaded, its last known coordinates are shown instead.  
 **Usage:** `/wp locate`
 
 ## Pet Behavior
 
 ### `/wp follow`
 **Permission:** `wp.follow` (default: true)  
-**Description:** Commands your selected pet to follow you.  
+**Description:** Commands your selected pet to follow you. A following pet that is loaded is teleported to you each time you move into a new chunk.  
 **Usage:** `/wp follow`
 
 ### `/wp stay`
@@ -97,19 +104,19 @@ The main command can be accessed using either of the following aliases:
 
 ### `/wp call`
 **Permission:** `wp.call` (default: true)  
-**Description:** Teleports your selected pet to your current location.  
+**Description:** Teleports your selected pet to your current location. A pet in an unloaded chunk can't be reached, and you are told it cannot be found.  
 **Usage:** `/wp call`
 
 ### `/wp gather`
 **Permission:** `wp.gather` (default: true)  
-**Description:** Teleports all of your pets to your current location.  
+**Description:** Teleports all of your loaded pets to your current location. Pets in unloaded chunks are skipped without a message.  
 **Usage:** `/wp gather`
 
 ## Pet Management
 
 ### `/wp rename <newName>`
 **Permission:** `wp.rename` (default: true)  
-**Description:** Renames your currently selected pet. Pet names are limited to 20 characters by default (configurable via `petNameCharacterLimit`).  
+**Description:** Renames your currently selected pet. Pet names are a single word, limited to 20 characters by default (configurable via `petNameCharacterLimit`). The name can't be `cancel` or a name already used by one of your pets.  
 **Usage:** `/wp rename NewName`
 
 ### `/wp setfree`
@@ -128,7 +135,7 @@ The main command can be accessed using either of the following aliases:
 
 ### `/wp lock`
 **Permission:** `wp.lock` (default: true)  
-**Description:** Enters lock mode. Right-click one of your owned pets to lock it, preventing other players from mounting it.  
+**Description:** Enters lock mode. Right-click one of your owned pets to lock it, preventing other players from mounting or interacting with it.  
 **Usage:** `/wp lock`
 
 ### `/wp unlock`
@@ -140,7 +147,7 @@ The main command can be accessed using either of the following aliases:
 
 ### `/wp checkaccess`
 **Permission:** `wp.checkaccess` (not defined in `plugin.yml`; operators have it by default, other players must be granted it explicitly)  
-**Description:** Enters access-check mode. Right-click a pet to view who has access to it.  
+**Description:** Enters access-check mode. Right-click a locked pet to view who has access to it. An unlocked pet only reports that it isn't locked.  
 **Usage:** `/wp checkaccess`
 
 ## Administration

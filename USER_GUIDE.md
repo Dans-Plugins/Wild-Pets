@@ -31,7 +31,7 @@ Wild Pets allows you to:
 
 **Taming:**
 - Each entity type requires a specific item and a certain quantity of that item
-- Taming has a chance to succeed; if it fails, you may need to try again
+- Taming has a chance to succeed; if it fails, the items are still used up and you may need to try again
 - The `cancelTamingAfterFailedAttempt` config option controls whether failed attempts cancel the taming process
 
 **Pet Selection:**
@@ -62,9 +62,9 @@ Wild Pets allows you to:
    /wp tame
    ```
 
-3. **Right-click the entity** with the required taming item in hand. The plugin will attempt to tame the mob.
+3. **Right-click the entity** with the required taming item in your main hand, in one stack of at least the required amount. The plugin will attempt to tame the mob.
 
-4. **Wait for the result.** You will receive a message indicating success or failure. If taming fails, try again.
+4. **Wait for the result.** You will receive a message indicating success or failure. A failed attempt uses up the items, so you need another set to try again. If you were holding the wrong item or too few of it, nothing is used up, but taming mode ends and you need to run `/wp tame` again.
 
 5. **Cancel taming mode** at any time:
    ```
@@ -109,7 +109,7 @@ Wild Pets allows you to:
    ```
    /wp rename NewName
    ```
-   Pet names are limited to 20 characters by default (configurable via `petNameCharacterLimit`).
+   Pet names are a single word, limited to 20 characters by default (configurable via `petNameCharacterLimit`). A name can't be `cancel` or one already used by another of your pets.
 
 ---
 
@@ -121,6 +121,7 @@ Wild Pets allows you to:
 ```
 /wp follow
 ```
+A following pet is teleported to you each time you move into a new chunk.
 
 **Make your pet stay in place:**
 ```
@@ -148,7 +149,7 @@ Wild Pets allows you to:
 /wp list
 ```
 
-**List another player's pets** (requires `wp.list.others` permission):
+**List an online player's pets** (requires `wp.list.others` permission):
 ```
 /wp list PlayerName
 ```
@@ -157,6 +158,7 @@ Wild Pets allows you to:
 ```
 /wp gather
 ```
+Pets in unloaded chunks stay where they are.
 
 ---
 
@@ -238,7 +240,7 @@ Wild Pets allows you to:
 ## Tips and Best Practices
 
 - Use `/wp info` to quickly check your currently selected pet's details.
-- Use `/wp gather` when you've lost track of multiple pets across a large area.
+- Use `/wp gather` when you've lost track of multiple pets in loaded parts of the world.
 - If you're having trouble taming a specific mob, check the entity's configuration (taming item and amount) in `config.yml`.
 - Lock valuable pets to prevent other players from riding them.
 - Pet names help distinguish pets of the same type — give each one a unique name.
@@ -246,7 +248,7 @@ Wild Pets allows you to:
 ## Troubleshooting
 
 **I can't tame a mob:**
-- Make sure you have the correct taming item and sufficient quantity in your hand.
+- Make sure you have the correct taming item and sufficient quantity in one stack in your main hand.
 - Check that the entity type is enabled in the plugin configuration.
 - Verify you have the `wp.tame` permission.
 
@@ -254,6 +256,7 @@ Wild Pets allows you to:
 - Use `/wp locate` to find its last known location.
 - Use `/wp call` to teleport the pet to you.
 - Use `/wp gather` to teleport all your pets to you at once.
+- `/wp call` and `/wp gather` only reach pets in loaded chunks. If a pet can't be reached, travel to its last known location first.
 
 **I've reached my pet limit:**
 - Use `/wp list` to view all your pets.
