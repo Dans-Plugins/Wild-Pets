@@ -14,47 +14,41 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
+import java.util.function.BooleanSupplier;
+
 /**
  * @author Daniel McCoy Stephenson
  */
 public class DamageEffectsAndDeathHandler implements Listener {
     private final ConfigService configService;
     private final PetListRepository petListRepository;
-    private final WildPets wildPets;
+    private final BooleanSupplier debugEnabled;
     private final ServerProvider serverProvider;
 
     public DamageEffectsAndDeathHandler(ConfigService configService, PetListRepository petListRepository, WildPets wildPets) {
-        this(configService, petListRepository, wildPets, new ServerProvider());
+        this(configService, petListRepository, wildPets::isDebugEnabled, new ServerProvider());
     }
 
-    public DamageEffectsAndDeathHandler(ConfigService configService, PetListRepository petListRepository, WildPets wildPets, ServerProvider serverProvider) {
+    public DamageEffectsAndDeathHandler(ConfigService configService, PetListRepository petListRepository, BooleanSupplier debugEnabled, ServerProvider serverProvider) {
         this.configService = configService;
         this.petListRepository = petListRepository;
-        this.wildPets = wildPets;
+        this.debugEnabled = debugEnabled;
         this.serverProvider = serverProvider;
     }
 
     /**
-     * Prevents direct damage to and from pets
+     * Prevents damage to pets. Damage dealt by pets is handled with EntityDamageByEntityEvent,
+     * because this event does not identify a damager.
      */
     @EventHandler()
     public void handle(EntityDamageEvent event) {
         if (!configService.getBoolean("damageToPetsEnabled")) {
             Pet pet = petListRepository.getPet(event.getEntity());
             if (pet != null) {
-                if (wildPets.isDebugEnabled()) { System.out.println("[DEBUG] Cancelling EntityDamageEvent event to protect " + pet.getName() + "."); }
+                if (debugEnabled.getAsBoolean()) { System.out.println("[DEBUG] Cancelling EntityDamageEvent event to protect " + pet.getName() + "."); }
                 event.setCancelled(true);
             }
         }
-        if (!configService.getBoolean("damageFromPetsEnabled")) {
-            // cancel direct damage from pets
-            Pet damager = petListRepository.getPet(event.getEntity());
-            if (damager != null) {
-                if (wildPets.isDebugEnabled()) { System.out.println("[DEBUG] Cancelling EntityDamageEvent event to protect an entity from " + damager.getName() + "."); }
-                event.setCancelled(true);
-            }
-        }
-
     }
 
     /**
@@ -73,7 +67,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
                 }
             }
             else {
-                if (wildPets.isDebugEnabled()) { System.out.println("[DEBUG] Something went wrong removing " + name + " from the persistent data."); }
+                if (debugEnabled.getAsBoolean()) { System.out.println("[DEBUG] Something went wrong removing " + name + " from the persistent data."); }
             }
         }
     }
@@ -87,7 +81,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
             // if entity is a pet, cancel
             Pet pet = petListRepository.getPet(event.getEntity());
             if (pet != null) {
-                if (wildPets.isDebugEnabled()) {
+                if (debugEnabled.getAsBoolean()) {
                     System.out.println("[DEBUG] Cancelling EntityDamageByEntityEvent event to protect " + pet.getName() + ".");
                 }
                 event.setCancelled(true);
@@ -97,7 +91,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
             // if damager is a pet, cancel
             Pet damager = petListRepository.getPet(event.getDamager());
             if (damager != null) {
-                if (wildPets.isDebugEnabled()) {
+                if (debugEnabled.getAsBoolean()) {
                     System.out.println("[DEBUG] Cancelling EntityDamageEvent event to protect an entity from " + damager.getName() + ".");
                 }
                 event.setCancelled(true);
@@ -110,7 +104,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
                     Entity entity = (Entity) projectile.getShooter();
                     Pet pet = petListRepository.getPet(entity);
                     if (pet != null) {
-                        if (wildPets.isDebugEnabled()) {
+                        if (debugEnabled.getAsBoolean()) {
                             System.out.println("[DEBUG] Cancelling EntityDamageEvent event to protect an entity from a projectile from " + pet.getName() + ".");
                         }
                         event.setCancelled(true);
@@ -128,7 +122,7 @@ public class DamageEffectsAndDeathHandler implements Listener {
                     Entity entity = (Entity) cloud.getSource();
                     Pet pet = petListRepository.getPet(entity);
                     if (pet != null) {
-                        if (wildPets.isDebugEnabled()) {
+                        if (debugEnabled.getAsBoolean()) {
                             System.out.println("[DEBUG] Cancelling EntityDamageEvent event to protect an entity from an area of effect potion from " + pet.getName() + ".");
                         }
                         event.setCancelled(true);
