@@ -47,12 +47,12 @@ This document provides detailed information about all configuration options avai
 ### `configOptions.damageToPetsEnabled`
 **Type:** Boolean  
 **Default:** `false`  
-**Description:** When `true`, tamed pets can receive damage from attacks.
+**Description:** When `true`, tamed pets can receive damage, including from falls, fire and other non-attack sources. When `false`, all damage to tamed pets is cancelled. An attack from another pet is still cancelled while `damageFromPetsEnabled` is `false`.
 
 ### `configOptions.damageFromPetsEnabled`
 **Type:** Boolean  
 **Default:** `false`  
-**Description:** When `true`, tamed pets can deal damage to other entities.
+**Description:** When `true`, tamed pets can deal damage to other entities. When `false`, damage from a pet's direct attacks, projectiles and area-of-effect potion clouds is cancelled.
 
 ### `configOptions.preventMountingLockedPets`
 **Type:** Boolean  
