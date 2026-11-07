@@ -155,6 +155,8 @@ The following tables list the entity configurations bundled with Wild Pets and t
 
 An entity with no matching configuration can still be tamed, using a built-in fallback of 10 `WHEAT` at a 25% chance. The fallback is written to `config.yml` as `entityConfigurations.default`, but that section isn't read back, so editing it has no effect.
 
+Earlier versions wrote the Wandering Trader section as `Wandering Trader`, with a space. That key never matched, so Wandering Traders used the fallback above. Upgrading adds `Wandering_Trader` with the defaults listed below and leaves the old section in `config.yml`, where it is ignored. Move any custom values to the new key.
+
 #### Passive Mobs
 
 | Entity | Config Key | Required Item (`MATERIAL` name) | Amount | Chance |
@@ -191,7 +193,7 @@ An entity with no matching configuration can still be tamed, using a built-in fa
 | Tropical Fish | `Tropical_Fish` | `KELP` | 24 | 50% |
 | Turtle | `Turtle` | `SEAGRASS` | 16 | 50% |
 | Villager | `Villager` | `POTATO` | 8 | 50% |
-| Wandering Trader | `Wandering Trader` | `GOLD_INGOT` | 8 | 50% |
+| Wandering Trader | `Wandering_Trader` | `GOLD_INGOT` | 8 | 50% |
 
 #### Neutral Mobs
 

@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,14 +23,28 @@ public class EntityConfigService {
     }
 
     public EntityConfig acquireConfiguration(Entity entity) {
-        for (EntityConfig entityConfig : entityConfigs) {
-            if (entity.getType().name().equalsIgnoreCase(entityConfig.getType())) {
-                if (wildPets.isDebugEnabled()) { System.out.println("[DEBUG] Configuration for " + entity.getType().name() + " found!"); }
-                return entityConfig;
-            }
+        EntityConfig entityConfig = findConfiguration(entityConfigs, entity.getType().name());
+        if (entityConfig != null) {
+            if (wildPets.isDebugEnabled()) { System.out.println("[DEBUG] Configuration for " + entity.getType().name() + " found!"); }
+            return entityConfig;
         }
         if (wildPets.isDebugEnabled()) { System.out.println("[DEBUG] Configuration for " + entity.getType().name() + " not found! Using default configuration."); }
         return getDefaultConfiguration();
+    }
+
+    /**
+     * Finds the configuration whose key is the given entity type name, ignoring case.
+     * (WildPets is final, so this is the step tests exercise; acquireConfiguration only
+     * adds the debug lines and the fallback.)
+     * @return the matching configuration, or null if there is none.
+     */
+    static EntityConfig findConfiguration(List<EntityConfig> configurations, String entityTypeName) {
+        for (EntityConfig entityConfig : configurations) {
+            if (entityTypeName.equalsIgnoreCase(entityConfig.getType())) {
+                return entityConfig;
+            }
+        }
+        return null;
     }
 
     public void initializeWithDefaults() {
@@ -86,7 +101,7 @@ public class EntityConfigService {
         configurations.add(new EntityConfig("Tropical_Fish", 0.5, Material.KELP, 24, true));
         configurations.add(new EntityConfig("Turtle", 0.5, Material.SEAGRASS, 16, true));
         configurations.add(new EntityConfig("Villager", 0.5, Material.POTATO, 8, true));
-        configurations.add(new EntityConfig("Wandering Trader", 0.5, Material.GOLD_INGOT, 8, true));
+        configurations.add(new EntityConfig("Wandering_Trader", 0.5, Material.GOLD_INGOT, 8, true));
 
         // neutral mobs
         configurations.add(new EntityConfig("Bee", 0.5, Material.HONEYCOMB, 8, true));
