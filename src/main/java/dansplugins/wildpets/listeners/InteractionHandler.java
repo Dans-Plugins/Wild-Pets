@@ -56,6 +56,21 @@ public class InteractionHandler implements Listener {
         
         Pet pet = petListRepository.getPet(clickedEntity);
 
+        // Mode handlers may return early when they refuse an action; the access
+        // check below must still run so a locked pet's interaction is blocked.
+        handlePlayerMode(event, player, clickedEntity, pet);
+
+        if (pet == null) {
+            return;
+        }
+
+        if (pet.isLocked() && !pet.getOwnerUUID().equals(player.getUniqueId()) && !pet.getAccessList().contains(player.getUniqueId())) {
+            player.sendMessage(ChatColor.RED + "You don't have access to this pet.");
+            event.setCancelled(true);
+        }
+    }
+
+    private void handlePlayerMode(PlayerInteractEntityEvent event, Player player, Entity clickedEntity, Pet pet) {
         if (ephemeralData.isPlayerTaming(player.getUniqueId())) {
             setRightClickCooldown(player, 1);
 
@@ -295,16 +310,6 @@ public class InteractionHandler implements Listener {
             }
 
         }
-
-        if (pet == null) {
-            return;
-        }
-
-        if (pet.isLocked() && !pet.getOwnerUUID().equals(player.getUniqueId()) && !pet.getAccessList().contains(player.getUniqueId())) {
-            player.sendMessage(ChatColor.RED + "You don't have access to this pet.");
-            event.setCancelled(true);
-        }
-
     }
 
     @EventHandler()

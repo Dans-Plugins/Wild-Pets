@@ -238,7 +238,7 @@ public class InteractionHandlerTest {
     }
 
     @Test
-    public void testUnlockingSomeoneElsesPetIsRefusedWithoutCancellingTheInteraction() {
+    public void testUnlockingSomeoneElsesLockedPetIsRefusedAndCancelsTheInteraction() {
         othersPet.setLocked(true);
         when(mockEphemeralData.isPlayerUnlocking(playerUUID)).thenReturn(true);
         when(mockPetListRepository.getPet(mockCow)).thenReturn(othersPet);
@@ -248,8 +248,8 @@ public class InteractionHandlerTest {
         verify(mockPlayer).sendMessage(ChatColor.RED + "This is not your pet.");
         verify(mockEphemeralData).setPlayerAsNotUnlocking(playerUUID);
         assertTrue(othersPet.isLocked());
-        // the refusal returns before the trailing access check, so the interaction is not cancelled
-        assertFalse(event.isCancelled());
+        verify(mockPlayer).sendMessage(ChatColor.RED + "You don't have access to this pet.");
+        assertTrue(event.isCancelled());
     }
 
     @Test
@@ -323,6 +323,62 @@ public class InteractionHandlerTest {
 
         verify(mockPlayer).sendMessage(ChatColor.RED + "No one has access to this pet.");
         verify(mockEphemeralData).setPlayerAsNotCheckingAccess(playerUUID);
+    }
+
+    // --- refusals on someone else's locked pet still block the interaction ---
+
+    @Test
+    public void testTamingSomeoneElsesLockedPetIsRefusedAndCancelsTheInteraction() {
+        othersPet.setLocked(true);
+        when(mockEphemeralData.isPlayerTaming(playerUUID)).thenReturn(true);
+        when(mockPetListRepository.getPet(mockCow)).thenReturn(othersPet);
+
+        handler.handle(event);
+
+        verify(mockPlayer).sendMessage(ChatColor.RED + "That entity is already a pet.");
+        verify(mockPlayer).sendMessage(ChatColor.RED + "You don't have access to this pet.");
+        assertTrue(event.isCancelled());
+    }
+
+    @Test
+    public void testSelectingSomeoneElsesLockedPetIsRefusedAndCancelsTheInteraction() {
+        othersPet.setLocked(true);
+        when(mockEphemeralData.isPlayerSelecting(playerUUID)).thenReturn(true);
+        when(mockPetListRepository.getPet(mockCow)).thenReturn(othersPet);
+        when(mockPetListRepository.getPlayersPet(mockPlayer, mockCow)).thenReturn(null);
+
+        handler.handle(event);
+
+        verify(mockPlayer).sendMessage(ChatColor.RED + "That entity is not your pet.");
+        verify(mockPlayer).sendMessage(ChatColor.RED + "You don't have access to this pet.");
+        assertTrue(event.isCancelled());
+    }
+
+    @Test
+    public void testLockingSomeoneElsesLockedPetIsRefusedAndCancelsTheInteraction() {
+        othersPet.setLocked(true);
+        when(mockEphemeralData.isPlayerLocking(playerUUID)).thenReturn(true);
+        when(mockPetListRepository.getPet(mockCow)).thenReturn(othersPet);
+
+        handler.handle(event);
+
+        verify(mockPlayer).sendMessage(ChatColor.RED + "This is not your pet.");
+        verify(mockPlayer).sendMessage(ChatColor.RED + "You don't have access to this pet.");
+        assertTrue(event.isCancelled());
+    }
+
+    @Test
+    public void testCheckingAccessOnSomeoneElsesLockedPetWithEmptyAccessListCancelsTheInteraction() {
+        othersPet.setLocked(true);
+        othersPet.removeFromAccessList(otherPlayerUUID);
+        when(mockEphemeralData.isPlayerCheckingAccess(playerUUID)).thenReturn(true);
+        when(mockPetListRepository.getPet(mockCow)).thenReturn(othersPet);
+
+        handler.handle(event);
+
+        verify(mockPlayer).sendMessage(ChatColor.RED + "No one has access to this pet.");
+        verify(mockPlayer).sendMessage(ChatColor.RED + "You don't have access to this pet.");
+        assertTrue(event.isCancelled());
     }
 
     // --- plain right-click ---
