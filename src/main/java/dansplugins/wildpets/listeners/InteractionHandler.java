@@ -9,6 +9,7 @@ import dansplugins.wildpets.config.ConfigService;
 import dansplugins.wildpets.config.EntityConfigService;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
 import dansplugins.wildpets.scheduler.Scheduler;
+import dansplugins.wildpets.helpers.ServerProvider;
 import dansplugins.wildpets.helpers.UUIDChecker;
 import dansplugins.wildpets.utils.MessageFormat;
 
@@ -37,8 +38,13 @@ public class InteractionHandler implements Listener {
     private final WildPets wildPets;
     private final ConfigService configService;
     private final Scheduler scheduler;
+    private final ServerProvider serverProvider;
 
     public InteractionHandler(EntityConfigService entityConfigService, PetListRepository petListRepository, PetRecordRepository petRecordRepository, EphemeralData ephemeralData, WildPets wildPets, ConfigService configService, Scheduler scheduler) {
+        this(entityConfigService, petListRepository, petRecordRepository, ephemeralData, wildPets, configService, scheduler, new ServerProvider());
+    }
+
+    public InteractionHandler(EntityConfigService entityConfigService, PetListRepository petListRepository, PetRecordRepository petRecordRepository, EphemeralData ephemeralData, WildPets wildPets, ConfigService configService, Scheduler scheduler, ServerProvider serverProvider) {
         this.entityConfigService = entityConfigService;
         this.petListRepository = petListRepository;
         this.petRecordRepository = petRecordRepository;
@@ -46,6 +52,7 @@ public class InteractionHandler implements Listener {
         this.wildPets = wildPets;
         this.configService = configService;
         this.scheduler = scheduler;
+        this.serverProvider = serverProvider;
     }
 
     @EventHandler()
@@ -261,7 +268,7 @@ public class InteractionHandler implements Listener {
             player.sendMessage("");
             player.sendMessage(MessageFormat.header("Wild Pets", "Access List"));
 
-            UUIDChecker uuidChecker = new UUIDChecker();
+            UUIDChecker uuidChecker = new UUIDChecker(serverProvider);
 
             for (UUID uuid : pet.getAccessList()) {
                 String playerName = uuidChecker.findPlayerNameBasedOnUUID(uuid);
@@ -288,7 +295,7 @@ public class InteractionHandler implements Listener {
 
                 setRightClickCooldown(player, configService.getInt("rightClickViewCooldown"));
 
-                InfoSender infoSender = new InfoSender(configService, petRecordRepository);
+                InfoSender infoSender = new InfoSender(configService, petRecordRepository, serverProvider);
                 infoSender.sendInfoToPlayer(player, pet);
 
                 if (configService.getBoolean("rightClickToSelect")) {

@@ -9,6 +9,8 @@ import dansplugins.wildpets.pet.list.PetListRepository;
 import dansplugins.wildpets.pet.record.PetRecordRepository;
 import dansplugins.wildpets.scheduler.Scheduler;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
 import org.bukkit.entity.Cow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
@@ -28,8 +30,8 @@ import static org.mockito.Mockito.*;
 /**
  * Covers the right-click and mount handlers. WildPets is final and cannot be mocked, so the handler is
  * built with a null plugin; the taming branch is only exercised up to the guards that run before
- * isDebugEnabled() is first consulted. The info-view and access-list output paths build their own
- * InfoSender/UUIDChecker on the real Bukkit server and are not exercised here.
+ * isDebugEnabled() is first consulted. Name lookups in the info-view and access-list output paths
+ * resolve against a mock Server supplied through the injected ServerProvider.
  */
 public class InteractionHandlerTest {
     @Mock
@@ -46,6 +48,9 @@ public class InteractionHandlerTest {
 
     @Mock
     private ServerProvider mockServerProvider;
+
+    @Mock
+    private Server mockServer;
 
     @Mock
     private EntityConfigService mockEntityConfigService;
@@ -87,8 +92,14 @@ public class InteractionHandlerTest {
         othersPet = new Pet(UUID.randomUUID(), otherPlayerUUID, "Other", mockServerProvider);
         othersPet.setName("Daisy");
 
+        when(mockServerProvider.get()).thenReturn(mockServer);
+        when(mockServer.getPlayer(playerUUID)).thenReturn(mockPlayer);
+        when(mockServer.getPlayer(otherPlayerUUID)).thenReturn(mockOtherPlayer);
+        when(mockPlayer.getName()).thenReturn("Daniel");
+        when(mockOtherPlayer.getName()).thenReturn("Other");
+
         handler = new InteractionHandler(mockEntityConfigService, mockPetListRepository, mockPetRecordRepository,
-                mockEphemeralData, null, mockConfigService, mockScheduler);
+                mockEphemeralData, null, mockConfigService, mockScheduler, mockServerProvider);
     }
 
     // --- taming guards ---
@@ -325,6 +336,28 @@ public class InteractionHandlerTest {
         verify(mockEphemeralData).setPlayerAsNotCheckingAccess(playerUUID);
     }
 
+    @Test
+    public void testCheckingAccessListsTheNamesOnTheAccessListAndSkipsUnresolvableOnes() {
+        UUID unknownUUID = UUID.randomUUID();
+        OfflinePlayer unknownOfflinePlayer = mock(OfflinePlayer.class);
+        when(mockServer.getOfflinePlayer(unknownUUID)).thenReturn(unknownOfflinePlayer);
+        ownPet.setLocked(true);
+        ownPet.addToAccessList(otherPlayerUUID);
+        ownPet.addToAccessList(unknownUUID);
+        when(mockEphemeralData.isPlayerCheckingAccess(playerUUID)).thenReturn(true);
+        when(mockPetListRepository.getPet(mockCow)).thenReturn(ownPet);
+
+        handler.handle(event);
+
+        verify(mockPlayer).sendMessage(contains("Access List"));
+        verify(mockPlayer).sendMessage(contains(ChatColor.WHITE + "Daniel"));
+        verify(mockPlayer).sendMessage(contains(ChatColor.WHITE + "Other"));
+        verify(mockServer).getOfflinePlayer(unknownUUID);
+        verify(mockEphemeralData).setPlayerAsNotCheckingAccess(playerUUID);
+        assertTrue(event.isCancelled());
+        verify(mockPlayer, never()).sendMessage(ChatColor.RED + "You don't have access to this pet.");
+    }
+
     // --- refusals on someone else's locked pet still block the interaction ---
 
     @Test
@@ -390,6 +423,63 @@ public class InteractionHandlerTest {
         verify(mockPlayer, never()).sendMessage(anyString());
         verifyNoInteractions(mockScheduler);
         assertFalse(event.isCancelled());
+    }
+
+    @Test
+    public void testPlainRightClickOnOwnPetSendsInfoAndStartsTheViewCooldown() {
+        when(mockConfigService.getInt("rightClickViewCooldown")).thenReturn(7);
+        when(mockPetListRepository.getPet(mockCow)).thenReturn(ownPet);
+
+        handler.handle(event);
+
+        verify(mockPlayer).sendMessage(contains("Pet Info"));
+        verify(mockPlayer).sendMessage(contains(ChatColor.WHITE + "Bessie"));
+        verify(mockPlayer).sendMessage(contains("Owner:    " + ChatColor.WHITE + "Daniel"));
+        verify(mockEphemeralData).setRightClickCooldown(playerUUID, true);
+        verify(mockScheduler).scheduleRightClickCooldownSetter(mockPlayer, 7);
+        verify(mockEphemeralData, never()).selectPetForPlayer(any(), any());
+        assertFalse(event.isCancelled());
+    }
+
+    @Test
+    public void testPlainRightClickOnOwnPetSelectsItWhenRightClickToSelectIsEnabled() {
+        when(mockConfigService.getBoolean("rightClickToSelect")).thenReturn(true);
+        when(mockPetListRepository.getPet(mockCow)).thenReturn(ownPet);
+
+        handler.handle(event);
+
+        verify(mockPlayer).sendMessage(contains("Pet Info"));
+        verify(mockEphemeralData).selectPetForPlayer(ownPet, playerUUID);
+        verify(mockPlayer).sendMessage(contains(ChatColor.GREEN + "Bessie selected."));
+        assertFalse(event.isCancelled());
+    }
+
+    @Test
+    public void testPlainRightClickOnAlreadySelectedOwnPetDoesNotReselectIt() {
+        when(mockConfigService.getBoolean("rightClickToSelect")).thenReturn(true);
+        when(mockEphemeralData.getPetSelectionForPlayer(playerUUID)).thenReturn(ownPet);
+        when(mockPetListRepository.getPet(mockCow)).thenReturn(ownPet);
+
+        handler.handle(event);
+
+        verify(mockPlayer).sendMessage(contains("Pet Info"));
+        verify(mockEphemeralData, never()).selectPetForPlayer(any(), any());
+        verify(mockPlayer, never()).sendMessage(contains("selected."));
+    }
+
+    @Test
+    public void testPlainRightClickOnSomeoneElsesLockedPetIsNotSelectedAndCancelsTheInteraction() {
+        othersPet.setLocked(true);
+        when(mockConfigService.getBoolean("rightClickToSelect")).thenReturn(true);
+        when(mockPetListRepository.getPet(mockCow)).thenReturn(othersPet);
+
+        handler.handle(event);
+
+        // Current behaviour: the info view is still shown before the access check runs.
+        verify(mockPlayer).sendMessage(contains("Owner:    " + ChatColor.WHITE + "Other"));
+        verify(mockEphemeralData, never()).selectPetForPlayer(any(), any());
+        verify(mockPlayer).sendMessage(ChatColor.RED + "You don't have access to this pet.");
+        assertTrue(event.isCancelled());
     }
 
     @Test
