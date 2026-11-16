@@ -157,6 +157,8 @@ An entity with no matching configuration can still be tamed, using a built-in fa
 
 Earlier versions wrote the Wandering Trader section as `Wandering Trader`, with a space. That key never matched, so Wandering Traders used the fallback above. Upgrading adds `Wandering_Trader` with the defaults listed below and leaves the old section in `config.yml`, where it is ignored. Move any custom values to the new key.
 
+Before 1.20.5, the server calls Mooshrooms `MUSHROOM_COW` and Snow Golems `SNOWMAN`. On those servers, these mobs use the `Mooshroom` and `Snow_Golem` sections. A section keyed by the old name (`Mushroom_Cow` or `Snowman`) still takes priority if one exists.
+
 #### Passive Mobs
 
 | Entity | Config Key | Required Item (`MATERIAL` name) | Amount | Chance |
