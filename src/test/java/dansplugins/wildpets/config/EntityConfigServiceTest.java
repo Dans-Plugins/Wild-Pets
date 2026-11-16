@@ -5,6 +5,7 @@ import org.bukkit.entity.EntityType;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -73,6 +74,50 @@ public class EntityConfigServiceTest {
         assertEquals(Material.GOLD_INGOT, entityConfig.getRequiredTamingItem());
         assertEquals(8, entityConfig.getTamingItemAmount());
         assertEquals(0.5, entityConfig.getChanceToSucceed(), 0.0);
+    }
+
+    @Test
+    public void testMooshroomUsesItsBundledConfigurationBefore1_20_5() {
+        // execute - before 1.20.5 a Mooshroom's entity type is MUSHROOM_COW
+        EntityConfig entityConfig = EntityConfigService.findConfiguration(
+                EntityConfigService.buildDefaults(), "MUSHROOM_COW");
+
+        // verify - issue #392: the Mooshroom key never matched on 1.19.4, so the fallback was used
+        assertNotNull(entityConfig);
+        assertEquals("Mooshroom", entityConfig.getType());
+        assertEquals(Material.RED_MUSHROOM, entityConfig.getRequiredTamingItem());
+        assertEquals(8, entityConfig.getTamingItemAmount());
+    }
+
+    @Test
+    public void testSnowGolemUsesItsBundledConfigurationBefore1_20_5() {
+        // execute - before 1.20.5 a Snow Golem's entity type is SNOWMAN
+        EntityConfig entityConfig = EntityConfigService.findConfiguration(
+                EntityConfigService.buildDefaults(), "SNOWMAN");
+
+        // verify - issue #392: the Snow_Golem key never matched on 1.19.4, so the fallback was used
+        assertNotNull(entityConfig);
+        assertEquals("Snow_Golem", entityConfig.getType());
+        assertEquals(Material.SNOWBALL, entityConfig.getRequiredTamingItem());
+        assertEquals(32, entityConfig.getTamingItemAmount());
+    }
+
+    @Test
+    public void testMooshroomAndSnowGolemMatchTheirCurrentEntityTypeNames() {
+        // execute & verify - from 1.20.5 the entity types are MOOSHROOM and SNOW_GOLEM
+        ArrayList<EntityConfig> defaults = EntityConfigService.buildDefaults();
+        assertEquals("Mooshroom", EntityConfigService.findConfiguration(defaults, "MOOSHROOM").getType());
+        assertEquals("Snow_Golem", EntityConfigService.findConfiguration(defaults, "SNOW_GOLEM").getType());
+    }
+
+    @Test
+    public void testFindConfigurationPrefersAKeyMatchingThePre1_20_5Name() {
+        // setup - an operator may have added a Mushroom_Cow key to work around the mismatch
+        EntityConfig mushroomCow = new EntityConfig("Mushroom_Cow", 0.25, Material.BROWN_MUSHROOM, 4, true);
+        EntityConfig mooshroom = new EntityConfig("Mooshroom", 0.5, Material.RED_MUSHROOM, 8, true);
+
+        // execute & verify
+        assertSame(mushroomCow, EntityConfigService.findConfiguration(Arrays.asList(mooshroom, mushroomCow), "MUSHROOM_COW"));
     }
 
     @Test

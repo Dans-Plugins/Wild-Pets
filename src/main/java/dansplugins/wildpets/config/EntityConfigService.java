@@ -8,6 +8,8 @@ import org.bukkit.entity.Entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -33,7 +35,20 @@ public class EntityConfigService {
     }
 
     /**
-     * Finds the configuration whose key is the given entity type name, ignoring case.
+     * Entity type names that Spigot renamed in 1.20.5, mapped to the current name. Servers older
+     * than that (1.19.4 in minecraft-versions.json) report the old name, which the bundled
+     * {@code Mooshroom} and {@code Snow_Golem} keys never match.
+     */
+    private static final Map<String, String> RENAMED_ENTITY_TYPE_NAMES = new HashMap<>();
+
+    static {
+        RENAMED_ENTITY_TYPE_NAMES.put("MUSHROOM_COW", "MOOSHROOM");
+        RENAMED_ENTITY_TYPE_NAMES.put("SNOWMAN", "SNOW_GOLEM");
+    }
+
+    /**
+     * Finds the configuration whose key is the given entity type name, ignoring case. If no key
+     * matches a pre-1.20.5 entity type name, the key for its current name is used instead.
      * (WildPets is final, so this is the step tests exercise; acquireConfiguration only
      * adds the debug lines and the fallback.)
      * @return the matching configuration, or null if there is none.
@@ -43,6 +58,10 @@ public class EntityConfigService {
             if (entityTypeName.equalsIgnoreCase(entityConfig.getType())) {
                 return entityConfig;
             }
+        }
+        String currentName = RENAMED_ENTITY_TYPE_NAMES.get(entityTypeName.toUpperCase(Locale.ROOT));
+        if (currentName != null) {
+            return findConfiguration(configurations, currentName);
         }
         return null;
     }
