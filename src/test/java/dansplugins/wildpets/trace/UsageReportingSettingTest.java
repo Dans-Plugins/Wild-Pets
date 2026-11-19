@@ -57,6 +57,23 @@ public class UsageReportingSettingTest {
     }
 
     @Test
+    public void aBlankEnabledValueIsAnOptOut() throws Exception {
+        String contents = "usage-reporting:\n  enabled:   # off for now\n  key: k\n";
+        File file = configFile(contents);
+        // Bukkit drops the key, so the bundled default would win.
+        assertTrue(loadLikeBukkit(contents).getBoolean(UsageReportingSetting.ENABLED_KEY));
+
+        assertTrue(UsageReportingSetting.turnedOffOnDisk(file));
+        assertFalse(UsageReportingSetting.isEnabled(loadLikeBukkit(contents), file));
+    }
+
+    @Test
+    public void anEnabledKeyOutsideTheBlockIsNotTheSwitch() throws Exception {
+        File file = configFile("other:\n  enabled:\nusage-reporting:\n  enabled: true\n");
+        assertFalse(UsageReportingSetting.turnedOffOnDisk(file));
+    }
+
+    @Test
     public void theBundledDefaultIsOn() throws Exception {
         // Otherwise the tests below that rely on the default being true would prove nothing.
         assertEquals(Boolean.TRUE, bundled().get(UsageReportingSetting.ENABLED_KEY));
