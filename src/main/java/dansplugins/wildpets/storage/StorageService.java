@@ -53,9 +53,9 @@ public class StorageService {
     public void save() {
         savePetRecords();
         savePets();
-        if (configService.hasBeenAltered()) {
-            wildPets.saveConfig();
-        }
+        // config.yml is not written here (on every autosave and on shutdown): /wp config set
+        // already saved each change, and writing the loaded config again would undo anything
+        // edited by hand while the server was running -- including usage-reporting.enabled: false.
     }
 
     public void load() {

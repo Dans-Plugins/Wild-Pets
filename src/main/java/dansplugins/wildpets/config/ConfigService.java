@@ -1,12 +1,14 @@
 package dansplugins.wildpets.config;
 
 import dansplugins.wildpets.WildPets;
+import dansplugins.wildpets.trace.UsageReportingSetting;
 import dansplugins.wildpets.utils.MessageFormat;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -285,7 +287,18 @@ public class ConfigService {
     // assumed.
 
     public boolean isUsageReportingEnabled() {
-        return getConfig().getBoolean(USAGE_REPORTING_ENABLED_KEY);
+        return isUsageReportingEnabled(getConfig(), new File(wildPets.getDataFolder(), "config.yml"));
+    }
+
+    /**
+     * Fails closed: only a value that clearly means "on" turns reporting on (getBoolean() would
+     * read a quoted "false" as the bundled true), and config.yml as it is on disk right now must
+     * allow it too, so neither a stale loaded copy nor Bukkit's fallback to the defaults for a
+     * file it could not parse can override an opt-out. Static for the same reason as
+     * copyUsageReportingDefaults.
+     */
+    static boolean isUsageReportingEnabled(Configuration config, File configFile) {
+        return UsageReportingSetting.isEnabled(config, configFile);
     }
 
     public String getUsageReportingEndpoint() {
