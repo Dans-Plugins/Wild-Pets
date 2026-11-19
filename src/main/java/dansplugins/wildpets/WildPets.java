@@ -11,6 +11,7 @@ import dansplugins.wildpets.pet.record.PetRecordRepository;
 import dansplugins.wildpets.storage.StorageService;
 import dansplugins.wildpets.scheduler.Scheduler;
 import dansplugins.wildpets.trace.TraceClient;
+import dansplugins.wildpets.trace.UsageReportingSetting;
 import org.bukkit.ChatColor;
 
 import org.bukkit.command.Command;
@@ -107,6 +108,22 @@ public final class WildPets extends JavaPlugin {
         }
         reloadConfig();
         entityConfigService.initializeWithConfig();
+    }
+
+    /**
+     * Writes the loaded config to config.yml without ever turning usage reporting back on. Every
+     * save goes through here: the defaults pass, the usage-reporting block written on upgrade, and
+     * /wp config set. A config.yml Bukkit could not parse was loaded as empty, so saving would
+     * replace the operator's whole file (an opt-out included) with the defaults: it is left alone
+     * and an error is logged. And the loaded config can be older than the file, since an operator
+     * may set usage-reporting.enabled: false by hand while the server runs, so an opt-out on disk
+     * is carried into it first.
+     */
+    @Override
+    public void saveConfig() {
+        if (UsageReportingSetting.prepareToSave(getConfig(), new File(getDataFolder(), "config.yml"), getLogger())) {
+            super.saveConfig();
+        }
     }
 
     /**
