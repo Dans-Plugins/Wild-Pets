@@ -108,7 +108,7 @@ into the file at startup, so the block is there to edit after the first start.
 ### `usage-reporting.enabled`
 **Type:** Boolean  
 **Default:** `true`  
-**Description:** Whether the plugin reports usage events. Set to `false` to turn it off. Only `true` (or `on`, `yes`) turns it on; any other value, including a quoted `"false"`, turns it off. Once turned off it stays off: the plugin never writes `config.yml` back with reporting on, even if the file was edited while the server was running, and never overwrites a `config.yml` it cannot parse (it logs an error instead, and reporting stays off until the file is fixed).
+**Description:** Whether the plugin reports usage events. Set to `false` to turn it off. Only `true` (or `on`, `yes`) turns it on; any other value, including a quoted `"false"`, turns it off. Once turned off it stays off: the plugin never writes `config.yml` back with reporting on, even if the file was edited while the server was running, and never overwrites a `config.yml` it cannot parse (it logs an error instead, and reporting stays off until the file is fixed). Other spellings of the block or the switch (`usage_reporting:`, `usageReporting:`, `enable: false`, `disabled: true`), or `usage-reporting: false`, also count as off.
 
 ### `usage-reporting.endpoint`
 **Type:** String  
