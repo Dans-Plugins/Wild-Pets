@@ -189,7 +189,10 @@ public class StorageService {
             petRecordRepository.addPetRecord(pet); // no-op when a persisted record already exists, because petRecords is a hashset and PetRecord implements equals()/hashCode() on uniqueID
         }
         loadFailed = false;
-        logger().info("Loaded " + pets.size() + " pet(s) and " + records.size() + " pet record(s).");
+        // One "<n> <label> loaded" line per stored type: the release gates' save-compatibility
+        // check compares these counts between the stable release and the candidate.
+        logger().info(pets.size() + " pets loaded");
+        logger().info(records.size() + " pet records loaded");
         return true;
     }
     
