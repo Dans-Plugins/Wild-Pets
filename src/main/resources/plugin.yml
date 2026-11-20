@@ -24,6 +24,8 @@ permissions:
     default: true
   wp.wander:
     default: true
+  wp.stay:
+    default: true
   wp.list:
     default: true
   wp.list.others:
@@ -45,6 +47,10 @@ permissions:
   wp.gather:
     default: true
   wp.trade:
+    default: true
+  wp.checkaccess:
+    default: true
+  wp.default:
     default: true
   wp.config:
     default: op

@@ -93,7 +93,7 @@ Every subcommand below also requires the base `wp` permission (default: true), o
 **Usage:** `/wp follow`
 
 ### `/wp stay`
-**Permission:** `wp.stay` (not defined in `plugin.yml`; operators have it by default, other players must be granted it explicitly)  
+**Permission:** `wp.stay` (default: true)  
 **Description:** Commands your selected pet to stay in its current location.  
 **Usage:** `/wp stay`
 
@@ -146,7 +146,7 @@ Every subcommand below also requires the base `wp` permission (default: true), o
 ## Access Control
 
 ### `/wp checkaccess`
-**Permission:** `wp.checkaccess` (not defined in `plugin.yml`; operators have it by default, other players must be granted it explicitly)  
+**Permission:** `wp.checkaccess` (default: true)  
 **Description:** Enters access-check mode. Right-click a locked pet to view who has access to it. An unlocked pet only reports that it isn't locked.  
 **Usage:** `/wp checkaccess`
 
