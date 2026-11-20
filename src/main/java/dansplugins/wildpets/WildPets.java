@@ -52,8 +52,15 @@ public final class WildPets extends JavaPlugin {
         registerEventHandlers();
         initializeCommandService();
         initializeConfig();
+        if (!storageService.load()) {
+            // The pet files could not be read. Running on would let players tame and name pets
+            // that could never be saved (save() is refused, so the unreadable files are not
+            // overwritten), so the plugin is disabled until the files are repaired.
+            getLogger().severe("Wild Pets is being disabled because its pet data could not be loaded.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         scheduler.scheduleAutosave();
-        storageService.load();
         handlebStatsIntegration();
         startUsageReporting();
     }
