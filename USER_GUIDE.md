@@ -266,3 +266,7 @@ Pets in unloaded chunks stay where they are.
 **Commands are not working:**
 - Make sure you have the required permissions. See [COMMANDS.md](COMMANDS.md) for a full list of permissions.
 - Type `/wp help` in-game for a list of available commands.
+
+**The server log says "Wild Pets is being disabled because its pet data could not be loaded" (server admins):**
+- Pets are stored in `plugins/WildPets/pets.json` and `plugins/WildPets/petRecords.json`. One of these could not be read: the log line before it names the file and the error.
+- The plugin leaves both files untouched and does not save over them while it is disabled, so nothing more is lost. Repair the file, or restore it from a backup, and restart the server.
