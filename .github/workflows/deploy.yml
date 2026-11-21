@@ -31,7 +31,7 @@ jobs:
     # Run on manual dispatch (any branch) or when the pushed branch matches
     # DEPLOY_BRANCH (default: main).
     if: ${{ github.event_name == 'workflow_dispatch' || github.ref_name == (vars.DEPLOY_BRANCH || 'main') }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
 
